@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/kiyengar/.oh-my-zsh"
+  export ZSH="/home/kiyengar/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -62,7 +62,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions)
+plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -77,14 +77,11 @@ source $ZSH/oh-my-zsh.sh
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
 # else
-export EDITOR='nvim'
+#   export EDITOR='mvim'
 # fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -94,22 +91,3 @@ export EDITOR='nvim'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
-  source /etc/profile.d/vte-2.91.sh
-fi
-
-alias ls="ls -lah"
-alias vz="vim ~/.zshrc"
-alias sz="source ~/.zshrc"
-alias dev="cd ~/Development"
-alias ga="git add --all"
-alias gc="git commit"
-alias gp="git push origin master"
-alias cs="cd ~/Development/custom-solutions"
-alias whoami="echo k.iyengar"
-alias vpn="cd ~/VPN && sudo openvpn --config k.iyengar@laptop.ovpn"
-alias code="code-insiders"
