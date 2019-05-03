@@ -15,7 +15,8 @@ set foldlevel=20
 
 
 let $FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
-let g:ale_fixers = {'typescript': ['tslint', 'prettier']}
+let g:ale_fixers = {'typescript': ['tslint', 'prettier'], 'haskell': ['brittany']}
+let g:ale_linters = {'haskell': ['ghc']}
 let g:ale_lint_on_save = 1
 let g:ale_javascript_prettier_use_local_config = 1
 
