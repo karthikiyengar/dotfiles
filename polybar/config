@@ -37,10 +37,10 @@ font-2 = siji:pixelsize=10;1
 
 modules-left = workspaces-xmonad title-xmonad 
 ; modules-center =
-modules-right = spotify weather memory cpu temperature pulseaudio date battery powermenu
+modules-right = spotify weather memory filesystem cpu temperature pulseaudio date battery 
 
 tray-position = right
-tray-padding = 2
+tray-pad= 2
 ;tray-background = #0063ff
 
 ;wm-restack = bspwm
@@ -282,12 +282,12 @@ format = <label>
 format-prefix = "Temp: "
 format-prefix-foreground = ${colors.foreground-alt}
 ; format-underline = #f50a4d
-format-warn = <ramp> <label-warn>
+format-warn = <label-warn>
 ; format-warn-underline = ${self.format-underline}
 
 label = %temperature-c%
 label-warn = %temperature-c%
-label-warn-foreground = ${colors.secondary}
+label-warn-foreground = ${colors.danger}
 
 ramp-0 = 
 ramp-1 = 

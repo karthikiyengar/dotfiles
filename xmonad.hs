@@ -36,6 +36,7 @@ myKeys =
   [ ( (myMod, xK_b)
     , sequence_ [spawn "polybar-msg cmd toggle", sendMessage ToggleStruts]
     )
+  , ((myMod .|. shiftMask, xK_l), spawn "xscreensaver-command -lock")
   ]
 
 
