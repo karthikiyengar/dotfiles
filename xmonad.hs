@@ -12,6 +12,7 @@ import           System.IO
 import           XMonad.Hooks.EwmhDesktops      ( ewmh )
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Util.EZConfig
+import           Graphics.X11.ExtraTypes.XF86
 
 myBar = "killall -q polybar; polybar xmother"
 
@@ -36,9 +37,17 @@ myKeys =
   [ ( (myMod, xK_b)
     , sequence_ [spawn "polybar-msg cmd toggle", sendMessage ToggleStruts]
     )
-  , ((myMod .|. shiftMask, xK_l), spawn "xscreensaver-command -lock")
-  ]
+    , ((myMod .|. shiftMask, xK_l), spawn "xscreensaver-command -lock")
+    ]
 
+    ++ [ ((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume 0 +5%")
+       , ((0, xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume 0 -5%")
+       , ((0, xF86XK_AudioMute)       , spawn "pactl set-sink-mute 0 toggle")
+       ]
+
+
+
+---- amixer -D pulse sset Master 5%- > /dev/null
 
 myConfig =
   def { terminal           = "termite"
