@@ -102,7 +102,7 @@ if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
   source /etc/profile.d/vte-2.91.sh
 fi
 
-alias ls="ls -lah"
+alias ls="ls -lah --color"
 alias vz="vim ~/.zshrc"
 alias sz="source ~/.zshrc"
 alias dev="cd ~/Development"

@@ -41,7 +41,7 @@ myKeys =
 
 
 myConfig =
-  def { terminal           = "tilix"
+  def { terminal           = "termite"
       , modMask            = mod4Mask
       , focusedBorderColor = "#008080"
       , logHook            = myEventLogHook

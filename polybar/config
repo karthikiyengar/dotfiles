@@ -37,7 +37,7 @@ font-2 = siji:pixelsize=10;1
 
 modules-left = workspaces-xmonad title-xmonad 
 ; modules-center =
-modules-right = spotify weather memory filesystem cpu temperature pulseaudio date battery 
+modules-right = spotify weather filesystem memory cpu temperature pulseaudio date battery 
 
 tray-position = right
 tray-pad= 2
@@ -77,8 +77,10 @@ interval = 25
 
 mount-0 = /
 
-label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
+label-mounted = %percentage_used%%
 label-unmounted = %mountpoint% not mounted
+format-mounted-prefix = "Df: "
+format-mounted-prefix-foreground = ${colors.foreground-alt}  
 label-unmounted-foreground = ${colors.foreground-alt}
 
 [module/mpd]
@@ -183,7 +185,7 @@ label = %date% %time%
 type = internal/pulseaudio
 
 format-volume = <label-volume> <bar-volume>
-label-volume = Vol: %{F${colors.foregrounds}%percentage%%{F-}%
+label-volume = Vol: %{F${colors.foreground}%percentage%%{F-}%
 label-volume-foreground = ${colors.foreground-alt}
 
 label-muted = muted
