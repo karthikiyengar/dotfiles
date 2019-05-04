@@ -5,6 +5,7 @@ foreground = #adadad
 foreground-alt = #555
 primary = #ffb52a
 secondary = #e60053
+success = #66b266
 alert = #bd2c40
 
 [bar/xmother]
@@ -181,7 +182,7 @@ label = %date% %time%
 type = internal/pulseaudio
 
 format-volume = <label-volume> <bar-volume>
-label-volume = Vol: %percentage%%
+label-volume = Vol: %{F${colors.foregrounds}%percentage%%{F-}%
 label-volume-foreground = ${colors.foreground-alt}
 
 label-muted = muted
@@ -242,11 +243,10 @@ format-charging = <animation-charging> <label-charging>
 format-charging-underline = #ffb52a
 
 format-discharging = <animation-discharging> <label-discharging>
-format-discharging-underline = ${self.format-charging-underline}
-
+; format-discharging-underline = ${self.format-charging-underline}
 format-full-prefix = "Bat: "
 format-full-prefix-foreground = ${colors.foreground-alt}
-format-full-underline = ${self.format-charging-underline}
+format-full-underline = ${colors.success}
 
 ramp-capacity-0 = 
 ramp-capacity-1 = 
