@@ -13,7 +13,7 @@ import           XMonad.Hooks.EwmhDesktops      ( ewmh )
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Util.EZConfig
 
-myBar = "polybar xmother"
+myBar = "killall -q polybar; polybar xmother"
 
 myStatusBar = statusBar myBar def def
 

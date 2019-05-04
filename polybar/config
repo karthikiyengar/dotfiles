@@ -11,8 +11,8 @@ alert = #bd2c40
 [bar/xmother]
 monitor = eDP-1
 width = 100%
-height = 27
-radius = 6.0
+height = 23
+radius = 0.0
 fixed-center = false
 enable-ipc = true
 background = ${colors.background}
@@ -21,11 +21,12 @@ foreground = ${colors.foreground}
 line-size = 3
 line-color = #f00
 
-border-size = 4
+border-size = 1
 border-color = #00000000
 
 padding-left = 0
 padding-right = 2
+padding-bottom = 0
 
 module-margin-left = 1
 module-margin-right = 2
@@ -34,9 +35,9 @@ font-0 = xft:Bitstream Vera Sans Mono:size=8:bold:antialias=true
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
 
-modules-left = workspaces-xmonad title-xmonad
-; modules-center = 
-modules-right = pulseaudio memory cpu battery temperature date powermenu
+modules-left = workspaces-xmonad title-xmonad 
+; modules-center =
+modules-right = spotify weather memory cpu temperature pulseaudio date battery powermenu
 
 tray-position = right
 tray-padding = 2
@@ -239,14 +240,21 @@ battery = BAT0
 adapter = AC
 full-at = 98
 
-format-charging = <animation-charging> <label-charging>
-format-charging-underline = #ffb52a
+format-charging-prefix = "Bat: "
+format-charging-prefix-foreground = ${colors.foreground-alt}
+format-charging = <label-charging>
+format-charging-underline = ${colors.success}
 
-format-discharging = <animation-discharging> <label-discharging>
-; format-discharging-underline = ${self.format-charging-underline}
+
+format-discharging-prefix = "Bat: "
+format-discharging-prefix-foreground = ${colors.foreground-alt}
+format-discharging = <label-discharging>
+format-discharging-underline = ${colors.alert}
+
+
 format-full-prefix = "Bat: "
 format-full-prefix-foreground = ${colors.foreground-alt}
-format-full-underline = ${colors.success}
+format-full-foreground = ${colors.success}
 
 ramp-capacity-0 = 
 ramp-capacity-1 = 
@@ -339,3 +347,24 @@ type = custom/script
 exec = tail -F /tmp/.xmonad-title-log
 exec-if = [ -e /tmp/.xmonad-title-log ]
 tail = true
+
+
+[module/weather]
+type = custom/script
+format-prefix = "Wea: "
+format-prefix-foreground = ${colors.foreground-alt}
+exec = ~/.config/polybar/scripts/weather.sh
+interval = 600
+click-left = xdg-open https://www.accuweather.com/en/de/berlin/10178/weather-forecast/178087
+label-font = 1
+
+[module/spotify]
+type = custom/script
+interval = 1
+format-prefix = " "
+format = <label>
+exec = python ~/.config/polybar/scripts/spotify.py -f '{artist}: {song}'
+click-left = dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
+double-click-left = dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
+double-click-right = dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
+format-underline = #1db954
