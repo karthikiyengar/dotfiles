@@ -9,10 +9,11 @@ success = #66b266
 alert = #bd2c40
 
 [bar/xmother]
-monitor = eDP-1
+monitor = DP-2
 width = 100%
 height = 23
 radius = 0.0
+override-redirect=true
 fixed-center = false
 enable-ipc = true
 background = ${colors.background}

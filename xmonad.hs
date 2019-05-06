@@ -13,10 +13,11 @@ import           XMonad.Hooks.EwmhDesktops      ( ewmh )
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Util.EZConfig
 import           Graphics.X11.ExtraTypes.XF86
+import           XMonad.Actions.PhysicalScreens
 
 myBar = "killall -q polybar; polybar xmother"
 
-myStatusBar = statusBar myBar def def
+myStatusBar = statusBar myBar (PP { ppOutput = \s -> return () }) def
 
 myMod = mod4Mask
 
@@ -45,7 +46,14 @@ myKeys =
        , ((0, xF86XK_AudioMute)       , spawn "pactl set-sink-mute 0 toggle")
        ]
 
-
+    -- Screen order for triple screens. TODO: Refactor
+    ++ [ ((myMod, xK_w)              , viewScreen 2)
+       , ((myMod, xK_e)              , viewScreen 0)
+       , ((myMod, xK_r)              , viewScreen 1)
+       , ((myMod .|. shiftMask, xK_w), sendToScreen 2)
+       , ((myMod .|. shiftMask, xK_e), sendToScreen 0)
+       , ((myMod .|. shiftMask, xK_r), sendToScreen 1)
+       ]
 
 ---- amixer -D pulse sset Master 5%- > /dev/null
 
@@ -53,28 +61,11 @@ myConfig =
   def { terminal           = "termite"
       , modMask            = mod4Mask
       , focusedBorderColor = "#008080"
-      , logHook            = myEventLogHook
-      , layoutHook         = avoidStruts $ layoutHook defaultConfig
+      , borderWidth        = 2
+      , layoutHook         = avoidStruts $ layoutHook def
       }
     `additionalKeysP` myKeysP
     `additionalKeys`  myKeys
-
-
-myEventLogHook = do
-  winset <- gets windowset
-  title  <- maybe (return "") (fmap show . getName) . W.peek $ winset
-  let currWs = W.currentTag winset
-  let wss    = map W.tag $ W.workspaces winset
-  let wsStr  = join $ map (fmt currWs) $ sort' wss
-
-  io $ appendFile "/tmp/.xmonad-title-log" (title ++ "\n")
-  io $ appendFile "/tmp/.xmonad-workspace-log" (wsStr ++ "\n")
-
- where
-  fmt currWs ws | currWs == ws = "[" ++ ws ++ "]"
-                | otherwise    = " " ++ ws ++ " "
-  sort' = sortBy (compare `on` (!! 0))
-
 
 main = do
   forM_ [".xmonad-workspace-log", ".xmonad-title-log"] $ \file -> do
