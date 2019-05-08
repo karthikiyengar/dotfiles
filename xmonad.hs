@@ -14,6 +14,7 @@ import           XMonad.Hooks.ManageDocks
 import           XMonad.Util.EZConfig
 import           Graphics.X11.ExtraTypes.XF86
 import           XMonad.Actions.PhysicalScreens
+import           XMonad.Hooks.SetWMName
 
 myBar = "killall -q polybar; polybar xmother"
 
@@ -55,11 +56,13 @@ myKeys =
        , ((myMod .|. shiftMask, xK_r), sendToScreen 1)
        ]
 
+myRemovedKeys = [((myMod .|. shiftMask, xK_q))]
 ---- amixer -D pulse sset Master 5%- > /dev/null
 
 myConfig =
   def { terminal           = "termite"
       , modMask            = mod4Mask
+      , startupHook        = setWMName "LG3D"
       , focusedBorderColor = "#008080"
       , borderWidth        = 2
       , logHook            = myEventLogHook
@@ -67,6 +70,7 @@ myConfig =
       }
     `additionalKeysP` myKeysP
     `additionalKeys`  myKeys
+    `removeKeys`      myRemovedKeys
 
 myEventLogHook = do
   winset <- gets windowset
