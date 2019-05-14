@@ -35,6 +35,8 @@ myKeysP =
     ]
   ]
 
+-- Use this to detect keys
+-- xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'
 myKeys =
   [ ( (myMod, xK_b)
     , sequence_ [spawn "polybar-msg cmd toggle", sendMessage ToggleStruts]
@@ -45,6 +47,7 @@ myKeys =
     ++ [ ((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume 0 +5%")
        , ((0, xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume 0 -5%")
        , ((0, xF86XK_AudioMute)       , spawn "pactl set-sink-mute 0 toggle")
+       , ((myMod, xK_Print), spawn "sh ~/.xmonad/scripts/select-screenshot.sh")
        ]
 
     -- Screen order for triple screens. TODO: Refactor
