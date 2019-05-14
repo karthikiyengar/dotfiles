@@ -36,7 +36,7 @@ font-0 = xft:Bitstream Vera Sans Mono:size=8:bold:antialias=true
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
 
-modules-left = workspaces-xmonad title-xmonad 
+modules-left = workspaces-xmonad layout-xmonad title-xmonad 
 ; modules-center =
 modules-right = spotify weather filesystem memory cpu temperature pulseaudio date battery 
 
@@ -350,6 +350,13 @@ type = custom/script
 exec = tail -F /tmp/.xmonad-title-log
 exec-if = [ -e /tmp/.xmonad-title-log ]
 tail = true
+
+[module/layout-xmonad]
+type = custom/script
+exec = tail -F /tmp/.xmonad-layout-log
+exec-if = [ -e /tmp/.xmonad-layout-log ]
+tail = true
+
 
 
 [module/weather]

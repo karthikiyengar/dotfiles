@@ -73,14 +73,21 @@ myConfig =
     `removeKeys`      myRemovedKeys
 
 myEventLogHook = do
+  forM_ [".xmonad-workspace-log", ".xmonad-title-log", ".xmonad-layout-log"]
+    $ \file -> do
+        safeSpawn "mkfifo" ["/tmp/" ++ file]
   winset <- gets windowset
   title  <- maybe (return "") (fmap show . getName) . W.peek $ winset
-  let currWs = W.currentTag winset
-  let wss    = map W.tag $ W.workspaces winset
-  let wsStr  = join $ map (fmt currWs) $ sort' wss
+  let currWs  = W.currentTag winset
+  let currWsM = W.lookupWorkspace currWs
+  let wss     = map W.tag $ W.workspaces winset
+  let wsStr   = join $ map (fmt currWs) $ sort' wss
+  let lStr = description . W.layout . W.workspace . W.current $ winset
 
   io $ appendFile "/tmp/.xmonad-title-log" (title ++ "\n")
   io $ appendFile "/tmp/.xmonad-workspace-log" (wsStr ++ "\n")
+  io $ appendFile "/tmp/.xmonad-layout-log" (lStr ++ "\n")
+
 
  where
   fmt currWs ws | currWs == ws = "[" ++ ws ++ "]"
@@ -88,10 +95,7 @@ myEventLogHook = do
   sort' = sortBy (compare `on` (!! 0))
 
 
-main = do
-  forM_ [".xmonad-workspace-log", ".xmonad-title-log"] $ \file -> do
-    safeSpawn "mkfifo" ["/tmp/" ++ file]
-  xmonad =<< myStatusBar myConfig
+main = xmonad =<< myStatusBar myConfig
 
 
 
