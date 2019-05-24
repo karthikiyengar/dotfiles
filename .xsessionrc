@@ -23,9 +23,9 @@ feh --bg-fill ~/Wallpapers/dark-space.jpg
 
 # Natural Scrolling
 xinput set-prop 'DELL081C:00 044E:121F Touchpad' 'libinput Natural Scrolling Enabled' 1
-xinput set-prop "pointer:MX Master 2S" 'libinput Natural Scrolling Enabled' 1
-
 
 # Tapping Enabled
 xinput set-prop 'DELL081C:00 044E:121F Touchpad' 'libinput Tapping Enabled' 1
 
+# Bluetooh Mouse Natural Scrolling
+sleep 3; xinput set-prop "pointer:MX Master 2S" 'libinput Natural Scrolling Enabled' 1

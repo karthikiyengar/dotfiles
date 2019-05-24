@@ -15,12 +15,15 @@ import           XMonad.Util.EZConfig
 import           Graphics.X11.ExtraTypes.XF86
 import           XMonad.Actions.PhysicalScreens
 import           XMonad.Hooks.SetWMName
+import           XMonad.Actions.OnScreen
+import qualified Data.Map                      as M
 
 myBar = "killall -q polybar; polybar xmother"
 
 myStatusBar = statusBar myBar (PP { ppOutput = \s -> return () }) def
 
 myMod = mod4Mask
+altMask = mod1Mask
 
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
@@ -37,7 +40,9 @@ myKeysP =
 
 -- Use this to detect keys
 -- xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'
-myKeys =
+
+myKeys x = M.union (M.fromList (newKeys x)) (keys def x)
+newKeys conf@(XConfig { XMonad.modMask = modm }) =
   [ ( (myMod, xK_b)
     , sequence_ [spawn "polybar-msg cmd toggle", sendMessage ToggleStruts]
     )
@@ -50,13 +55,17 @@ myKeys =
        , ((myMod, xK_Print), spawn "sh ~/.xmonad/scripts/select-screenshot.sh")
        ]
 
-    -- Screen order for triple screens. TODO: Refactor
-    ++ [ ((myMod, xK_w)              , viewScreen 2)
-       , ((myMod, xK_e)              , viewScreen 0)
-       , ((myMod, xK_r)              , viewScreen 1)
-       , ((myMod .|. shiftMask, xK_w), sendToScreen 2)
-       , ((myMod .|. shiftMask, xK_e), sendToScreen 0)
-       , ((myMod .|. shiftMask, xK_r), sendToScreen 1)
+    -- Screen order for triple screens.
+    ++ [ ( (m .|. myMod, key)
+         , screenWorkspace sc >>= flip whenJust (windows . f)
+         )
+       | (key, sc) <- zip [xK_w, xK_e, xK_r] [1, 0, 2]
+       , (f  , m ) <- [(W.view, 0), (W.shift, shiftMask)]
+       ]
+    -- Use view as default, mod + ctrl as greedy
+    ++ [ ((m .|. myMod, k), windows (f i))
+       | (i, k) <- zip (workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])
+       , (f, m) <- [(W.greedyView, controlMask), (W.view, myMod)]
        ]
 
 myRemovedKeys = [((myMod .|. shiftMask, xK_q))]
@@ -66,13 +75,13 @@ myConfig =
   def { terminal           = "termite"
       , modMask            = mod4Mask
       , startupHook        = setWMName "LG3D"
-      , focusedBorderColor = "#008080"
+      , focusedBorderColor = "#00d6d6"
       , borderWidth        = 2
       , logHook            = myEventLogHook
       , layoutHook         = avoidStruts $ layoutHook def
+      , keys               = myKeys
       }
     `additionalKeysP` myKeysP
-    `additionalKeys`  myKeys
     `removeKeys`      myRemovedKeys
 
 myEventLogHook = do
