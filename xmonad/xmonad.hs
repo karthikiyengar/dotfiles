@@ -1,9 +1,12 @@
-import           XMonad
+import           XMonad                  hiding ( (|||) )
+import           XMonad.Layout.LayoutCombinators
+import           XMonad.Layout           hiding ( (|||) )
 import           Data.List                      ( sortBy )
 import           Data.Function                  ( on )
 import           Control.Monad                  ( forM_
                                                 , join
                                                 )
+import           XMonad.Layout.NoBorders        ( smartBorders )
 import           XMonad.Util.Run                ( safeSpawn )
 import           XMonad.Util.NamedWindows       ( getName )
 import           XMonad.Hooks.DynamicLog
@@ -27,20 +30,8 @@ altMask = mod1Mask
 
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
-myKeysP =
-  [ (otherModMasks ++ "M-" ++ [key], action tag)
-  | (tag          , key   ) <- zip myWorkspaces "123456789"
-  , (otherModMasks, action) <-
-    [ ( ""
-      , windows . W.view
-      ) -- was W.greedyView
-    , ("S-", windows . W.shift)
-    ]
-  ]
-
 -- Use this to detect keys
 -- xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'
-
 myKeys x = M.union (M.fromList (newKeys x)) (keys def x)
 newKeys conf@(XConfig { XMonad.modMask = modm }) =
   [ ( (myMod, xK_b)
@@ -52,6 +43,22 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
     ++ [ ((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume 0 +5%")
        , ((0, xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume 0 -5%")
        , ((0, xF86XK_AudioMute)       , spawn "pactl set-sink-mute 0 toggle")
+       , ( (0, xF86XK_AudioPause)
+         , spawn
+           "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Pause"
+         )
+       , ( (0, xF86XK_AudioPlay)
+         , spawn
+           "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Play"
+         )
+       , ( (0, xF86XK_AudioNext)
+         , spawn
+           "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
+         )
+       , ( (0, xF86XK_AudioPrev)
+         , spawn
+           "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
+         )
        , ((myMod, xK_Print), spawn "sh ~/.xmonad/scripts/select-screenshot.sh")
        ]
 
@@ -62,14 +69,21 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
        | (key, sc) <- zip [xK_w, xK_e, xK_r] [1, 0, 2]
        , (f  , m ) <- [(W.view, 0), (W.shift, shiftMask)]
        ]
-    -- Use view as default, mod + ctrl as greedy
+
+    -- Use greedyView when mod + ctrl + workspace
     ++ [ ((m .|. myMod, k), windows (f i))
        | (i, k) <- zip (workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])
        , (f, m) <- [(W.greedyView, controlMask), (W.view, myMod)]
        ]
 
+    -- Use view when mod + workspace
+    ++ [ ((m .|. myMod, k), windows (f i))
+       | (i, k) <- zip (workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])
+       , (f, m) <- [(W.view, myMod), (W.view, myMod)]
+       ]
+
+
 myRemovedKeys = [((myMod .|. shiftMask, xK_q))]
----- amixer -D pulse sset Master 5%- > /dev/null
 
 myConfig =
   def { terminal           = "termite"
@@ -78,11 +92,10 @@ myConfig =
       , focusedBorderColor = "#00d6d6"
       , borderWidth        = 2
       , logHook            = myEventLogHook
-      , layoutHook         = avoidStruts $ layoutHook def
+      , layoutHook         = smartBorders $ avoidStruts $ layoutHook def
       , keys               = myKeys
       }
-    `additionalKeysP` myKeysP
-    `removeKeys`      myRemovedKeys
+    `removeKeys` myRemovedKeys
 
 myEventLogHook = do
   forM_ [".xmonad-workspace-log", ".xmonad-title-log", ".xmonad-layout-log"]
