@@ -1,6 +1,8 @@
 import           XMonad                  hiding ( (|||) )
 import           XMonad.Layout.LayoutCombinators
 import           XMonad.Layout           hiding ( (|||) )
+import           XMonad.Layout.Grid
+import           XMonad.Layout.ThreeColumns
 import           Data.List                      ( sortBy )
 import           Data.Function                  ( on )
 import           Control.Monad                  ( forM_
@@ -85,6 +87,11 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
 
 myRemovedKeys = [((myMod .|. shiftMask, xK_q))]
 
+myLayoutHook =
+  avoidStruts
+    $ smartBorders
+    $ ((Tall 1 (3 / 100) (1 / 2)) ||| Grid ||| ThreeCol 1 (3 / 100) (1 / 3))
+
 myConfig =
   def { terminal           = "termite"
       , modMask            = mod4Mask
@@ -92,7 +99,7 @@ myConfig =
       , focusedBorderColor = "#00d6d6"
       , borderWidth        = 2
       , logHook            = myEventLogHook
-      , layoutHook         = smartBorders $ avoidStruts $ layoutHook def
+      , layoutHook         = myLayoutHook
       , keys               = myKeys
       }
     `removeKeys` myRemovedKeys
