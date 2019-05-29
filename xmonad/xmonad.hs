@@ -14,7 +14,9 @@ import           XMonad.Util.NamedWindows       ( getName )
 import           XMonad.Hooks.DynamicLog
 import qualified XMonad.StackSet               as W
 import           System.IO
-import           XMonad.Hooks.EwmhDesktops      ( ewmh )
+import           XMonad.Hooks.EwmhDesktops      ( ewmh
+                                                , fullscreenEventHook
+                                                )
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Util.EZConfig
 import           Graphics.X11.ExtraTypes.XF86
@@ -93,15 +95,17 @@ myLayoutHook =
     $ ((Tall 1 (3 / 100) (1 / 2)) ||| Grid ||| ThreeCol 1 (3 / 100) (1 / 3))
 
 myConfig =
-  def { terminal           = "termite"
-      , modMask            = mod4Mask
-      , startupHook        = setWMName "LG3D"
-      , focusedBorderColor = "#00d6d6"
-      , borderWidth        = 2
-      , logHook            = myEventLogHook
-      , layoutHook         = myLayoutHook
-      , keys               = myKeys
-      }
+  ewmh
+    $ def { terminal           = "termite"
+          , modMask            = mod4Mask
+          , startupHook        = setWMName "LG3D"
+          , focusedBorderColor = "#00d6d6"
+          , borderWidth        = 2
+          , logHook            = myEventLogHook
+          , layoutHook         = myLayoutHook
+          , handleEventHook    = handleEventHook def <+> fullscreenEventHook
+          , keys               = myKeys
+          }
     `removeKeys` myRemovedKeys
 
 myEventLogHook = do
