@@ -23,6 +23,8 @@ import           Graphics.X11.ExtraTypes.XF86
 import           XMonad.Actions.PhysicalScreens
 import           XMonad.Hooks.SetWMName
 import           XMonad.Actions.OnScreen
+import           XMonad.Actions.SpawnOn
+import           XMonad.Util.SpawnOnce
 import qualified Data.Map                      as M
 
 myBar = "killall -q polybar; polybar xmother"
@@ -44,7 +46,11 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
     , ((myMod .|. shiftMask, xK_l), spawn "xscreensaver-command -lock")
     ]
 
-    ++ [ ((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume 0 +5%")
+    ++ [ ( (myMod, xK_p)
+         , spawn
+           "rofi -combi-modi window,drun,emoji -theme solarized -show combi -modi combi,run,calc -terse -no-show-match -no-sort -location 1 -width 100"
+         )
+       , ((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume 0 +5%")
        , ((0, xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume 0 -5%")
        , ((0, xF86XK_AudioMute)       , spawn "pactl set-sink-mute 0 toggle")
        , ( (0, xF86XK_AudioPause)
@@ -71,7 +77,7 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
          , screenWorkspace sc >>= flip whenJust (windows . f)
          )
        | (key, sc) <- zip [xK_w, xK_e, xK_r] [1, 0, 2]
-       , (f  , m ) <- [(W.view, 0), (W.shift, shiftMask)]
+       , (f  , m ) <- [(W.greedyView, 0), (W.shift, shiftMask)]
        ]
 
     -- Use greedyView when mod + ctrl + workspace
@@ -98,7 +104,8 @@ myConfig =
   ewmh
     $ def { terminal           = "termite"
           , modMask            = mod4Mask
-          , startupHook        = setWMName "LG3D"
+          , startupHook        = myStartupHook
+          , manageHook         = manageSpawn <+> manageHook def
           , focusedBorderColor = "#00d6d6"
           , borderWidth        = 2
           , logHook            = myEventLogHook
@@ -107,6 +114,15 @@ myConfig =
           , keys               = myKeys
           }
     `removeKeys` myRemovedKeys
+
+myStartupHook = do
+  spawnOnOnce "1" "todoist"
+  spawnOnOnce "1" "spotify"
+  spawnOnOnce "2" "code"
+  spawnOnOnce "2" "termite"
+  spawnOnOnce "3" "firefox"
+  spawnOnOnce "9" "slack"
+  spawnOnOnce "9" "thunderbird"
 
 myEventLogHook = do
   forM_ [".xmonad-workspace-log", ".xmonad-title-log", ".xmonad-layout-log"]
