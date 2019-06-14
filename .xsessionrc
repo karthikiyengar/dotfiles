@@ -1,7 +1,8 @@
 #!bin/bash
 
-# xscreensaver daemon
-xscreensaver -nosplash -log /dev/null &
+# screen lock daemon
+xautolock -detectsleep -time 3 -locker "systemctl suspend" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'Locking screen in 30 seconds'" &
+
 
 # Applets
 nm-applet &
@@ -29,4 +30,4 @@ xinput set-prop 'DELL081C:00 044E:121F Touchpad' 'libinput Natural Scrolling Ena
 xinput set-prop 'DELL081C:00 044E:121F Touchpad' 'libinput Tapping Enabled' 1
 
 # Bluetooh Mouse Natural Scrolling
-sleep 3; xinput set-prop "pointer:MX Master 2S" 'libinput Natural Scrolling Enabled' 1
+# sleep 3; xinput set-prop "pointer:MX Master 2S" 'libinput Natural Scrolling Enabled' 1

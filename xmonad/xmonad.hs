@@ -43,7 +43,7 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
   [ ( (myMod, xK_b)
     , sequence_ [spawn "polybar-msg cmd toggle", sendMessage ToggleStruts]
     )
-    , ((myMod .|. shiftMask, xK_l), spawn "xscreensaver-command -lock")
+    , ((myMod .|. shiftMask, xK_l), spawn "slock")
     ]
 
     ++ [ ( (myMod, xK_p)
@@ -98,7 +98,11 @@ myRemovedKeys = [((myMod .|. shiftMask, xK_q))]
 myLayoutHook =
   avoidStruts
     $ smartBorders
-    $ ((Tall 1 (3 / 100) (1 / 2)) ||| Grid ||| ThreeCol 1 (3 / 100) (1 / 3))
+    $ (   (Tall 1 (3 / 100) (1 / 2))
+      ||| Grid
+      ||| ThreeCol 1 (3 / 100) (1 / 3)
+      ||| Full
+      )
 
 myConfig =
   ewmh
