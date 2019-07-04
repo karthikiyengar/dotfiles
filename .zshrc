@@ -114,5 +114,7 @@ alias lia="cd ~/Development/lia"
 alias whoami="echo k.iyengar"
 alias vpn="cd ~/VPN && sudo openvpn --config k.iyengar@laptop.ovpn"
 alias r="ranger"
+alias nclean="find . -name "node_modules" -exec rm -rf '{}' +"
+alias adfs="sh ~/adfs.sh"
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

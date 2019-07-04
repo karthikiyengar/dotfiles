@@ -1,7 +1,7 @@
 #!bin/bash
 
 # screen lock daemon
-xautolock -detectsleep -time 3 -locker "systemctl suspend" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'Locking screen in 30 seconds'" &
+xautolock -detectsleep -time 10 -locker "systemctl suspend" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'Locking screen in 30 seconds'" &
 
 
 # Applets
