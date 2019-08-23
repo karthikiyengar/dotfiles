@@ -1,13 +1,13 @@
 #!bin/bash
 
 # screen lock daemon
-xautolock -detectsleep -time 10 -locker "systemctl suspend" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'Locking screen in 30 seconds'" &
+xautolock -detectsleep -time 3 -locker "slock" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'Locking screen in 30 seconds'" &
 
 
 # Applets
 nm-applet &
 blueman-applet &
-clipit &
+greenclip daemon &
 mullvad-vpn &
 
 # Set cursor to pointer
@@ -21,7 +21,7 @@ xset fp rehash
 autorandr -c
 
 # Set Wallpaper
-feh --bg-fill ~/Wallpapers/dark-space.jpg
+feh --bg-scale ~/Wallpapers/dark-space.jpg
 
 # Natural Scrolling
 xinput set-prop 'DELL081C:00 044E:121F Touchpad' 'libinput Natural Scrolling Enabled' 1

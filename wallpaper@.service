@@ -1,0 +1,11 @@
+[Unit]
+Description=Randomly changes wallpaper
+
+[Service]
+Environment=DISPLAY=:0
+User=%i
+ExecStart=feh --randomize --bg-fill ${HOME}/Wallpapers/
+
+[Install]
+WantedBy=basic.target  
+

@@ -26,6 +26,7 @@ import           XMonad.Actions.OnScreen
 import           XMonad.Actions.SpawnOn
 import           XMonad.Util.SpawnOnce
 import qualified Data.Map                      as M
+import           XMonad.Actions.CopyWindow      ( copy )
 
 myBar = "killall -q polybar; polybar xmother"
 
@@ -70,6 +71,15 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
            "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
          )
        , ((myMod, xK_Print), spawn "sh ~/.xmonad/scripts/select-screenshot.sh")
+       , ((myMod, xK_f)    , spawn "nautilus")
+       , ( (myMod .|. shiftMask, xK_h)
+         , spawn
+           "rofi -modi 'clipboard:greenclip print' -theme solarized -show clipboard -terse -no-show-match -no-sort -location 1 -width 100 -run-command '{cmd}'"
+         )
+       , ( (modm, xK_a)
+         , sequence_ $ [ windows $ copy i | i <- XMonad.workspaces conf ]
+         )    -- Pin to all workspaces
+       , ((modm .|. shiftMask, xK_a), windows $ kill8)    -- remove from all but current
        ]
 
     -- Screen order for triple screens.
@@ -79,19 +89,6 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
        | (key, sc) <- zip [xK_w, xK_e, xK_r] [1, 0, 2]
        , (f  , m ) <- [(W.greedyView, 0), (W.shift, shiftMask)]
        ]
-
-    -- Use greedyView when mod + ctrl + workspace
-    ++ [ ((m .|. myMod, k), windows (f i))
-       | (i, k) <- zip (workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])
-       , (f, m) <- [(W.greedyView, controlMask), (W.view, myMod)]
-       ]
-
-    -- Use view when mod + workspace
-    ++ [ ((m .|. myMod, k), windows (f i))
-       | (i, k) <- zip (workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])
-       , (f, m) <- [(W.view, myMod), (W.view, myMod)]
-       ]
-
 
 myRemovedKeys = [((myMod .|. shiftMask, xK_q))]
 
@@ -125,7 +122,7 @@ myStartupHook = do
   spawnOnOnce "2" "code"
   spawnOnOnce "2" "termite"
   spawnOnOnce "3" "firefox"
-  spawnOnOnce "9" "slack"
+  spawnOnOnce "9" "flatpak run com.slack.Slack"
   spawnOnOnce "9" "thunderbird"
 
 myEventLogHook = do
@@ -150,6 +147,9 @@ myEventLogHook = do
                 | otherwise    = " " ++ ws ++ " "
   sort' = sortBy (compare `on` (!! 0))
 
+
+kill8 ss | Just w <- W.peek ss = (W.insertUp w) $ W.delete w ss
+         | otherwise           = ss
 
 main = xmonad =<< myStatusBar myConfig
 
