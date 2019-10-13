@@ -103,12 +103,13 @@ myLayoutHook =
 
 myConfig =
   ewmh
-    $ def { terminal           = "termite"
+    $ def { terminal           = "urxvt"
           , modMask            = mod4Mask
           , startupHook        = myStartupHook
           , manageHook         = manageSpawn <+> manageHook def
-          , focusedBorderColor = "#00d6d6"
-          , borderWidth        = 2
+          , focusedBorderColor = "#fb9224"
+          , normalBorderColor  = "#000"
+          , borderWidth        = 3
           , logHook            = myEventLogHook
           , layoutHook         = myLayoutHook
           , handleEventHook    = handleEventHook def <+> fullscreenEventHook
@@ -120,7 +121,7 @@ myStartupHook = do
   spawnOnOnce "1" "todoist"
   spawnOnOnce "1" "spotify"
   spawnOnOnce "2" "code"
-  spawnOnOnce "2" "termite"
+  spawnOnOnce "2" "urxvt"
   spawnOnOnce "3" "firefox"
   spawnOnOnce "9" "flatpak run com.slack.Slack"
   spawnOnOnce "9" "thunderbird"
