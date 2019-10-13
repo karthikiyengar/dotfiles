@@ -39,7 +39,7 @@ font-2 = siji:pixelsize=10;1
 
 modules-left = workspaces-xmonad layout-xmonad title-xmonad 
 ; modules-center =
-modules-right = spotify weather filesystem memory cpu temperature pulseaudio date battery 
+modules-right = spotify weather filesystem memory cpu temperature date battery 
 
 tray-position = right
 tray-pad= 2

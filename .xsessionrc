@@ -8,6 +8,7 @@ xautolock -detectsleep -time 3 -locker "slock" -notify 30 -notifier "notify-send
 
 # Applets
 nm-applet &
+pasystray &
 blueman-applet &
 greenclip daemon &
 mullvad-vpn &
