@@ -51,9 +51,9 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
          , spawn
            "rofi -combi-modi window,drun,emoji -theme solarized -show combi -modi combi,run,calc -terse -no-show-match -no-sort -location 1 -width 100"
          )
-       , ((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume 0 +5%")
-       , ((0, xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume 0 -5%")
-       , ((0, xF86XK_AudioMute)       , spawn "pactl set-sink-mute 0 toggle")
+       , ((0, xF86XK_AudioRaiseVolume), spawn "pulseaudio-ctl up")
+       , ((0, xF86XK_AudioLowerVolume), spawn "pulseaudio-ctl down")
+       , ((0, xF86XK_AudioMute)       , spawn "pulseaudio-ctl mute")
        , ( (0, xF86XK_AudioPause)
          , spawn
            "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Pause"
