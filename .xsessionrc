@@ -1,7 +1,7 @@
 #!bin/bash
 
 # enable compositing
-compton --backend glx --xrender-sync --xrender-sync-fence -fcCz -l -10 -t -10 --fade-delta 4
+compton --backend glx --xrender-sync --xrender-sync-fence -fCz --fade-delta 4 &!
 
 # screen lock daemon
 xautolock -detectsleep -time 3 -locker "slock" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'Locking screen in 30 seconds'" &
