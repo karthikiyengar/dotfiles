@@ -120,11 +120,11 @@ myConfig =
     `removeKeys` myRemovedKeys
 
 myStartupHook = do
-  spawnOnOnce "1" "todoist"
-  spawnOnOnce "1" "spotify"
+  spawnOnOnce "8" "todoist"
+  spawnOnOnce "8" "spotify"
   spawnOnOnce "2" "code"
   spawnOnOnce "2" "urxvt"
-  spawnOnOnce "3" "firefox"
+  spawnOnOnce "1" "firefox"
   spawnOnOnce "9" "flatpak run com.slack.Slack"
   spawnOnOnce "9" "thunderbird"
 
