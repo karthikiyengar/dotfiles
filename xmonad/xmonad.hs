@@ -70,8 +70,10 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
          , spawn
            "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
          )
+       , ((0, xF86XK_MonBrightnessUp), spawn "sudo light -A 5") -- Added to visudo, deb manually installed
+       , ((0, xF86XK_MonBrightnessDown), spawn "sudo light -U 5")
        , ((myMod, xK_Print), spawn "sh ~/.xmonad/scripts/select-screenshot.sh")
-       , ((myMod, xK_f)    , spawn "nautilus")
+       , ((myMod, xK_f), spawn "nautilus")
        , ( (myMod .|. shiftMask, xK_h)
          , spawn
            "rofi -modi 'clipboard:greenclip print' -theme solarized -show clipboard -terse -no-show-match -no-sort -location 1 -width 100 -run-command '{cmd}'"
