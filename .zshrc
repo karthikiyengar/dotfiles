@@ -102,6 +102,9 @@ if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
   source /etc/profile.d/vte-2.91.sh
 fi
 
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
 alias ls="ls -lah --color"
 alias vz="vim ~/.zshrc"
 alias sz="source ~/.zshrc"
@@ -117,4 +120,5 @@ alias nclean="find . -name "node_modules" -exec rm -rf '{}' +"
 alias adfs="sh ~/adfs.sh"
 alias u="sudo apt-get update; sudo apt-get upgrade"
 alias crocks="cd ~/Development/crocks"
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$PATH"
+alias ikea="cd ~/Development/cs-ikea"
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"

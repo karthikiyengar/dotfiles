@@ -70,7 +70,9 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
          , spawn
            "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
          )
-       , ((0, xF86XK_MonBrightnessUp), spawn "sudo light -A 5") -- Added to visudo, deb manually installed
+       , ( (0, xF86XK_MonBrightnessUp)
+         , spawn "sudo light -A 5"
+         ) -- Added to visudo, deb manually installed
        , ((0, xF86XK_MonBrightnessDown), spawn "sudo light -U 5")
        , ((myMod, xK_Print), spawn "sh ~/.xmonad/scripts/select-screenshot.sh")
        , ((myMod, xK_f), spawn "nautilus")
@@ -111,7 +113,7 @@ myConfig =
           , manageHook         = manageSpawn <+> manageHook def
           , focusedBorderColor = "#fb9224"
           , normalBorderColor  = "#000"
-          , borderWidth        = 3
+          , borderWidth        = 2
           , logHook            = myEventLogHook
           , layoutHook         = myLayoutHook
           , handleEventHook    = handleEventHook def <+> fullscreenEventHook
@@ -125,19 +127,20 @@ myStartupHook = do
   spawnOnOnce "2" "code"
   spawnOnOnce "2" "urxvt"
   spawnOnOnce "1" "firefox"
-  spawnOnOnce "9" "flatpak run com.slack.Slack"
+  spawnOnOnce "9" "slack"
   spawnOnOnce "9" "thunderbird"
 
 myEventLogHook = do
   forM_ [".xmonad-workspace-log", ".xmonad-title-log", ".xmonad-layout-log"]
-    $ \file -> do
-        safeSpawn "mkfifo" ["/tmp/" ++ file]
+    $ \file -> safeSpawn "mkfifo" ["/tmp/" ++ file]
   winset <- gets windowset
   title  <- maybe (return "") (fmap show . getName) . W.peek $ winset
-  let currWs  = W.currentTag winset
-  let currWsM = W.lookupWorkspace currWs
-  let wss     = map W.tag $ W.workspaces winset
-  let wsStr   = join $ map (fmt currWs) $ sort' wss
+  let currWs = W.currentTag winset
+  let activeWss = filter
+        (\ws -> (length (W.stack ws) > 0) || W.tag ws == currWs)
+        (W.workspaces winset)
+  let wsTags = map W.tag $ activeWss
+  let wsStr  = join $ map (fmt currWs) $ sort' wsTags
   let lStr = description . W.layout . W.workspace . W.current $ winset
 
   io $ appendFile "/tmp/.xmonad-title-log" (title ++ "\n")
@@ -157,5 +160,5 @@ kill8 ss | Just w <- W.peek ss = (W.insertUp w) $ W.delete w ss
 main = xmonad =<< myStatusBar myConfig
 
 
-
-
+-- TODO: How do you resize floating windows?
+-- TODO: spawnOnOnce steals focus at startup
