@@ -346,9 +346,12 @@ type = custom/script
 exec = tail -F /tmp/.xmonad-workspace-log
 exec-if = [ -e /tmp/.xmonad-workspace-log ]
 tail = true
+format-foreground = #43abc9
 
 [module/title-xmonad]
 type = custom/script
+format-foreground = #fb9224
+label-maxlen = 100
 exec = tail -F /tmp/.xmonad-title-log
 exec-if = [ -e /tmp/.xmonad-title-log ]
 tail = true
@@ -380,3 +383,4 @@ click-left = dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/
 double-click-left = dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
 double-click-right = dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
 format-underline = #1db954
+label-maxlen = 100
