@@ -98,6 +98,8 @@ export EDITOR='nvim'
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+HISTSIZE=999999999
+
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
   source /etc/profile.d/vte-2.91.sh
 fi
