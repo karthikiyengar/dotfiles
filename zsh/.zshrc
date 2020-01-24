@@ -4,16 +4,15 @@ source ./.antigen.zsh
 antigen use oh-my-zsh
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle git
+antigen bundle hoffi/zsh-theme-lambda
 antigen apply
 
 export ZSH="/home/kiyengar/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
 source $ZSH/oh-my-zsh.sh
 
 export EDITOR='nvim'
 
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 HISTSIZE=999999999
 
@@ -38,3 +37,5 @@ alias crocks="cd ~/Development/crocks"
 alias ikea="cd ~/Development/cs-ikea"
 alias iam="cd ~/Development/iam-policies"
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
