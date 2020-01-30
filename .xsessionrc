@@ -13,13 +13,13 @@ then
   pasystray &
   blueman-applet &
   greenclip daemon &
-  mullvad-vpn &
+  # mullvad-vpn &
   
   # Set cursor to pointer
   xsetroot -cursor_name left_ptr
   
   # Load custom fonts
-  xset +fp /home/kiyengar/.local/share/fonts
+  xset +fp $HOME/.local/share/fonts
   xset fp rehash
   
   # Set the correct xrandr settings
