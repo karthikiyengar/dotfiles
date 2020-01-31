@@ -26,7 +26,7 @@ then
   autorandr -c
   
   # Set Wallpaper
-  # sh ~/apod.sh
+  feh --bg-scale ~/wallpapers/dark-space.jpg
 
   # Natural Scrolling
   xinput set-prop 'DELL081C:00 044E:121F Touchpad' 'libinput Natural Scrolling Enabled' 1
