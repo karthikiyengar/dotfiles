@@ -1,5 +1,5 @@
 # Use Antigen to manage packages
-source ./.antigen.zsh
+source ~/.antigen.zsh
 
 antigen use oh-my-zsh
 antigen bundle zsh-users/zsh-autosuggestions
@@ -11,6 +11,7 @@ export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
 export EDITOR='nvim'
+export FFF_HIDDEN=1
 
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 
@@ -43,6 +44,7 @@ alias crocks="cd ~/Development/crocks"
 alias ikea="cd ~/Development/cs-ikea"
 alias iam="cd ~/Development/iam-policies"
 alias f="f"
+alias apod="sh ~/apod.sh"
 export PATH="$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

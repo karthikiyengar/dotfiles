@@ -1,6 +1,6 @@
 #!bin/bash
 
-if [ "$STARTUP" == "xmonad-session" ] 
+if [ "$DESKTOP_SESSION" = "xmonad" ] 
 then
   # enable compositing
   # compton --backend glx --xrender-sync --xrender-sync-fence -fCz --fade-delta 4 &!
@@ -26,8 +26,8 @@ then
   autorandr -c
   
   # Set Wallpaper
-  feh --bg-scale ~/Wallpapers/dark-space.jpg
-  
+  # sh ~/apod.sh
+
   # Natural Scrolling
   xinput set-prop 'DELL081C:00 044E:121F Touchpad' 'libinput Natural Scrolling Enabled' 1
   

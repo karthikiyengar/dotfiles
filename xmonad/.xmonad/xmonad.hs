@@ -49,7 +49,7 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
 
     ++ [ ( (myMod, xK_p)
          , spawn
-           "rofi -combi-modi window,drun,emoji -theme solarized -show combi -modi combi,run,calc -terse -no-show-match -no-sort -location 1 -width 100"
+           "rofi -combi-modi window,drun,emoji -theme solarized -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100"
          )
        , ((0, xF86XK_AudioRaiseVolume), spawn "pulseaudio-ctl up")
        , ((0, xF86XK_AudioLowerVolume), spawn "pulseaudio-ctl down")
@@ -107,13 +107,13 @@ myLayoutHook =
 
 myConfig =
   ewmh
-    $ def { terminal           = "urxvt"
+    $ def { terminal           = "konsole"
           , modMask            = mod4Mask
           , startupHook        = myStartupHook
           , manageHook         = manageSpawn <+> manageHook def
           , focusedBorderColor = "#fb9224"
           , normalBorderColor  = "#000"
-          , borderWidth        = 2
+          , borderWidth        = 1 
           , logHook            = myEventLogHook
           , layoutHook         = myLayoutHook
           , handleEventHook    = handleEventHook def <+> fullscreenEventHook
@@ -125,7 +125,7 @@ myStartupHook = do
   spawnOnOnce "8" "todoist"
   spawnOnOnce "8" "spotify"
   spawnOnOnce "2" "code"
-  spawnOnOnce "2" "urxvt"
+  spawnOnOnce "2" "konsole"
   spawnOnOnce "1" "firefox"
   spawnOnOnce "9" "slack"
   spawnOnOnce "9" "thunderbird"
