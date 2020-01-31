@@ -7,7 +7,7 @@ antigen bundle git
 antigen bundle hoffi/zsh-theme-lambda
 antigen apply
 
-export ZSH="/home/kiyengar/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
 export EDITOR='nvim'
