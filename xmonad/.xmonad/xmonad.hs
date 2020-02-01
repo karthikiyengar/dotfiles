@@ -105,9 +105,11 @@ myLayoutHook =
       ||| Full
       )
 
+myTerminal = "kitty"
+
 myConfig =
   ewmh
-    $ def { terminal           = "konsole"
+    $ def { terminal           = myTerminal
           , modMask            = mod4Mask
           , startupHook        = myStartupHook
           , manageHook         = manageSpawn <+> manageHook def
@@ -125,7 +127,7 @@ myStartupHook = do
   spawnOnOnce "8" "todoist"
   spawnOnOnce "8" "spotify"
   spawnOnOnce "2" "code"
-  spawnOnOnce "2" "konsole"
+  spawnOnOnce "2" myTerminal
   spawnOnOnce "1" "firefox"
   spawnOnOnce "9" "slack"
   spawnOnOnce "9" "thunderbird"
