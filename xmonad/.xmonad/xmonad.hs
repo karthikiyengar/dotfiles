@@ -71,9 +71,9 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
            "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
          )
        , ( (0, xF86XK_MonBrightnessUp)
-         , spawn "light -A 5"
+         , spawn "~/.xmonad/scripts/media.sh brightness-inc"
          ) -- Added to visudo, deb manually installed
-       , ((0, xF86XK_MonBrightnessDown), spawn "light -U 5")
+       , ((0, xF86XK_MonBrightnessDown), spawn "~/.xmonad/scripts/media.sh brightness-dec")
        , ((myMod, xK_Print), spawn "sh ~/.xmonad/scripts/select-screenshot.sh")
        , ((myMod, xK_f), spawn "nautilus")
        , ( (myMod .|. shiftMask, xK_h)
@@ -149,7 +149,7 @@ myEventLogHook = do
   io $ appendFile "/tmp/.xmonad-workspace-log" (wsStr ++ "\n")
   io $ appendFile "/tmp/.xmonad-layout-log" (lStr ++ "\n")
 
-
+  
  where
   fmt currWs ws | currWs == ws = "[" ++ ws ++ "]"
                 | otherwise    = " " ++ ws ++ " "

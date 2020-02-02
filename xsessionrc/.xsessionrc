@@ -29,6 +29,7 @@ then
   # Set Wallpaper
   feh --bg-scale ~/wallpapers/dark-space.jpg
 
+  rumno-bacground
   # Set touchpad settings
   ~/.wm-scripts/touchpad-settings.sh  
 fi
