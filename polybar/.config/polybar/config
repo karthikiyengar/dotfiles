@@ -378,7 +378,7 @@ type = custom/script
 interval = 1
 format-prefix = " "
 format = <label>
-exec = python ~/.config/polybar/scripts/spotify.py -f '{artist}: {song}'
+exec = python3 ~/.config/polybar/scripts/spotify.py -f '{artist}: {song}'
 click-left = dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
 double-click-left = dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
 double-click-right = dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
