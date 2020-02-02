@@ -2,10 +2,10 @@
 if [[ "$DESKTOP_SESSION" == *"xmonad"* ]] 
 then
   # enable compositing
-  compton --backend glx --xrender-sync --xrender-sync-fence -fCz --fade-delta 4 &!
+  # compton &!
   
   # screen lock daemon
-  xautolock -detectsleep -time 3 -locker "slock" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'Locking screen in 30 seconds'" &
+  xautolock --corners 0-00 -detectsleep -time 3 -locker "slock" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'Locking screen in 30 seconds'" &
   
   # Applets
   nm-applet &

@@ -75,7 +75,7 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
          ) -- Added to visudo, deb manually installed
        , ((0, xF86XK_MonBrightnessDown), spawn "~/.wm-scripts/media.sh brightness-dec")
        , ((myMod, xK_Print), spawn "sh ~/.wm-scripts/select-screenshot.sh")
-       , ((myMod, xK_f), spawn "nautilus")
+       , ((myMod, xK_f), spawn "XDG_CURRENT_DESKTOP=kde dolphin")
        , ( (myMod .|. shiftMask, xK_h)
          , spawn
            "rofi -modi 'clipboard:greenclip print' -theme solarized -show clipboard -terse -no-show-match -no-sort -location 1 -width 100 -run-command '{cmd}'"

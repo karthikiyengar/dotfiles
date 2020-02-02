@@ -2,7 +2,7 @@
 
 GET_VOLUME="amixer sget Master | grep -oP '\[(\d+)%\]' | head -n 1 | grep -oP '\d+'"
 if [ $1 == "volume-inc" ]; then
-    amixer set 'Master' 5%+; rumno -v $(eval $GET_VOLUME) 
+    amixer set 'Master' on; amixer set 'Master' 5%+; rumno -v $(eval $GET_VOLUME) 
 fi
 
 if [ $1 == "volume-dec" ]; then

@@ -1,3 +1,8 @@
+if [ -x "$(command -v syndaemon)" ]; then
+    # disable touchpad clicks when typing
+    syndaemon -i .5 -K -t -R -d 
+fi
+
 if [ -x "$(command -v synclient)" ]; then
     synclient VertScrollDelta=-113
     synclient HorizScrollDelta=-113
