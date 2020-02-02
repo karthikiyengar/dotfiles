@@ -51,9 +51,9 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
          , spawn
            "rofi -combi-modi window,drun,emoji -theme solarized -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100"
          )
-       , ((0, xF86XK_AudioRaiseVolume), spawn "pulseaudio-ctl up")
-       , ((0, xF86XK_AudioLowerVolume), spawn "pulseaudio-ctl down")
-       , ((0, xF86XK_AudioMute)       , spawn "pulseaudio-ctl mute")
+       , ((0, xF86XK_AudioRaiseVolume), spawn "~/.wm-scripts/media.sh volume-inc")
+       , ((0, xF86XK_AudioLowerVolume), spawn "~/.wm-scripts/media.sh volume-dec")
+       , ((0, xF86XK_AudioMute)       , spawn "~/.wm-scripts/media.sh mute")
        , ( (0, xF86XK_AudioPause)
          , spawn
            "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Pause"
@@ -71,10 +71,10 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
            "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
          )
        , ( (0, xF86XK_MonBrightnessUp)
-         , spawn "~/.xmonad/scripts/media.sh brightness-inc"
+         , spawn "~/.wm-scripts/media.sh brightness-inc"
          ) -- Added to visudo, deb manually installed
-       , ((0, xF86XK_MonBrightnessDown), spawn "~/.xmonad/scripts/media.sh brightness-dec")
-       , ((myMod, xK_Print), spawn "sh ~/.xmonad/scripts/select-screenshot.sh")
+       , ((0, xF86XK_MonBrightnessDown), spawn "~/.wm-scripts/media.sh brightness-dec")
+       , ((myMod, xK_Print), spawn "sh ~/.wm-scripts/select-screenshot.sh")
        , ((myMod, xK_f), spawn "nautilus")
        , ( (myMod .|. shiftMask, xK_h)
          , spawn
