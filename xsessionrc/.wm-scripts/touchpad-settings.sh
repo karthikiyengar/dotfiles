@@ -4,6 +4,7 @@ if [ -x "$(command -v syndaemon)" ]; then
 fi
 
 if [ -x "$(command -v synclient)" ]; then
+    synclient HorizTwoFingerScroll=1
     synclient VertScrollDelta=-113
     synclient HorizScrollDelta=-113
 else 
