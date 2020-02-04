@@ -51,9 +51,14 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
          , spawn
            "rofi -combi-modi window,drun,emoji -theme solarized -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100"
          )
-       , ((0, xF86XK_AudioRaiseVolume), spawn "~/.wm-scripts/media.sh volume-inc")
-       , ((0, xF86XK_AudioLowerVolume), spawn "~/.wm-scripts/media.sh volume-dec")
-       , ((0, xF86XK_AudioMute)       , spawn "~/.wm-scripts/media.sh mute")
+       , ((myMod, xK_v), spawn "DESKTOP_SESSION=kde pavucontrol-qt -t 3")
+       , ( (0, xF86XK_AudioRaiseVolume)
+         , spawn "~/.wm-scripts/media.sh volume-inc"
+         )
+       , ( (0, xF86XK_AudioLowerVolume)
+         , spawn "~/.wm-scripts/media.sh volume-dec"
+         )
+       , ((0, xF86XK_AudioMute), spawn "~/.wm-scripts/media.sh mute")
        , ( (0, xF86XK_AudioPause)
          , spawn
            "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Pause"
@@ -73,9 +78,11 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
        , ( (0, xF86XK_MonBrightnessUp)
          , spawn "~/.wm-scripts/media.sh brightness-inc"
          ) -- Added to visudo, deb manually installed
-       , ((0, xF86XK_MonBrightnessDown), spawn "~/.wm-scripts/media.sh brightness-dec")
+       , ( (0, xF86XK_MonBrightnessDown)
+         , spawn "~/.wm-scripts/media.sh brightness-dec"
+         )
        , ((myMod, xK_Print), spawn "sh ~/.wm-scripts/select-screenshot.sh")
-       , ((myMod, xK_f), spawn "XDG_CURRENT_DESKTOP=kde dolphin")
+       , ((myMod, xK_f)    , spawn "XDG_CURRENT_DESKTOP=kde dolphin")
        , ( (myMod .|. shiftMask, xK_h)
          , spawn
            "rofi -modi 'clipboard:greenclip print' -theme solarized -show clipboard -terse -no-show-match -no-sort -location 1 -width 100 -run-command '{cmd}'"
@@ -115,7 +122,7 @@ myConfig =
           , manageHook         = manageSpawn <+> manageHook def
           , focusedBorderColor = "#fb9224"
           , normalBorderColor  = "#000"
-          , borderWidth        = 1 
+          , borderWidth        = 1
           , logHook            = myEventLogHook
           , layoutHook         = myLayoutHook
           , handleEventHook    = handleEventHook def <+> fullscreenEventHook
@@ -149,7 +156,7 @@ myEventLogHook = do
   io $ appendFile "/tmp/.xmonad-workspace-log" (wsStr ++ "\n")
   io $ appendFile "/tmp/.xmonad-layout-log" (lStr ++ "\n")
 
-  
+
  where
   fmt currWs ws | currWs == ws = "[" ++ ws ++ "]"
                 | otherwise    = " " ++ ws ++ " "
