@@ -45,7 +45,7 @@ alias ikea="cd ~/Development/cs-ikea"
 alias iam="cd ~/Development/iam-policies"
 alias f="f"
 alias mapi="cd ~/Development/lyra-api"
-alias apod="sh ~/apod.sh"
+alias wp="~/.wm-scripts/change-wallpaper.sh"
 alias zy="sudo zypper"
 export PATH="$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
 

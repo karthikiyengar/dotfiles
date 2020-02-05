@@ -1,9 +1,11 @@
-mkdir -p "~/.wallpapers"
-wallpaper_location="~/.wallpapers/current-wallpaper.jpg"
+#!/bin/bash
+mkdir -p ~/.wallpapers
+wallpaper_location=~/.wallpapers/current-wallpaper.jpg
 urls=$(wget -O - -o /dev/null http://www.reddit.com/r/earthporn/.rss | grep -oP 'https://i.redd.it/.*?jpg')
 
 for url in $urls; do 
-    wget -o /dev/null -O $wallpaper_location $url
+    set -x
+    wget -O $wallpaper_location $url
     is_landscape=$(identify -format '%[fx:(w>h)]' $wallpaper_location)
     resolution=$(feh -L "%p" $wallpaper_location)
     is_highres=0;

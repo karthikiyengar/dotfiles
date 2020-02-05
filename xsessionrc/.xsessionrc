@@ -26,9 +26,15 @@ then
   autorandr -c
   
   # Set Wallpaper
-  feh --bg-scale ~/wallpapers/dark-space.jpg
-
+  if [ -f "~/.wallpapers/current-wallpaper.jpg" ]; then
+    feh --bg-scale "~/.wallpapers/current-wallpaper.jpg"
+  else
+    feh --bg-scale "~/.wallpapers/dark-space.jpg"
+  fi
+  
   rumno-background
   # Set touchpad settings
   ~/.wm-scripts/touchpad-settings.sh  
+  
+  ~/.wm-scripts/change-wallpaper.sh &
 fi
