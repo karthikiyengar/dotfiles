@@ -1,6 +1,0 @@
-# systemctl.conf
-fs.inotify.max_user_watches=524288
-
-# puleseaudio 
-load-module module-bluetooth-policy auto_switch=2
-
