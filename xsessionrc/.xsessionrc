@@ -5,15 +5,15 @@ then
   # compton &!
   
   # screen lock daemon
-  xautolock --corners 0-00 -detectsleep -time 3 -locker "slock" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'Locking screen in 30 seconds'" &
+  xautolock -corners "-000" -detectsleep -time 3 -locker "slock" -notify 30 -notifier "notify-send -u critical -t 10000 -- 'Locking screen in 30 seconds'" &!
   
   # Applets
-  nm-applet &
-  pasystray &
-  blueman-applet &
-  greenclip daemon &
+  nm-applet &!
+  pasystray &!
+  blueman-applet &!
+  greenclip daemon &!
   # mullvad-vpn &
-  rumno-background &
+  rumno-background &!
   
   # Set cursor to pointer
   xsetroot -cursor_name left_ptr
@@ -26,15 +26,15 @@ then
   autorandr -c
   
   # Set Wallpaper
-  if [ -f "~/.wallpapers/current-wallpaper.jpg" ]; then
-    feh --bg-scale "~/.wallpapers/current-wallpaper.jpg"
+  if [ -f ~/.wallpapers/current-wallpaper.jpg ]; then
+    feh --bg-scale ~/.wallpapers/current-wallpaper.jpg
   else
-    feh --bg-scale "~/.wallpapers/dark-space.jpg"
+    feh --bg-scale ~/.wallpapers/dark-space.jpg
   fi
   
   rumno-background
   # Set touchpad settings
   ~/.wm-scripts/touchpad-settings.sh  
   
-  ~/.wm-scripts/change-wallpaper.sh &
+  ~/.wm-scripts/change-wallpaper.sh &!
 fi
