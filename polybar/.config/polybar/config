@@ -39,7 +39,7 @@ font-2 = siji:pixelsize=10;1
 
 modules-left = workspaces-xmonad layout-xmonad title-xmonad 
 ; modules-center =
-modules-right = spotify weather filesystem memory cpu date battery 
+modules-right = spotify weather filesystem memory cpu xkeyboard date battery 
 
 tray-position = right
 tray-pad= 2
@@ -59,19 +59,15 @@ label = %title:0:30:...%
 
 [module/xkeyboard]
 type = internal/xkeyboard
-blacklist-0 = num lock
-
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-format-prefix-underline = ${colors.secondary}
-
-label-layout = %layout%
-label-layout-underline = ${colors.secondary}
-
-label-indicator-padding = 2
-label-indicator-margin = 1
-label-indicator-background = ${colors.secondary}
-label-indicator-underline = ${colors.secondary}
+format = <label-indicator>
+format-spacing = 0
+format-prefix = ""
+label-indicator-on-capslock = "C"
+label-indicator-on-numlock = "N"
+label-indicator-on-scrolllock = "S"
+label-indicator-on = ""
+label-indicator-off = ""
+format-foreground = ${colors.primary}
 
 [module/filesystem]
 type = internal/fs
