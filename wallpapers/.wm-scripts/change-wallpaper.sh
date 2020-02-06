@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir -p ~/.wallpapers
 wallpaper_location=~/.wallpapers/current-wallpaper.jpg
-urls=$(wget -O - -o /dev/null http://www.reddit.com/r/earthporn/.rss | grep -oP 'https://i.redd.it/.*?jpg')
+urls=$(wget -O - -o /dev/null http://www.reddit.com/r/earthporn/new/.rss | grep -oP 'https://i.redd.it/.*?jpg')
 
 for url in $urls; do 
     set -x

@@ -1,4 +1,4 @@
-echo "Running"
+#!/bin/bash
 battery_level=`acpi -b | cut -d ' ' -f 4 | grep -o '[0-9]*'`
 battery_state=$(acpi | grep 'Battery' | sed 's/Battery\s[0-9]*: //' | sed 's/, [0-9][0-9]*\%.*//')
 battery_remaining=$(acpi | grep -oh '[0-9:]* remaining' | sed 's/:\w\w remaining$/ Minutes/'  | sed 's/00://' | sed 's/:/h /')
@@ -14,7 +14,7 @@ previous_battery_state=$(cat /tmp/.battery | tail -n 1)
 echo "$battery_level" > /tmp/.battery
 echo "$battery_state" >> /tmp/.battery
 
-checkBatteryLevel() {
+function checkBatteryLevel() {
     if [ $battery_state != "Discharging" ] || [ "${battery_level}" == "${previous_battery_level}" ]; then
         exit
     fi
@@ -28,7 +28,7 @@ checkBatteryLevel() {
     fi
 }
 
-checkBatteryStateChange() {
+function checkBatteryStateChange() {
     if [ "$battery_state" != "Discharging" ] && [ "$previous_battery_state" == "Discharging" ]; then
         notify-send "Charging" "Battery is now plugged in." -u low
     fi
