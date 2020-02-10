@@ -2,5 +2,8 @@
 OnUnitInactiveSec=2s
 AccuracySec=1s
 
+[Unit]
+Requires=battery-monitor@.service
+
 [Install]
 WantedBy=timers.target

@@ -16,14 +16,14 @@ then
   rumno-background &!
   
   # Set cursor to pointer
-  xsetroot -cursor_name left_ptr
+  xsetroot -cursor_name left_ptr &!
   
   # Load custom fonts
   xset +fp $HOME/.local/share/fonts
-  xset fp rehash
+  xset fp rehash &!
   
   # Set the correct xrandr settings
-  autorandr -c
+  autorandr -c &!
   
   # Set Wallpaper
   if [ -f ~/.wallpapers/current-wallpaper.jpg ]; then
@@ -31,8 +31,14 @@ then
   else
     feh --bg-scale ~/.wallpapers/dark-space.jpg
   fi
-  
-  rumno-background
+ 
+  if [ -x "$(command -v nextcloud)" ]; then
+    nextcloud --background &!
+  fi
+
+
+
+  rumno-background &!
   # Set touchpad settings
   ~/.wm-scripts/touchpad-settings.sh  
   
