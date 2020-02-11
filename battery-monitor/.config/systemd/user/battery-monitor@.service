@@ -6,7 +6,7 @@ Type=simple
 ExecStart=/bin/bash %h/.wm-scripts/battery-monitor.sh
 Environment=DISPLAY=:0
 Environment=XAUTHORITY=%h/.Xauthority
-Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus
 
 [Install]
 WantedBy=multi-user.target
