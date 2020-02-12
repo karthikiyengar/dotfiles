@@ -1,0 +1,9 @@
+[Timer]
+OnUnitInactiveSec=3h
+AccuracySec=1s
+
+[Unit]
+Requires=wallpaper@.service
+
+[Install]
+WantedBy=timers.target
