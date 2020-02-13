@@ -3,6 +3,7 @@ import           XMonad.Layout.LayoutCombinators
 import           XMonad.Layout           hiding ( (|||) )
 import           XMonad.Layout.Grid
 import           XMonad.Layout.ThreeColumns
+import           XMonad.Layout.Spacing
 import           Data.List                      ( sortBy )
 import           Data.Function                  ( on )
 import           Control.Monad                  ( forM_
@@ -106,6 +107,7 @@ myRemovedKeys = [((myMod .|. shiftMask, xK_q))]
 myLayoutHook =
   avoidStruts
     $ smartBorders
+    $ spacingRaw True (Border 0 0 0 0) False (Border 1 1 1 1) True
     $ (   (Tall 1 (3 / 100) (1 / 2))
       ||| Grid
       ||| ThreeCol 1 (3 / 100) (1 / 3)

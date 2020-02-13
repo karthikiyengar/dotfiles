@@ -6,7 +6,6 @@ cityporn/top
 skyporn/top
 beachporn/top
 waterporn/top
-spaceporn/top
 auroraporn/hot
 END
 )
