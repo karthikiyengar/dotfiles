@@ -3,7 +3,7 @@ import           XMonad.Layout.LayoutCombinators
 import           XMonad.Layout           hiding ( (|||) )
 import           XMonad.Layout.Grid
 import           XMonad.Layout.ThreeColumns
-import           XMonad.Layout.Spacing
+import           XMonad.Layout.DwmStyle
 import           Data.List                      ( sortBy )
 import           Data.Function                  ( on )
 import           Control.Monad                  ( forM_
@@ -107,7 +107,7 @@ myRemovedKeys = [((myMod .|. shiftMask, xK_q))]
 myLayoutHook =
   avoidStruts
     $ smartBorders
-    $ spacingRaw True (Border 0 0 0 0) False (Border 1 1 1 1) True
+    $ dwmStyle shrinkText def
     $ (   (Tall 1 (3 / 100) (1 / 2))
       ||| Grid
       ||| ThreeCol 1 (3 / 100) (1 / 3)
@@ -157,7 +157,6 @@ myEventLogHook = do
   io $ appendFile "/tmp/.xmonad-title-log" (title ++ "\n")
   io $ appendFile "/tmp/.xmonad-workspace-log" (wsStr ++ "\n")
   io $ appendFile "/tmp/.xmonad-layout-log" (lStr ++ "\n")
-
 
  where
   fmt currWs ws | currWs == ws = "[" ++ ws ++ "]"
