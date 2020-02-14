@@ -6,6 +6,7 @@ import           XMonad.Layout.ThreeColumns
 import           XMonad.Layout.DwmStyle
 import           Data.List                      ( sortBy )
 import           Data.Function                  ( on )
+import           Data.Monoid
 import           Control.Monad                  ( forM_
                                                 , join
                                                 )
@@ -15,9 +16,7 @@ import           XMonad.Util.NamedWindows       ( getName )
 import           XMonad.Hooks.DynamicLog
 import qualified XMonad.StackSet               as W
 import           System.IO
-import           XMonad.Hooks.EwmhDesktops      ( ewmh
-                                                , fullscreenEventHook
-                                                )
+import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Util.EZConfig
 import           Graphics.X11.ExtraTypes.XF86
@@ -28,6 +27,11 @@ import           XMonad.Actions.SpawnOn
 import           XMonad.Util.SpawnOnce
 import qualified Data.Map                      as M
 import           XMonad.Actions.CopyWindow      ( copy )
+import           XMonad.Util.WorkspaceCompare
+import           XMonad.Util.XUtils             ( fi )
+import           XMonad.Actions.OnScreen
+import           XMonad.Actions.UpdateFocus
+import           XMonad.Actions.WithAll
 
 myBar = "killall -q polybar; polybar xmother"
 
@@ -50,7 +54,7 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
 
     ++ [ ( (myMod, xK_p)
          , spawn
-           "rofi -combi-modi window,drun,emoji -theme solarized -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100"
+           "rofi -combi-modi window,drun,emoji -theme solarized -show combi -modi combi,run,calc -terse -no-show-match  -calc-command \"echo '{result}' | xsel -b\" -no-sort -location 1 -width 100"
          )
        , ((myMod, xK_v), spawn "DESKTOP_SESSION=kde pavucontrol -t 3")
        , ( (0, xF86XK_AudioRaiseVolume)
@@ -116,23 +120,97 @@ myLayoutHook =
 
 myTerminal = "kitty"
 
+
+handle :: ([WindowSpace] -> [WindowSpace]) -> Event -> X ()
+handle f (ClientMessageEvent { ev_window = w, ev_message_type = mt, ev_data = d })
+  = withWindowSet $ \s -> do
+    sort' <- getSortByIndex
+    let ws = f $ sort' $ W.workspaces s
+
+    a_cd     <- getAtom "_NET_CURRENT_DESKTOP"
+    a_d      <- getAtom "_NET_WM_DESKTOP"
+    a_aw     <- getAtom "_NET_ACTIVE_WINDOW"
+    a_cw     <- getAtom "_NET_CLOSE_WINDOW"
+    a_ignore <- mapM getAtom ["XMONAD_TIMER"]
+    if mt == a_cd
+      then do
+        trace $ "CE triggered"
+        let n = head d
+        if 0 <= n && fi n < length ws
+          then windows $ W.view (W.tag (ws !! fi n))
+          else trace $ "Bad _NET_CURRENT_DESKTOP with data[0]=" ++ show n
+      else if mt == a_d
+        then do
+          trace $ "AD triggered"
+          let n = head d
+          if 0 <= n && fi n < length ws
+            then windows $ W.shiftWin (W.tag (ws !! fi n)) w
+            else trace $ "Bad _NET_DESKTOP with data[0]=" ++ show n
+        else if mt == a_aw
+          then do
+            trace $ "_NET_ACTIVE_WINDOW triggered"
+            let n = head d
+            -- windows W.shiftMaster
+            return ()
+            -- window s $ W.focusWindow w
+          else if mt == a_cw
+            then do
+              killWindow w
+            else if mt `elem` a_ignore
+              then do
+                return ()
+              else do
+              -- The Message is unknown to us, but that is ok, not all are meant
+              -- to be handled by the window manager
+                return ()
+handle _ _ = return ()
+
+
+myEwmhDesktopsEventHook :: Event -> X All
+myEwmhDesktopsEventHook e@(ClientMessageEvent { ev_window = w, ev_message_type = mt })
+  = do
+    trace "Here"
+    a_aw <- getAtom "_NET_ACTIVE_WINDOW"
+    if mt == a_aw
+      then do
+        spawn "notify-send 'active'"
+        -- windows $ viewOnScreen 1 "1"
+        return (All True)
+      else ewmhDesktopsEventHook e
+myEwmhDesktopsEventHook e = ewmhDesktopsEventHook e
+
+myCustomHook f e = handle f e >> return (All True)
+
+-- | Add EWMH functionality to the given config.  See above for an example.
+ewmh' :: XConfig a -> XConfig a
+ewmh' c = c { startupHook     = startupHook c +++ ewmhDesktopsStartup
+            , handleEventHook = handleEventHook c <> myEwmhDesktopsEventHook
+            , logHook         = logHook c +++ ewmhDesktopsLogHook
+            }
+ -- @@@ will fix this correctly later with the rewrite
+  where x +++ y = mappend y x
+
 myConfig =
-  ewmh
-    $ def { terminal           = myTerminal
-          , modMask            = mod4Mask
-          , startupHook        = myStartupHook
-          , manageHook         = manageSpawn <+> manageHook def
-          , focusedBorderColor = "#fb9224"
-          , normalBorderColor  = "#000"
-          , borderWidth        = 1
-          , logHook            = myEventLogHook
-          , layoutHook         = myLayoutHook
-          , handleEventHook    = handleEventHook def <+> fullscreenEventHook
-          , keys               = myKeys
-          }
+  ewmh'
+    $            def
+                   { terminal           = myTerminal
+                   , modMask            = mod4Mask
+                   , startupHook        = myStartupHook
+                   , manageHook         = manageSpawn <+> manageHook def
+                   , focusedBorderColor = "#fb9224"
+                   , normalBorderColor  = "#000"
+                   , borderWidth        = 1
+                   , logHook            = myEventLogHook
+                   , layoutHook         = myLayoutHook
+                   , handleEventHook    = handleEventHook def
+                                          <+> focusOnMouseMove
+                                          <+> fullscreenEventHook
+                   , keys               = myKeys
+                   }
     `removeKeys` myRemovedKeys
 
 myStartupHook = do
+  trace "STARTED"
   spawnOnOnce "8" "todoist"
   spawnOnOnce "8" "spotify"
   spawnOnOnce "2" "code"
