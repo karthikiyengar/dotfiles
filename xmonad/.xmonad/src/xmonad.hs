@@ -1,6 +1,5 @@
 import           XMonad                  hiding ( (|||) )
 import           XMonad.Layout.LayoutCombinators
-import           XMonad.Layout           hiding ( (|||) )
 import           XMonad.Layout.Grid
 import           XMonad.Layout.ThreeColumns
 import           XMonad.Layout.DwmStyle
@@ -15,24 +14,20 @@ import           XMonad.Util.Run                ( safeSpawn )
 import           XMonad.Util.NamedWindows       ( getName )
 import           XMonad.Hooks.DynamicLog
 import qualified XMonad.StackSet               as W
-import           System.IO
 import           XMonad.Hooks.EwmhDesktops
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Util.EZConfig
 import           Graphics.X11.ExtraTypes.XF86
-import           XMonad.Actions.PhysicalScreens
-import           XMonad.Hooks.SetWMName
-import           XMonad.Actions.OnScreen
 import           XMonad.Actions.SpawnOn
+import           XMonad.Actions.OnScreen
 import           XMonad.Util.SpawnOnce
 import qualified Data.Map                      as M
+import           Data.Maybe
 import           XMonad.Actions.CopyWindow      ( copy )
-import           XMonad.Util.WorkspaceCompare
-import           XMonad.Util.XUtils             ( fi )
-import           XMonad.Actions.OnScreen
 import           XMonad.Actions.UpdateFocus
-import           XMonad.Actions.WithAll
+import XMonad.Layout.MagicFocus
 
+myBar :: String
 myBar = "killall -q polybar; polybar xmother"
 
 myStatusBar = statusBar myBar (PP { ppOutput = \s -> return () }) def
@@ -121,65 +116,29 @@ myLayoutHook =
 myTerminal = "kitty"
 
 
-handle :: ([WindowSpace] -> [WindowSpace]) -> Event -> X ()
-handle f (ClientMessageEvent { ev_window = w, ev_message_type = mt, ev_data = d })
-  = withWindowSet $ \s -> do
-    sort' <- getSortByIndex
-    let ws = f $ sort' $ W.workspaces s
-
-    a_cd     <- getAtom "_NET_CURRENT_DESKTOP"
-    a_d      <- getAtom "_NET_WM_DESKTOP"
-    a_aw     <- getAtom "_NET_ACTIVE_WINDOW"
-    a_cw     <- getAtom "_NET_CLOSE_WINDOW"
-    a_ignore <- mapM getAtom ["XMONAD_TIMER"]
-    if mt == a_cd
-      then do
-        trace $ "CE triggered"
-        let n = head d
-        if 0 <= n && fi n < length ws
-          then windows $ W.view (W.tag (ws !! fi n))
-          else trace $ "Bad _NET_CURRENT_DESKTOP with data[0]=" ++ show n
-      else if mt == a_d
-        then do
-          trace $ "AD triggered"
-          let n = head d
-          if 0 <= n && fi n < length ws
-            then windows $ W.shiftWin (W.tag (ws !! fi n)) w
-            else trace $ "Bad _NET_DESKTOP with data[0]=" ++ show n
-        else if mt == a_aw
-          then do
-            trace $ "_NET_ACTIVE_WINDOW triggered"
-            let n = head d
-            -- windows W.shiftMaster
-            return ()
-            -- window s $ W.focusWindow w
-          else if mt == a_cw
-            then do
-              killWindow w
-            else if mt `elem` a_ignore
-              then do
-                return ()
-              else do
-              -- The Message is unknown to us, but that is ok, not all are meant
-              -- to be handled by the window manager
-                return ()
-handle _ _ = return ()
 
 
 myEwmhDesktopsEventHook :: Event -> X All
-myEwmhDesktopsEventHook e@(ClientMessageEvent { ev_window = w, ev_message_type = mt })
-  = do
-    trace "Here"
+myEwmhDesktopsEventHook e@ClientMessageEvent { ev_window = w, ev_message_type = mt }
+  = withWindowSet $ \ws -> do -- ws is the current stackset
     a_aw <- getAtom "_NET_ACTIVE_WINDOW"
     if mt == a_aw
       then do
-        spawn "notify-send 'active'"
+        let curWsId = W.current ws 
+            currentScreenId = (W.screen . W.current) ws -- the current screen
+            selectedWs = 0 
+            wsid = (W.tag . W.workspace) curWsId 
+            st =  W.integrate' . W.stack . W.workspace $ W.current ws
+        e <- gets (fromMaybe 0 . M.lookup w . waitingUnmap)
+        _ <- windows (greedyViewOnScreen currentScreenId wsid)
+        windows (W.swapMaster . W.focusWindow w)
+        -- windows $ greedyViewOnScreen 1 "1" 
+        spawn "notify-send 'Curr Screen'"
         -- windows $ viewOnScreen 1 "1"
         return (All True)
       else ewmhDesktopsEventHook e
 myEwmhDesktopsEventHook e = ewmhDesktopsEventHook e
 
-myCustomHook f e = handle f e >> return (All True)
 
 -- | Add EWMH functionality to the given config.  See above for an example.
 ewmh' :: XConfig a -> XConfig a
@@ -199,18 +158,18 @@ myConfig =
                    , manageHook         = manageSpawn <+> manageHook def
                    , focusedBorderColor = "#fb9224"
                    , normalBorderColor  = "#000"
+                   , focusFollowsMouse = True
                    , borderWidth        = 1
                    , logHook            = myEventLogHook
                    , layoutHook         = myLayoutHook
                    , handleEventHook    = handleEventHook def
-                                          <+> focusOnMouseMove
+                                          -- <+> focusOnMouseMove
                                           <+> fullscreenEventHook
                    , keys               = myKeys
                    }
     `removeKeys` myRemovedKeys
 
 myStartupHook = do
-  trace "STARTED"
   spawnOnOnce "8" "todoist"
   spawnOnOnce "8" "spotify"
   spawnOnOnce "2" "code"
