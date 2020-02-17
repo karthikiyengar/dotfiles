@@ -82,7 +82,7 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
        , ( (0, xF86XK_MonBrightnessDown)
          , spawn "~/.wm-scripts/media.sh brightness-dec"
          )
-       , ((myMod, xK_Print), spawn "sh ~/.wm-scripts/select-screenshot.sh")
+       , ((0, xK_Print), spawn "flameshot gui")
        , ((myMod, xK_f)    , spawn "XDG_CURRENT_DESKTOP=kde dolphin")
        , ( (myMod .|. shiftMask, xK_h)
          , spawn
