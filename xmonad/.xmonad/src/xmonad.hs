@@ -83,7 +83,7 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
          , spawn "~/.wm-scripts/media.sh brightness-dec"
          )
        , ((0, xK_Print), spawn "flameshot gui")
-       , ((myMod, xK_f)    , spawn "XDG_CURRENT_DESKTOP=kde dolphin")
+       , ((myMod, xK_f), spawn "XDG_CURRENT_DESKTOP=kde dolphin")
        , ( (myMod .|. shiftMask, xK_h)
          , spawn
            "rofi -modi 'clipboard:greenclip print' -theme solarized -show clipboard -terse -no-show-match -no-sort -location 1 -width 100 -run-command '{cmd}'"
@@ -98,7 +98,7 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
     ++ [ ( (m .|. myMod, key)
          , screenWorkspace sc >>= flip whenJust (windows . f)
          )
-       | (key, sc) <- zip [xK_w, xK_e, xK_r] [1, 0, 2]
+       | (key, sc) <- zip [xK_w, xK_e, xK_r] [0, 1, 2]
        , (f  , m ) <- [(W.greedyView, 0), (W.shift, shiftMask)]
        ]
 

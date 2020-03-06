@@ -7,6 +7,7 @@ skyporn/top
 beachporn/top
 waterporn/top
 auroraporn/hot
+exposureporn/hot
 END
 )
 

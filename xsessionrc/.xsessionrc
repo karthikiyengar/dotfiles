@@ -36,10 +36,7 @@ then
     nextcloud --background &!
   fi
 
-  if [ -x "$(command -v protonmail-bridge)" ]; then
-    protonmail-bridge --no-window &!
-  fi
-
+  flatpak run ch.protonmail.protonmail-bridge --no-window &!
   rumno-background &!
   # Set touchpad settings
   ~/.wm-scripts/touchpad-settings.sh  

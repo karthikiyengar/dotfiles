@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b9819e4a8f4cf36089580a7549bbcd8cff62584e049d76fbf099bb6f82a9d930
+-- hash: c9402c023b6e191b8c217d9f7ac7769890bdc7d9c14cc89e295813e36af201fa
 
 name:           xmonad-config
 version:        0.1.0.0
@@ -26,8 +26,6 @@ source-repository head
   location: https://github.com/githubuser/xmonad-config
 
 library
-  exposed-modules:
-      Lib
   other-modules:
       Paths_xmonad_config
   hs-source-dirs:
