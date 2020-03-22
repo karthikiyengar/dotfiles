@@ -140,6 +140,7 @@ myStartupHook = do
   spawnOnOnce "1" "firefox"
   spawnOnOnce "9" "slack"
   spawnOnOnce "9" "thunderbird"
+  setWMName "LG3D"
 
 myEventLogHook = do
   forM_ [".xmonad-workspace-log", ".xmonad-title-log", ".xmonad-layout-log"]
