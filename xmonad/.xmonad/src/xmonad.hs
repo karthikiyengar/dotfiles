@@ -124,7 +124,7 @@ myConfig =
           , manageHook         = manageSpawn <+> manageHook def
           , focusedBorderColor = "#fb9224"
           , normalBorderColor  = "#000"
-          , borderWidth        = 1
+          , borderWidth        = 3
           , logHook            = myEventLogHook
           , layoutHook         = myLayoutHook
           , handleEventHook    = handleEventHook def <+> fullscreenEventHook
@@ -133,7 +133,6 @@ myConfig =
     `removeKeys` myRemovedKeys
 
 myStartupHook = do
-  spawnOnOnce "8" "todoist"
   spawnOnOnce "8" "spotify"
   spawnOnOnce "2" "code"
   spawnOnOnce "2" myTerminal
