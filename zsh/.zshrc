@@ -53,3 +53,7 @@ alias vx="vim ~/.xmonad/src/xmonad.hs"
 export PATH="$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/kiyengar/.sdkman"
+[[ -s "/home/kiyengar/.sdkman/bin/sdkman-init.sh" ]] && source "/home/kiyengar/.sdkman/bin/sdkman-init.sh"
