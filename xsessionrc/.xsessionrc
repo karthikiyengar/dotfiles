@@ -3,7 +3,8 @@ if [[ "$DESKTOP_SESSION" == *"xmonad"* ]]
 then
   # enable compositing
   # compton --backend glx --xrender-sync --xrender-sync-fence -fCz --fade-delta 4 &!
-  
+  picom --fade-delta 3 -CfGb
+
   # screen lock daemon
   
   # Run xidlehook
