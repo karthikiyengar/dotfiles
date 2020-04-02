@@ -53,6 +53,7 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
            "rofi -combi-modi window,drun,emoji -theme solarized -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100"
          )
        , ((myMod, xK_v), spawn "DESKTOP_SESSION=kde pavucontrol -t 3")
+       , ((myMod, xK_c), spawn "blueman-manager")
        , ( (0, xF86XK_AudioRaiseVolume)
          , spawn "~/.wm-scripts/media.sh volume-inc"
          )

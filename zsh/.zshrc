@@ -49,7 +49,7 @@ alias wp="~/.wm-scripts/change-wallpaper.sh"
 alias zy="sudo zypper"
 alias gd="git diff --staged"
 alias ssh="kitty +kitten ssh"
-alias vx="vim ~/.xmonad/src/xmonad.hs"
+alias vx="code ~/.xmonad/"
 export PATH="$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
