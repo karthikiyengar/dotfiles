@@ -1,37 +1,16 @@
 #!bin/bash
 if [[ "$DESKTOP_SESSION" == *"xmonad"* ]] 
 then
+  source ~/.profile
   # enable compositing
   # compton --backend glx --xrender-sync --xrender-sync-fence -fCz --fade-delta 4 &!
   picom --fade-delta 3 -CfGb
 
-  # screen lock daemon
-  
-  # Run xidlehook
-  xidlehook \
-  `# Don't lock when there's a fullscreen application` \
-  --not-when-fullscreen \
-  `# Don't lock when there's audio playing` \
-  --not-when-audio \
-  `# Dim the screen after 60 seconds, undim if user becomes active` \
-  --timer 60 \
-    'xrandr --output "eDP-1" --brightness .3' \
-    'xrandr --output "eDP-1" --brightness 1' \
-  `# Undim & lock after 10 more seconds` \
-  --timer 10 \
-    'xrandr --output "eDP-1" --brightness 1; slock' \
-    '' \
-  `# Finally, suspend 30 mins after it locks` \
-  --timer 900 \
-    'systemctl suspend' \
-    '' &!
-  
   # Applets
   nm-applet &!
   pasystray &!
   blueman-applet &!
   greenclip daemon &!
-  # mullvad-vpn &
   rumno-background &!
   
   # Set cursor to pointer
@@ -42,7 +21,7 @@ then
   xset fp rehash &!
   
   # Set the correct xrandr settings
-  autorandr -c &!
+  autorandr -c
   
   # Set Wallpaper
   if [ -f ~/.wallpapers/current-wallpaper.jpg ]; then
@@ -55,10 +34,13 @@ then
     nextcloud --background &!
   fi
 
-  flatpak run ch.protonmail.protonmail-bridge --no-window &!
+  protonmail-bridge --no-window &!
   rumno-background &!
+  
   # Set touchpad settings
   ~/.wm-scripts/touchpad-settings.sh  
   
-  ~/.wm-scripts/change-wallpaper.sh &!
+  # Run xidlehook
+  export RUST_LOG=trace  
+  xidlehook --not-when-fullscreen --not-when-audio --timer 60 'xrandr --output "eDP-1" --brightness .3' 'xrandr --output "eDP-1" --brightness 1' --timer 10 'xrandr --output "eDP-1" --brightness 1; slock' '' --timer 1800 'systemctl suspend' '' >> $HOME/.xidlehook.log 2>> $HOME/.xidlehook.err &
 fi
