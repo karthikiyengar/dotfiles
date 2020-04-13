@@ -34,7 +34,6 @@ then
     nextcloud --background &!
   fi
 
-  protonmail-bridge --no-window &!
   rumno-background &!
   
   # Set touchpad settings

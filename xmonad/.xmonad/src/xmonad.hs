@@ -138,6 +138,7 @@ myStartupHook = do
   spawnOnOnce "2" "code"
   spawnOnOnce "2" myTerminal
   spawnOnOnce "1" "firefox"
+  spawnOnOnce "7" "joplin"
   spawnOnOnce "9" "slack"
   spawnOnOnce "9" "thunderbird"
   setWMName "LG3D"
