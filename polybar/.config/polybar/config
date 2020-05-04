@@ -59,14 +59,14 @@ label = %title:0:30:...%
 
 [module/xkeyboard]
 type = internal/xkeyboard
-format = <label-indicator>
+format = <label-indicator> <label-layout>
 format-spacing = 0
-format-prefix = ""
-label-indicator-on-capslock = "C"
-label-indicator-on-numlock = "N"
-label-indicator-on-scrolllock = "S"
-label-indicator-on = ""
-label-indicator-off = ""
+format-prefix = 
+label-indicator-on-capslock = c
+label-indicator-on-numlock = n
+label-indicator-on-scrolllock = s
+label-indicator-on = 
+label-indicator-off = 
 format-foreground = ${colors.primary}
 
 [module/filesystem]
