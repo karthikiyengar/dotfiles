@@ -54,6 +54,7 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
          )
        , ((myMod, xK_v), spawn "DESKTOP_SESSION=kde pavucontrol -t 3")
        , ((myMod, xK_c), spawn "blueman-manager")
+       , ((myMod, xK_u), spawn "unipicker --copy --command 'rofi -dmenu -theme solarized -location 1 -width 100'")
        , ( (0, xF86XK_AudioRaiseVolume)
          , spawn "~/.wm-scripts/media.sh volume-inc"
          )
@@ -115,6 +116,12 @@ myLayoutHook =
       ||| Full
       )
 
+
+myManageHook = composeAll
+   [ title =? "Emulator" --> doFloat
+   , title =? "Android Emulator - pixel:5554" --> doFloat
+   ]
+
 myTerminal = "kitty"
 
 myConfig =
@@ -122,7 +129,7 @@ myConfig =
     $ def { terminal           = myTerminal
           , modMask            = mod4Mask
           , startupHook        = myStartupHook
-          , manageHook         = manageSpawn <+> manageHook def
+          , manageHook         = manageSpawn <+> myManageHook <+> manageHook def
           , focusedBorderColor = "#fb9224"
           , normalBorderColor  = "#000"
           , borderWidth        = 3
