@@ -50,7 +50,7 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
 
     ++ [ ( (myMod, xK_p)
          , spawn
-           "rofi -combi-modi window,drun,emoji -theme solarized -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100"
+           "rofi -combi-modi window,drun,run,emoji -theme solarized -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100"
          )
        , ((myMod, xK_v), spawn "DESKTOP_SESSION=kde pavucontrol -t 3")
        , ((myMod, xK_c), spawn "blueman-manager")
@@ -122,7 +122,7 @@ myManageHook = composeAll
    , title =? "Android Emulator - pixel:5554" --> doFloat
    ]
 
-myTerminal = "kitty"
+myTerminal = "gnome-terminal"
 
 myConfig =
   ewmh

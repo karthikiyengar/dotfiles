@@ -5,6 +5,8 @@ antigen use oh-my-zsh
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle git
 antigen bundle hoffi/zsh-theme-lambda
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle akoenig/npm-run.plugin.ZSH
 antigen apply
 
 export ZSH="$HOME/.oh-my-zsh"
