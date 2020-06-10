@@ -115,7 +115,7 @@ myLayoutHook =
       ||| Full
       )
 
-myTerminal = "kitty"
+myTerminal = "gnome-terminal"
 
 myConfig =
   ewmh
