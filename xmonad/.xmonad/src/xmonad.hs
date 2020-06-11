@@ -4,6 +4,7 @@ import           XMonad.Layout           hiding ( (|||) )
 import           XMonad.Layout.Grid
 import           XMonad.Layout.ThreeColumns
 import           XMonad.Layout.DwmStyle
+import XMonad.Layout.NoBorders
 import           Data.List                      ( sortBy )
 import           Data.Function                  ( on )
 import           Control.Monad                  ( forM_
@@ -26,12 +27,14 @@ import           XMonad.Hooks.SetWMName
 import           XMonad.Actions.OnScreen
 import           XMonad.Actions.SpawnOn
 import           XMonad.Util.SpawnOnce
+import           XMonad.Config.Kde
 import qualified Data.Map                      as M
 import           XMonad.Actions.CopyWindow      ( copy )
 
-myBar = "killall -q polybar; polybar xmother"
+-- myBar = "killall -q polybar; polybar xmother"
+myBar = "test"
 
-myStatusBar = statusBar myBar (PP { ppOutput = \s -> return () }) def
+-- myStatusBar = statusBar myBar (PP { ppOutput = \s -> return () }) def
 
 myMod = mod4Mask
 altMask = mod1Mask
@@ -41,6 +44,7 @@ myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 -- Use this to detect keys
 -- xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'
 myKeys x = M.union (M.fromList (newKeys x)) (keys def x)
+
 newKeys conf@(XConfig { XMonad.modMask = modm }) =
   [ ( (myMod, xK_b)
     , sequence_ [spawn "polybar-msg cmd toggle", sendMessage ToggleStruts]
@@ -134,13 +138,13 @@ myConfig =
     `removeKeys` myRemovedKeys
 
 myStartupHook = do
-  spawnOnOnce "8" "spotify"
-  spawnOnOnce "2" "code"
-  spawnOnOnce "2" myTerminal
-  spawnOnOnce "1" "firefox"
-  spawnOnOnce "7" "joplin"
-  spawnOnOnce "9" "slack"
-  spawnOnOnce "9" "thunderbird"
+  -- spawnOnOnce "8" "spotify"
+  -- spawnOnOnce "2" "code"
+  -- spawnOnOnce "2" myTerminal
+  -- spawnOnOnce "1" "firefox"
+  -- spawnOnOnce "7" "joplin"
+  -- spawnOnOnce "9" "slack"
+  -- spawnOnOnce "9" "thunderbird"
   setWMName "LG3D"
 
 myEventLogHook = do
@@ -169,8 +173,57 @@ myEventLogHook = do
 kill8 ss | Just w <- W.peek ss = (W.insertUp w) $ W.delete w ss
          | otherwise           = ss
 
-main = xmonad =<< myStatusBar myConfig
+-- main' = xmonad kde4Config myConfig
 
+
+myManageHook =
+  composeAll
+    . concat
+    $ [ [ className =? c --> doFloat | c <- myFloats ]
+      , [ title =? t --> doFloat | t <- myOtherFloats ]
+
+      , [className  =? "krunner" --> doIgnore >> doFloat]
+      , [className  =? "plasmashell" --> doIgnore <+> hasBorder False >> doFloat]
+      , [ className =? c --> doF (W.shift "2") | c <- webApps ]
+      , [ className =? c --> doF (W.shift "3") | c <- ircApps ]
+      ]
+ where
+  myFloats      = ["krunner", "MPlayer", "Gimp", "plasmashell", "Plasma", "plasma-desktop", "Plasmoidviewer", "Plasma-desktop", "dashboard"]
+  myOtherFloats = ["krunner", "alsamixer", "plasmashell", "Plasma", "plasma-desktop", "Plasma-desktop", "dashboard"]
+  webApps       = ["firefox", "chrome"] -- open on desktop 2
+  ircApps       = ["Ksirc"]                -- open on desktop 3
+
+
+
+myKeys' x = M.union (M.fromList (newKeys' x)) (keys def x)
+newKeys' conf@XConfig { XMonad.modMask = modm } =
+  [ ( (myMod, xK_p)
+    , spawn
+      "rofi -combi-modi window,drun,emoji -theme solarized -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100"
+    )
+    , ((myMod, xK_v), spawn "DESKTOP_SESSION=kde pavucontrol -t 3")
+    , ((myMod, xK_c), spawn "blueman-manager")
+    , ( (modm, xK_a)
+      , sequence_ $ [ windows $ copy i | i <- XMonad.workspaces conf ]
+      )    -- Pin to all workspaces
+    , ((modm .|. shiftMask, xK_a), windows $ kill8)    -- remove from all but current
+    ]
+
+    -- Screen order for triple screens.
+    ++ [ ( (m .|. myMod, key)
+         , screenWorkspace sc >>= flip whenJust (windows . f)
+         )
+       | (key, sc) <- zip [xK_w, xK_e, xK_r] [0, 1, 2]
+       , (f  , m ) <- [(W.greedyView, 0), (W.shift, shiftMask)]
+       ]
+
+
+main = xmonad kde4Config { terminal   = myTerminal
+                         , modMask    = mod4Mask -- use the Windows button as mod
+                         , manageHook = manageHook kde4Config <+> myManageHook
+                         , layoutHook = myLayoutHook
+                         , keys       = myKeys'
+                         }
 
 -- TODO: How do you resize floating windows?
 -- TODO: spawnOnOnce steals focus at startup
