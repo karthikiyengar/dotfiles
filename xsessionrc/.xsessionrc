@@ -22,7 +22,10 @@ then
   
   # Set the correct xrandr settings
   autorandr -c
-  
+
+  # Enable keyboard layouts
+  setxkbmap -layout us,de -option 'grp:alt_space_toggle'
+
   # Set Wallpaper
   if [ -f ~/.wallpapers/current-wallpaper.jpg ]; then
     feh --bg-scale ~/.wallpapers/current-wallpaper.jpg
@@ -38,7 +41,8 @@ then
   
   # Set touchpad settings
   ~/.wm-scripts/touchpad-settings.sh  
-  
+ 
+  export _JAVA_AWT_WM_NONREPARENTING=1
   # Run xidlehook
   export RUST_LOG=trace  
   xidlehook --not-when-fullscreen --not-when-audio --timer 60 'xrandr --output "eDP-1" --brightness .3' 'xrandr --output "eDP-1" --brightness 1' --timer 10 'xrandr --output "eDP-1" --brightness 1; i3lock -i ~/.wallpapers/i3lock.png' '' --timer 1800 'systemctl hybrid-sleep' '' >> $HOME/.xidlehook.log 2>> $HOME/.xidlehook.err &

@@ -5,6 +5,8 @@ antigen use oh-my-zsh
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle git
 antigen bundle hoffi/zsh-theme-lambda
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle akoenig/npm-run.plugin.ZSH
 antigen apply
 
 export ZSH="$HOME/.oh-my-zsh"
@@ -32,8 +34,7 @@ alias sz="source ~/.zshrc"
 alias dev="cd ~/development"
 alias ga="git add --all"
 alias gc="git commit"
-alias cs="cd ~/development/custom-solutions"
-alias lia="cd ~/development/lia"
+alias app="cd ~/development/klarna-app"
 alias whoami="echo k.iyengar"
 alias vpn="cd ~/VPN && sudo openvpn --config k.iyengar@laptop.ovpn"
 alias r="ranger"
@@ -50,9 +51,17 @@ alias zy="sudo zypper"
 alias gd="git diff --staged"
 alias ssh="kitty +kitten ssh"
 alias vx="code ~/.xmonad/"
-export PATH="$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
+export PATH="$HOME/android-sdk/platform-tools:$HOME/android-sdk/tools/bin:$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
+export JRE_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre"
+export ANDROID_HOME="$HOME/android-sdk"
+export ANDROID_SDK_ROOT="$HOME/android-sdk"
+export GRADLE_USER_HOME="$HOME/.gradle"
+export M2_HOME="$HOME/.maven"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/kiyengar/.sdkman"
