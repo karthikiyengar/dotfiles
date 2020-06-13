@@ -1,7 +1,9 @@
 import           XMonad                  hiding ( (|||) )
 import           XMonad.Layout.LayoutCombinators
-import           XMonad.Layout           hiding ( (|||) )
 import           XMonad.Layout.Grid
+import qualified XMonad.Prompt                 as P
+import qualified XMonad.Actions.Submap         as SM
+import qualified XMonad.Actions.Search         as S
 import           XMonad.Layout.ThreeColumns
 import           XMonad.Layout.DwmStyle
 import           Data.List                      ( sortBy )
@@ -14,47 +16,58 @@ import           XMonad.Util.Run                ( safeSpawn )
 import           XMonad.Util.NamedWindows       ( getName )
 import           XMonad.Hooks.DynamicLog
 import qualified XMonad.StackSet               as W
-import           System.IO
 import           XMonad.Hooks.EwmhDesktops      ( ewmh
                                                 , fullscreenEventHook
                                                 )
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Util.EZConfig
 import           Graphics.X11.ExtraTypes.XF86
-import           XMonad.Actions.PhysicalScreens
 import           XMonad.Hooks.SetWMName
-import           XMonad.Actions.OnScreen
 import           XMonad.Actions.SpawnOn
 import           XMonad.Util.SpawnOnce
 import qualified Data.Map                      as M
 import           XMonad.Actions.CopyWindow      ( copy )
 
 myBar = "killall -q polybar; polybar xmother"
-
 myStatusBar = statusBar myBar (PP { ppOutput = \s -> return () }) def
-
-myMod = mod4Mask
-altMask = mod1Mask
-
+myTerminal = "gnome-terminal"
+myMod = mod4Mask -- Super Key
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+
+
+searchEngineMap method =
+  M.fromList
+    $ [ ((0, xK_a), method S.alpha)
+      , ((0, xK_d), method S.duckduckgo)
+      , ((0, xK_i), method S.imdb)
+      , ((0, xK_y), method S.youtube)
+      , ((0, xK_m), method S.maps)
+      , ((0, xK_g), method S.google)
+      , ((0, xK_h), method S.hoogle)
+      , ((0, xK_w), method S.wikipedia)
+      ]
 
 -- Use this to detect keys
 -- xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'
 myKeys x = M.union (M.fromList (newKeys x)) (keys def x)
-newKeys conf@(XConfig { XMonad.modMask = modm }) =
-  [ ( (myMod, xK_b)
+newKeys conf@XConfig { XMonad.modMask = modm } =
+  [ ( (modm, xK_b)
     , sequence_ [spawn "polybar-msg cmd toggle", sendMessage ToggleStruts]
     )
-    , ((myMod .|. shiftMask, xK_l), spawn "slock")
+    , ((modm .|. shiftMask, xK_l), spawn "slock")
     ]
 
-    ++ [ ( (myMod, xK_p)
+    ++ [ ( (modm, xK_p)
          , spawn
            "rofi -combi-modi window,drun,run,emoji -theme solarized -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100"
          )
-       , ((myMod, xK_v), spawn "DESKTOP_SESSION=kde pavucontrol -t 3")
-       , ((myMod, xK_c), spawn "blueman-manager")
-       , ((myMod, xK_u), spawn "unipicker --copy --command 'rofi -dmenu -theme solarized -location 1 -width 100'")
+       , ((modm, xK_v), spawn "DESKTOP_SESSION=kde pavucontrol -t 3")
+       , ((modm, xK_c), spawn "blueman-manager")
+       , ( (modm, xK_u)
+         , spawn
+           "unipicker --copy --command 'rofi -dmenu -theme solarized -location 1 -width 100'"
+         )
        , ( (0, xF86XK_AudioRaiseVolume)
          , spawn "~/.wm-scripts/media.sh volume-inc"
          )
@@ -85,26 +98,33 @@ newKeys conf@(XConfig { XMonad.modMask = modm }) =
          , spawn "~/.wm-scripts/media.sh brightness-dec"
          )
        , ((0, xK_Print), spawn "flameshot gui")
-       , ((myMod, xK_f), spawn "XDG_CURRENT_DESKTOP=kde dolphin")
-       , ( (myMod .|. shiftMask, xK_h)
+       , ((modm, xK_f), spawn "XDG_CURRENT_DESKTOP=kde dolphin")
+       , ( (modm .|. shiftMask, xK_h)
          , spawn
-           "rofi -modi 'clipboard:greenclip print' -theme solarized -show clipboard -terse -no-show-match -no-sort -location 1 -width 100 -run-command '{cmd}'"
+           "rofi -modi 'clipboard:greenclip print' -theme skill8olarized -show clipboard -terse -no-show-match -no-sort -location 1 -width 100 -run-command '{cmd}'"
          )
        , ( (modm, xK_a)
          , sequence_ $ [ windows $ copy i | i <- XMonad.workspaces conf ]
          )    -- Pin to all workspaces
-       , ((modm .|. shiftMask, xK_a), windows $ kill8)    -- remove from all but current
+       , ( (modm .|. shiftMask, xK_a)
+         , windows $ kill8
+         )    -- remove from all but current
+       , ((modm, xK_s), SM.submap $ searchEngineMap $ S.promptSearch P.def)
+       , ( (modm .|. shiftMask, xK_s)
+         , SM.submap $ searchEngineMap $ S.selectSearch
+         )
        ]
-
     -- Screen order for triple screens.
-    ++ [ ( (m .|. myMod, key)
+    ++ [ ( (m .|. modm, key)
          , screenWorkspace sc >>= flip whenJust (windows . f)
          )
        | (key, sc) <- zip [xK_w, xK_e, xK_r] [0, 1, 2]
        , (f  , m ) <- [(W.greedyView, 0), (W.shift, shiftMask)]
        ]
 
-myRemovedKeys = [((myMod .|. shiftMask, xK_q))]
+    -- ++ [((myMod, k), (S.promptSearch P.def f)) | (k,f) <- searchList ]
+
+myRemovedKeys = [(myMod .|. shiftMask, xK_q)]
 
 myLayoutHook =
   avoidStruts
@@ -117,27 +137,9 @@ myLayoutHook =
       )
 
 myManageHook = composeAll
-   [ title =? "Emulator" --> doFloat
-   , title =? "Android Emulator - pixel:5554" --> doFloat
-   ]
-
-myTerminal = "gnome-terminal"
-
-myConfig =
-  ewmh
-    $ def { terminal           = myTerminal
-          , modMask            = mod4Mask
-          , startupHook        = myStartupHook
-          , manageHook         = manageSpawn <+> myManageHook <+> manageHook def
-          , focusedBorderColor = "#fb9224"
-          , normalBorderColor  = "#000"
-          , borderWidth        = 3
-          , logHook            = myEventLogHook
-          , layoutHook         = myLayoutHook
-          , handleEventHook    = handleEventHook def <+> fullscreenEventHook
-          , keys               = myKeys
-          }
-    `removeKeys` myRemovedKeys
+  [ title =? "Emulator" --> doFloat
+  , title =? "Android Emulator - pixel:5554" --> doFloat
+  ]
 
 myStartupHook = do
   spawnOnOnce "8" "spotify"
@@ -173,6 +175,23 @@ myEventLogHook = do
 
 kill8 ss | Just w <- W.peek ss = (W.insertUp w) $ W.delete w ss
          | otherwise           = ss
+
+
+myConfig =
+  ewmh
+    $ def { terminal           = myTerminal
+          , modMask            = myMod
+          , startupHook        = myStartupHook
+          , manageHook         = manageSpawn <+> myManageHook <+> manageHook def
+          , focusedBorderColor = "#fb9224"
+          , normalBorderColor  = "#000"
+          , borderWidth        = 3
+          , logHook            = myEventLogHook
+          , layoutHook         = myLayoutHook
+          , handleEventHook    = handleEventHook def <+> fullscreenEventHook
+          , keys               = myKeys
+          }
+    `removeKeys` myRemovedKeys
 
 main = xmonad =<< myStatusBar myConfig
 
