@@ -142,7 +142,6 @@ myConfig =
 myStartupHook = do
   spawnOnOnce "8" "spotify"
   spawnOnOnce "2" "code"
-  spawnOnOnce "2" myTerminal
   spawnOnOnce "1" "firefox"
   spawnOnOnce "7" "joplin"
   spawnOnOnce "9" "slack"
@@ -178,5 +177,4 @@ kill8 ss | Just w <- W.peek ss = (W.insertUp w) $ W.delete w ss
 main = xmonad =<< myStatusBar myConfig
 
 
--- TODO: How do you resize floating windows?
 -- TODO: spawnOnOnce steals focus at startup

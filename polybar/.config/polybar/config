@@ -33,9 +33,9 @@ padding-bottom = 0
 module-margin-left = 1
 module-margin-right = 2
 
-font-0 = xft:Bitstream Vera Sans Mono:size=8:bold:antialias=true
+font-0 = terminus:pixelsize=10;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
-font-2 = siji:pixelsize=10;1
+font-2 = siji:style=Regular;2
 
 modules-left = workspaces-xmonad layout-xmonad title-xmonad 
 ; modules-center =
@@ -80,19 +80,6 @@ label-unmounted = %mountpoint% not mounted
 format-mounted-prefix = "Df: "
 format-mounted-prefix-foreground = ${colors.foreground-alt}  
 label-unmounted-foreground = ${colors.foreground-alt}
-
-[module/mpd]
-type = internal/mpd
-format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
-
-icon-prev = 
-icon-stop = 
-icon-play = 
-icon-pause = 
-icon-next = 
-
-label-song-maxlen = 25
-label-song-ellipsis = true
 
 [module/xbacklight]
 type = internal/xbacklight
@@ -372,11 +359,9 @@ label-font = 1
 [module/spotify]
 type = custom/script
 interval = 1
-format-prefix = " "
+format-prefix = ""
 format = <label>
-exec = python3 ~/.config/polybar/scripts/spotify.py -f '{artist}: {song}'
+exec = python3 ~/.config/polybar/scripts/spotify.py -f '{play_pause} {artist}: {song}'
 click-left = dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
-double-click-left = dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
-double-click-right = dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
 format-underline = #1db954
-label-maxlen = 100
+label-maxlen = 32
