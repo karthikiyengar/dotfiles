@@ -40,6 +40,7 @@ Plug 'ajh17/Spacegray.vim'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'vim-airline/vim-airline'
 Plug 'HerringtonDarkholme/yats.vim'
+Plug 'chrisbra/SudoEdit.vim'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --ts-completer' }
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
