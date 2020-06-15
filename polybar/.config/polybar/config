@@ -39,7 +39,7 @@ font-2 = siji:style=Regular;2
 
 modules-left = workspaces-xmonad layout-xmonad title-xmonad 
 ; modules-center =
-modules-right = spotify weather filesystem memory cpu xkeyboard date battery 
+modules-right = spotify weather filesystem memory cpu xkeyboard date caffeinate battery 
 
 tray-position = right
 tray-pad= 2
@@ -353,6 +353,16 @@ exec = ~/.config/polybar/scripts/weather.sh
 interval = 600
 click-left = xdg-open https://www.accuweather.com/en/de/berlin/10178/weather-forecast/178087
 label-font = 1
+
+; TODO: color as env variable
+[module/caffeinate]
+type = custom/script
+interval = 1
+format = <label>
+exec =  [ $(pgrep -x xidlehook) ] && echo "%{F#66b266}N%{F- }" || echo "%{F#ffb52a}Y%{F- }"
+format-prefix = "Caf: "
+format-prefix-foreground = ${colors.foreground-alt}
+click-left = ~/.config/polybar/scripts/caffeinate-toggle.sh
 
 [module/spotify]
 type = custom/script
