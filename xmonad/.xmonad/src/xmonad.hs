@@ -8,6 +8,7 @@ import           XMonad.Layout.ThreeColumns
 import           XMonad.Layout.DwmStyle
 import           Data.List                      ( sortBy )
 import           Data.Function                  ( on )
+import Data.String.Utils (replace)
 import           Control.Monad                  ( forM_
                                                 , join
                                                 )
@@ -161,7 +162,7 @@ myEventLogHook = do
         (W.workspaces winset)
   let wsTags = map W.tag $ activeWss
   let wsStr  = join $ map (fmt currWs) $ sort' wsTags
-  let lStr = description . W.layout . W.workspace . W.current $ winset
+  let lStr = replace "DwmStyle" "" . description . W.layout . W.workspace . W.current $ winset
 
   io $ appendFile "/tmp/.xmonad-title-log" (title ++ "\n")
   io $ appendFile "/tmp/.xmonad-workspace-log" (wsStr ++ "\n")

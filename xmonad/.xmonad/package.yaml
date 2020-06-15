@@ -29,6 +29,7 @@ dependencies:
   - xmonad
   - xmonad-contrib
   - containers
+  - MissingH
 executables:
   xmonad:
     main: src/xmonad.hs
