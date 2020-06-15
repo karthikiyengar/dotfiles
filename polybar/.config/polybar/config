@@ -334,10 +334,10 @@ format-foreground = #43abc9
 [module/title-xmonad]
 type = custom/script
 format-foreground = #fb9224
-label-maxlen = 100
 exec = tail -F /tmp/.xmonad-title-log
 exec-if = [ -e /tmp/.xmonad-title-log ]
 tail = true
+label-maxlen = 50
 
 [module/layout-xmonad]
 type = custom/script
