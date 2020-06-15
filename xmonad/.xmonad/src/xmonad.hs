@@ -102,7 +102,7 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
        , ((modm, xK_f), spawn "caja")
        , ( (modm .|. shiftMask, xK_h)
          , spawn
-           "rofi -modi 'clipboard:greenclip print' -theme skill8olarized -show clipboard -terse -no-show-match -no-sort -location 1 -width 100 -run-command '{cmd}'"
+           "rofi -modi 'clipboard:greenclip print' -theme solarized -show clipboard -terse -no-show-match -no-sort -location 1 -width 100 -run-command '{cmd}'"
          )
        , ( (modm, xK_a)
          , sequence_ $ [ windows $ copy i | i <- XMonad.workspaces conf ]
