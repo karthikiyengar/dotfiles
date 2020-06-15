@@ -63,7 +63,7 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
          , spawn
            "rofi -combi-modi window,drun,run,emoji -theme solarized -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100"
          )
-       , ((modm, xK_v), spawn "DESKTOP_SESSION=kde pavucontrol -t 3")
+       , ((modm, xK_v), spawn "pavucontrol -t 3")
        , ((modm, xK_c), spawn "blueman-manager")
        , ( (modm, xK_u)
          , spawn
@@ -99,7 +99,7 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
          , spawn "~/.wm-scripts/media.sh brightness-dec"
          )
        , ((0, xK_Print), spawn "flameshot gui")
-       , ((modm, xK_f), spawn "XDG_CURRENT_DESKTOP=kde dolphin")
+       , ((modm, xK_f), spawn "caja")
        , ( (modm .|. shiftMask, xK_h)
          , spawn
            "rofi -modi 'clipboard:greenclip print' -theme skill8olarized -show clipboard -terse -no-show-match -no-sort -location 1 -width 100 -run-command '{cmd}'"
@@ -122,8 +122,6 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
        | (key, sc) <- zip [xK_w, xK_e, xK_r] [0, 1, 2]
        , (f  , m ) <- [(W.greedyView, 0), (W.shift, shiftMask)]
        ]
-
-    -- ++ [((myMod, k), (S.promptSearch P.def f)) | (k,f) <- searchList ]
 
 myRemovedKeys = [(myMod .|. shiftMask, xK_q)]
 
