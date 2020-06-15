@@ -5,6 +5,4 @@ bluetoothctl disconnect CC:98:8B:34:ED:2B
 xidlehook --not-when-fullscreen --not-when-audio \
   --timer 60 'xrandr --output "eDP-1" --brightness .3' 'xrandr --output "eDP-1" --brightness 1' \
   --timer 10 'xrandr --output "eDP-1" --brightness 1; slock' '' \
-  --timer 1800 'systemctl suspend' '' &
-
-systemctl suspend;
+  --timer 300 'systemctl suspend' '' &
