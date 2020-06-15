@@ -44,5 +44,5 @@ then
  
   export _JAVA_AWT_WM_NONREPARENTING=1
   # Run xidlehook
-  ~/.wm-script/suspend.sh
+  ~/.wm-scripts/suspend.sh
 fi
