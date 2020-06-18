@@ -13,16 +13,10 @@ export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
 
 export EDITOR='nvim'
-export FFF_HIDDEN=1
 
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 
 HISTSIZE=999999999
-
-function f() {
-    fff "$@"
-    cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
-}
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
@@ -44,7 +38,6 @@ alias u="sudo apt-get update; sudo apt-get upgrade"
 alias crocks="cd ~/development/crocks"
 alias ikea="cd ~/development/cs-ikea"
 alias iam="cd ~/development/iam-policies"
-alias f="f"
 alias mapi="cd ~/development/lyra-api"
 alias wp="~/.wm-scripts/change-wallpaper.sh"
 alias zy="sudo zypper"
@@ -66,3 +59,10 @@ export M2_HOME="$HOME/.maven"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/kiyengar/.sdkman"
 [[ -s "/home/kiyengar/.sdkman/bin/sdkman-init.sh" ]] && source "/home/kiyengar/.sdkman/bin/sdkman-init.sh"
+
+
+# Enable thefuck
+eval $(thefuck --alias f)
+
+# Enable direnv
+eval "$(direnv hook $SHELL)"

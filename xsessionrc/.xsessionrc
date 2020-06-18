@@ -24,7 +24,7 @@ then
   autorandr -c
 
   # Enable keyboard layouts
-  setxkbmap -layout us,de -option 'grp:alt_space_toggle'
+  setxkbmap -layout us,de -option 'grp:alt_shift_space_toggle'
 
   # Set Wallpaper
   if [ -f ~/.wallpapers/current-wallpaper.jpg ]; then
