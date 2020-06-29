@@ -9,8 +9,6 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle akoenig/npm-run.plugin.ZSH
 antigen apply
 
-export ZSH="$HOME/.oh-my-zsh"
-source $ZSH/oh-my-zsh.sh
 
 export EDITOR='nvim'
 

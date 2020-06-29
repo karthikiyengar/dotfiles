@@ -18,12 +18,14 @@
 				git
 				rofi-calc
 				stack
+				cabal-install
 				thefuck
 				oh-my-zsh
 				zsh
 				antigen
 				fzf
 				fzf-zsh
+				direnv
 				haskellPackages.xmonad-contrib
         haskellPackages.xmonad-extras
         haskellPackages.xmonad
