@@ -61,7 +61,7 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
 
     ++ [ ( (modm, xK_p)
          , spawn
-           "rofi -combi-modi window,drun,run,emoji -theme solarized -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100"
+           "rofi -combi-modi window,drun,run -theme solarized -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100"
          )
        , ((modm, xK_v), spawn "pavucontrol -t 3")
        , ((modm, xK_c), spawn "blueman-manager")

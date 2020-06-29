@@ -29,6 +29,8 @@ alias dev="cd ~/development"
 alias ga="git add --all"
 alias gc="git commit"
 alias app="cd ~/development/klarna-app"
+alias appc="cd ~/development/klarna-app/clients"
+alias appe="cd ~/development/klarna-app/clients/apps/extension"
 alias whoami="echo k.iyengar"
 alias vpn="cd ~/VPN && sudo openvpn --config k.iyengar@laptop.ovpn"
 alias r="ranger"
@@ -66,3 +68,5 @@ eval $(thefuck --alias f)
 
 # Enable direnv
 eval "$(direnv hook $SHELL)"
+if [ -e /home/kiyengar/.nix-profile/etc/profile.d/nix.sh ]; then . /home/kiyengar/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
