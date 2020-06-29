@@ -22,13 +22,16 @@
 				thefuck
 				oh-my-zsh
 				zsh
+				docker
+				docker-compose
 				antigen
 				fzf
 				fzf-zsh
 				direnv
+				thunderbird
 				haskellPackages.xmonad-contrib
-        haskellPackages.xmonad-extras
-        haskellPackages.xmonad
+				haskellPackages.xmonad-extras
+				haskellPackages.xmonad
 			];
     };
   };

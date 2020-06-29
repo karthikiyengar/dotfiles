@@ -28,6 +28,28 @@ resolver: lts-14.25
 #   subdirs:
 #   - auto-update
 #   - wai
+nix:
+  pure: false
+  enable: true
+  packages:
+    - cairo
+    - gcc
+    - gnome2.pango
+    - gnome3.gtk
+    - gtk2-x11
+    - libxml2
+    - pkgconfig
+    - upower
+    - gobjectIntrospection
+    - x11
+    - xorg.libX11
+    - xorg.libXext
+    - xorg.libXinerama
+    - xorg.libXrandr
+    - xorg.libXrender
+    - xorg.libXScrnSaver
+    - libdbusmenu-gtk3
+    - zlib
 packages:
 - .
 # Dependency packages to be pulled from upstream that are not in the resolver.
