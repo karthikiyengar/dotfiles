@@ -6,6 +6,7 @@
       paths = [
 				flameshot
 				rofi
+				dunst
 				haskellPackages.greenclip
 				polybar
 				xidlehook

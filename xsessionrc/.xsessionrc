@@ -19,7 +19,10 @@ then
   # Load custom fonts
   xset +fp $HOME/.fonts
   xset fp rehash &!
-  
+
+  # Notification Daemon
+  dunst &!
+
   # Set the correct xrandr settings
   autorandr -c
 
