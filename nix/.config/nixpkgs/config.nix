@@ -1,5 +1,5 @@
 {
-	allowUnfree = true;
+  allowUnfree = true;
   packageOverrides = pkgs: with pkgs; {
     myPackages = pkgs.buildEnv {
       name = "my-packages";
@@ -7,28 +7,39 @@
 				flameshot
 				rofi
 				dunst
+				awscli
 				haskellPackages.greenclip
+				feh
+				slack
+				spotify
 				polybar
+				glibc
+				firefox
 				xidlehook
+				pavucontrol
 				jetbrains.idea-ultimate
 				neovim
-				nodejs-10_x
 				stow
-				vscode
+				vscode-with-extensions
 				git
+				git-lfs
 				rofi-calc
 				stack
+				pkg-config
+				librsvg
+				cairo
 				cabal-install
+				jq
 				thefuck
 				oh-my-zsh
 				zsh
-				docker
-				docker-compose
 				antigen
 				fzf
 				fzf-zsh
 				direnv
-				thunderbird
+				jdk
+				android-studio
+				maven
 				haskellPackages.xmonad-contrib
 				haskellPackages.xmonad-extras
 				haskellPackages.xmonad

@@ -1,12 +1,15 @@
 # Use Antigen to manage packages
 source ~/.antigen.zsh
 
+export NVM_AUTO_USE=true
+
 antigen use oh-my-zsh
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle git
 antigen bundle hoffi/zsh-theme-lambda
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle akoenig/npm-run.plugin.ZSH
+antigen bundle lukechilds/zsh-nvm
 antigen apply
 
 
@@ -44,15 +47,16 @@ alias zy="sudo zypper"
 alias gd="git diff --staged"
 alias ssh="kitty +kitten ssh"
 alias vx="code ~/.xmonad/"
-export PATH="$HOME/android-sdk/platform-tools:$HOME/android-sdk/tools/bin:$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
+export PATH="$HOME/.android/sdk/emulator:$HOME/.android/sdk/platform-tools:$HOME/.android/sdk/tools/bin:$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
-export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
-export JRE_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre"
-export ANDROID_HOME="$HOME/android-sdk"
-export ANDROID_SDK_ROOT="$HOME/android-sdk"
+export JAVA_HOME="$HOME/.nix-profile/lib/openjdk"
+export JRE_HOME="$HOME/.nix-profile/lib/openjdk/jre"
+export ANDROID_HOME="$HOME/.android/sdk"
+export ANDROID_SDK_ROOT="$HOME/.android/sdk"
+export ANDROID_AVD_HOME="$HOME/.android/avd"
 export GRADLE_USER_HOME="$HOME/.gradle"
 export M2_HOME="$HOME/.maven"
 

@@ -56,7 +56,7 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
   [ ( (modm, xK_b)
     , sequence_ [spawn "polybar-msg cmd toggle", sendMessage ToggleStruts]
     )
-    , ((modm .|. shiftMask, xK_l), spawn "slock")
+    , ((modm .|. shiftMask, xK_l), spawn "i3lock -c 444444")
     ]
 
     ++ [ ( (modm, xK_p)
