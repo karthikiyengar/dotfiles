@@ -20,6 +20,9 @@ then
   xset +fp $HOME/.fonts
   xset fp rehash &!
 
+  # Polkit for auth prompts
+  /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &!
+
   # Notification Daemon
   dunst &!
 
