@@ -14,13 +14,10 @@
 				spotify
 				polybar
 				glibc
-				firefox
 				xidlehook
 				pavucontrol
-				jetbrains.idea-ultimate
 				neovim
 				stow
-				vscode-with-extensions
 				git
 				git-lfs
 				rofi-calc

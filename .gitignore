@@ -8,3 +8,6 @@ xmonad/.xmonad/xmonad.o
 battery-monitor/.config/systemd/user/timers.target.wants/
 battery-monitor/.config/systemd/user/multi-user.target.wants/
 xmonad/.xmonad/prompt-history
+*.swp
+*.swo
+*~
