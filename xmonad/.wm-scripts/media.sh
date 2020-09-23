@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 GET_VOLUME="amixer sget Master | grep -oP '\[(\d+)%\]' | head -n 1 | grep -oP '\d+'"
 if [ $1 == "volume-inc" ]; then

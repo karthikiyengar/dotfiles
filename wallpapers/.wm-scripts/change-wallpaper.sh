@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # apt install imagemagick
 SUBREDDITS=$(cat <<-END
 earthporn/top

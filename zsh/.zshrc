@@ -45,12 +45,14 @@ alias mapi="cd ~/development/lyra-api"
 alias wp="~/.wm-scripts/change-wallpaper.sh"
 alias zy="sudo zypper"
 alias gd="git diff --staged"
-alias ssh="kitty +kitten ssh"
 alias vx="code ~/.xmonad/"
 export PATH="$HOME/.android/sdk/emulator:$HOME/.android/sdk/platform-tools:$HOME/.android/sdk/tools/bin:$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
+bindkey -v
+if [ -n "${commands[fzf-share]}" ]; then
+  source "$(fzf-share)/key-bindings.zsh"
+  source "$(fzf-share)/completion.zsh"
+fi
 
 export JAVA_HOME="$HOME/.nix-profile/lib/openjdk"
 export JRE_HOME="$HOME/.nix-profile/lib/openjdk/jre"

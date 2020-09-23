@@ -31,7 +31,7 @@ import           XMonad.Actions.CopyWindow      ( copy )
 
 myBar = "killall -q polybar; polybar xmother"
 myStatusBar = statusBar myBar (PP { ppOutput = \s -> return () }) def
-myTerminal = "gnome-terminal"
+myTerminal = "termonad"
 myMod = mod4Mask -- Super Key
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
