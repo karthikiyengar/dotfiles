@@ -1,10 +1,10 @@
 current-wallpaper.jpg
 nvim/.local/share/nvim/shada/main.shada
 nvim/.config/nvim
-xmonad/.xmonad/xmonad-x86_64-linux
-xmonad/.xmonad/xmonad.errors
-xmonad/.xmonad/xmonad.hi
-xmonad/.xmonad/xmonad.o
+xmonad-x86_64-linux
+xmonad.errors
+xmonad.hi
+xmonad.o
 battery-monitor/.config/systemd/user/timers.target.wants/
 battery-monitor/.config/systemd/user/multi-user.target.wants/
 xmonad/.xmonad/prompt-history

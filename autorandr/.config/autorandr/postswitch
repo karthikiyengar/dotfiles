@@ -4,4 +4,5 @@ if [ -f ~/.wallpapers/current-wallpaper.jpg ]; then
 else
     feh --bg-scale ~/.wallpapers/dark-space.jpg
 fi
- 
+
+~/.config/polybar/scripts/launch-polybar.sh

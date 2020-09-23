@@ -6,6 +6,8 @@ then
   # compton --backend glx --xrender-sync --xrender-sync-fence -fCz --fade-delta 4 &!
   compton --fade-delta 3 -CfGb
 
+  lxqt-policykit-agent &!
+  gnome-keyring-daemon &!
   # Applets
   nm-applet &!
   pasystray &!
