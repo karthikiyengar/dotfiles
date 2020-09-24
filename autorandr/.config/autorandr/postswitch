@@ -5,4 +5,4 @@ else
     feh --bg-scale ~/.wallpapers/dark-space.jpg
 fi
 
-~/.config/polybar/scripts/launch-polybar.sh
+xmonad --restart

@@ -12,7 +12,7 @@ import           Control.Monad                  ( forM_
                                                 , join
                                                 )
 import           XMonad.Layout.NoBorders        ( smartBorders )
-import           XMonad.Util.Run                ( safeSpawn )
+import           XMonad.Util.Run                ( safeSpawn, hPutStrLn )
 import           XMonad.Util.NamedWindows       ( getName )
 import           XMonad.Hooks.DynamicLog
 import qualified XMonad.StackSet               as W
@@ -28,12 +28,9 @@ import           XMonad.Util.SpawnOnce
 import qualified Data.Map                      as M
 import           XMonad.Actions.CopyWindow      ( copy )
 
-myBar = "~/.config/polybar/scripts/launch-polybar.sh"
-myStatusBar = statusBar myBar (PP { ppOutput = \s -> return () }) def
 myTerminal = "termonad"
 myMod = mod4Mask -- Super Key
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-
 
 
 searchEngineMap method =
@@ -52,10 +49,7 @@ searchEngineMap method =
 -- xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'
 myKeys x = M.union (M.fromList (newKeys x)) (keys def x)
 newKeys conf@XConfig { XMonad.modMask = modm } =
-  [ ( (modm, xK_b)
-    , sequence_ [spawn "polybar-msg cmd toggle", sendMessage ToggleStruts]
-    )
-    , ((modm .|. shiftMask, xK_l), spawn "i3lock -c 444444")
+  [ ((modm .|. shiftMask, xK_l), spawn "i3lock -c 444444")
     ]
 
     ++ [ ( (modm, xK_p)
@@ -140,35 +134,15 @@ myManageHook = composeAll
   ]
 
 myStartupHook = do
+  spawn "killall stalonetray; stalonetray"
   spawnOnOnce "8" "spotify"
   spawnOnOnce "2" "code"
   spawnOnOnce "1" "firefox"
   spawnOnOnce "7" "joplin"
   spawnOnOnce "9" "slack"
   spawnOnOnce "9" "thunderbird"
+  docksStartupHook
   setWMName "LG3D"
-
-myEventLogHook = do
-  forM_ [".xmonad-workspace-log", ".xmonad-title-log", ".xmonad-layout-log"]
-    $ \file -> safeSpawn "mkfifo" ["/tmp/" ++ file]
-  winset <- gets windowset
-  title  <- maybe (return "") (fmap show . getName) . W.peek $ winset
-  let currWs = W.currentTag winset
-  let activeWss = filter
-        (\ws -> (length (W.stack ws) > 0) || W.tag ws == currWs)
-        (W.workspaces winset)
-  let wsTags = map W.tag $ activeWss
-  let wsStr  = join $ map (fmt currWs) $ sort' wsTags
-  let lStr = description . W.layout . W.workspace . W.current $ winset
-
-  io $ appendFile "/tmp/.xmonad-title-log" (title ++ "\n")
-  io $ appendFile "/tmp/.xmonad-workspace-log" (wsStr ++ "\n")
-  io $ appendFile "/tmp/.xmonad-layout-log" (lStr ++ "\n")
-
- where
-  fmt currWs ws | currWs == ws = "[" ++ ws ++ "]"
-                | otherwise    = " " ++ ws ++ " "
-  sort' = sortBy (compare `on` (!! 0))
 
 
 kill8 ss | Just w <- W.peek ss = (W.insertUp w) $ W.delete w ss
@@ -184,14 +158,13 @@ myConfig =
           , focusedBorderColor = "#fb9224"
           , normalBorderColor  = "#000"
           , borderWidth        = 3
-          , logHook            = myEventLogHook
           , layoutHook         = myLayoutHook
           , handleEventHook    = handleEventHook def <+> fullscreenEventHook
           , keys               = myKeys
           }
     `removeKeys` myRemovedKeys
 
-main = xmonad =<< myStatusBar myConfig
+main = xmonad =<< xmobar myConfig
 
 
 -- TODO: spawnOnOnce steals focus at startup
