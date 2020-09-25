@@ -28,7 +28,7 @@ import           XMonad.Util.SpawnOnce
 import qualified Data.Map                      as M
 import           XMonad.Actions.CopyWindow      ( copy )
 
-myTerminal = "termonad"
+myTerminal = "urxvtc"
 myMod = mod4Mask -- Super Key
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
