@@ -17,7 +17,6 @@ import           XMonad.Util.NamedWindows       ( getName )
 import           XMonad.Hooks.DynamicLog
 import qualified XMonad.StackSet               as W
 import           XMonad.Hooks.EwmhDesktops      ( ewmh
-                                                , fullscreenEventHook
                                                 )
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Util.EZConfig
@@ -159,7 +158,6 @@ myConfig =
           , normalBorderColor  = "#000"
           , borderWidth        = 3
           , layoutHook         = myLayoutHook
-          , handleEventHook    = handleEventHook def <+> fullscreenEventHook
           , keys               = myKeys
           }
     `removeKeys` myRemovedKeys
