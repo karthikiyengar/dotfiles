@@ -13,6 +13,7 @@ antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle hschne/fzf-git
 antigen bundle git
 antigen bundle hoffi/zsh-theme-lambda
+antigen bundle vi-mode
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle akoenig/npm-run.plugin.ZSH
 antigen bundle lukechilds/zsh-nvm
@@ -30,6 +31,7 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 
 alias vim="nvim"
 alias ls="ls -lah --color"
+alias vn="sudo -e /etc/nixos/configuration.nix"
 alias vz="vim ~/.zshrc"
 alias sz="source ~/.zshrc"
 alias dev="cd ~/development"
@@ -45,7 +47,6 @@ alias appmc="cd ~/development/klapp/master/clients"
 alias appm="cd ~/development/klapp/master"
 alias whoami="echo k.iyengar"
 alias vpn="cd ~/VPN && sudo openvpn --config k.iyengar@laptop.ovpn"
-alias vn="sudo vim /etc/nixos/configuration.nix"
 alias r="sudo nixos-rebuild switch"
 alias nclean="find . -name "node_modules" -exec rm -rf '{}' +"
 alias adfs="sh ~/adfs.sh"
