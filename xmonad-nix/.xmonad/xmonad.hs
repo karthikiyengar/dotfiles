@@ -127,9 +127,15 @@ myLayoutHook =
       ||| Full
       )
 
+-- https://wiki.haskell.org/Xmonad/Frequently_asked_questions#I_need_to_find_the_class_title_or_some_other_X_property_of_my_program
+-- TLDR; xprop _NET_WM_CLASS (second property)
 myManageHook = composeAll
   [ title =? "Emulator" --> doFloat
   , title =? "Android Emulator - pixel:5554" --> doFloat
+  , className =? "Code" --> (doShift "2")
+  , className =? "Firefox" --> (doShift "1")
+  , className =? "Spotify" --> (doShift "8")
+  , className =? "Chromium-browser" --> (doShift "4")
   ]
 
 myStartupHook = do

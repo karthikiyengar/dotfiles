@@ -4,6 +4,9 @@
     myPackages = pkgs.buildEnv {
       name = "my-packages";
       paths = [
+				xsel
+				rxvt-unicode
+				firefox
 				flameshot
 				rofi
 				dunst
