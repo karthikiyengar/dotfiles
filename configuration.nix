@@ -65,16 +65,20 @@ in
     unstable.robo3t
     unstable.mongodb-compass
     flameshot
-    mate.caja
+		freemind	
+    pcmanfm
     kdeconnect
     heroku
     imagemagick
+    simplescreenrecorder
+    vlc
     stack
     blueman
     docker
     docker-compose
     thefuck
     i3lock
+		acpi
     gnome3.gnome-keyring
     gnome3.cheese
     python-with-my-packages
@@ -82,14 +86,18 @@ in
     psmisc
     networkmanagerapplet
     nodejs
+    yarn
+    libnotify
+    xsel
     xclip
     stow
     vscode-with-extensions
     haskellPackages.termonad
+    rxvt-unicode
     st 
     xidlehook
     pasystray 
-    autorandr
+    unstable.autorandr
     postman
     arandr
     neovim
@@ -103,10 +111,10 @@ in
     oh-my-zsh
     haskellPackages.greenclip
     coreutils   
+    google-chrome
     chromium
     git
-    joplin
-    joplin-desktop
+    unstable.joplin-desktop
     mkpasswd
     nextcloud-client
     dunst
@@ -116,7 +124,9 @@ in
     xorg.xkill
     slack
     pavucontrol
-    polybar
+    atop
+    stalonetray
+    xmobar
     gnome3.geary
     unstable.mailspring
     unstable.zoom-us
@@ -127,7 +137,7 @@ in
       vim_configurable.customize {
         name = "vim";
         vimrcConfig.customRC = ''set number'';
-        vimrcConfig.plug.plugins = with pkgs.vimPlugins; [vim-addon-nix youcompleteme];
+        vimrcConfig.plug.plugins = with pkgs.vimPlugins; [vim-addon-nix vim-sleuth YouCompleteMe];
       }
       )
       lxqt.lxqt-policykit
@@ -190,6 +200,9 @@ in
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
+  # Enable urxvtd
+  services.urxvtd.enable = true;
+
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
@@ -199,15 +212,15 @@ in
   services.blueman.enable = true;
   hardware.bluetooth.enable = true;
 
+  # USB Automount
+  services.gvfs.enable = true;
+
   # Tuxedo
   hardware.tuxedo-keyboard.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e";
-
-  # Enable touchpad support.
-  services.xserver.libinput.enable = true;
 
   # Enable XMonad Desktop Environment.
   services.autorandr.enable = true;
@@ -220,11 +233,11 @@ in
     displayManager = {
       defaultSession = "none+xmonad";
       lightdm = {
-        enable = true;
-        autoLogin = {
-          enable = true;
-          user = "kiyengar";
-        };
+				enable = true;
+      };
+      autoLogin = {
+				enable = true;
+        user = "kiyengar";
       };
     };
     windowManager = {
@@ -262,7 +275,11 @@ in
   };
 
   # Touchpad
-  services.xserver.libinput.naturalScrolling = true;
+  services.xserver.libinput = {
+		enable = true;
+		naturalScrolling = true;
+		additionalOptions = ''MatchIsTouchpad "on"'';
+	};
 
   # nixpkgs
   nixpkgs.config.allowUnfree = true; 
@@ -270,6 +287,24 @@ in
     "electron-3.1.13"
   ];
 
+	# battery monitor
+	systemd.user.services.batteryMonitor = {
+		path = [pkgs.bash pkgs.acpi pkgs.libnotify];
+		wantedBy = ["multi-user.target"];
+		description = "Notifies when battery is low and suspends";
+		serviceConfig = {
+			Type="simple";
+			ExecStart="${pkgs.bash}/bin/bash %h/.wm-scripts/battery-monitor.sh";
+		};
+	};
+
+	systemd.user.timers.batteryMonitor = {
+		timerConfig = {
+			OnUnitInactiveSec = "2s";
+			AccuracySec = "1s";
+		};
+		wantedBy = [ "timers.target" ];
+	};
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
