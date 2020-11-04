@@ -2,9 +2,15 @@
 source ~/.antigen.zsh
 
 export NVM_AUTO_USE=true
+export TERM=xterm;
+
+# Klarna Stuff
+export ADFS_USERNAME=k.iyengar
+export LDAP_USERNAME=k.iyengar
 
 antigen use oh-my-zsh
 antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle hschne/fzf-git
 antigen bundle git
 antigen bundle hoffi/zsh-theme-lambda
 antigen bundle vi-mode
@@ -52,9 +58,10 @@ alias iam="cd ~/development/iam-policies"
 alias mapi="cd ~/development/lyra-api"
 alias wp="~/.wm-scripts/change-wallpaper.sh"
 alias zy="sudo zypper"
+alias grm="git fetch --all; git rebase origin/master"
 alias gd="git diff --staged"
 alias vx="code ~/.xmonad/"
-export PATH="$HOME/.android/sdk/emulator:$HOME/.android/sdk/platform-tools:$HOME/.android/sdk/tools/bin:$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
+export PATH="$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/cmdline-tools/tools/bin:$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
 
 bindkey -v
 if [ -n "${commands[fzf-share]}" ]; then
@@ -64,7 +71,7 @@ fi
 
 export JAVA_HOME="$HOME/.nix-profile/lib/openjdk"
 export JRE_HOME="$HOME/.nix-profile/lib/openjdk/jre"
-export ANDROID_HOME="$HOME/.android/sdk"
+export ANDROID_HOME="$HOME/.android/sdk/cmdline-tools"
 export ANDROID_SDK_ROOT="$HOME/.android/sdk"
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 export GRADLE_USER_HOME="$HOME/.gradle"

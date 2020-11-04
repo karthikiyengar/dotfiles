@@ -5,7 +5,8 @@ then
   # enable compositing
   # compton --backend glx --xrender-sync --xrender-sync-fence -fCz --fade-delta 4 &!
   compton --fade-delta 3 -CfGb
-
+  
+  urxvtd &!
   lxqt-policykit-agent &!
   gnome-keyring-daemon &!
   # Applets
