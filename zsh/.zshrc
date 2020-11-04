@@ -31,7 +31,7 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 
 alias vim="nvim"
 alias ls="ls -lah --color"
-alias vn="sudo -e /etc/nixos/configuration.nix"
+alias vn="vim /etc/nixos/configuration.nix"
 alias vz="vim ~/.zshrc"
 alias sz="source ~/.zshrc"
 alias dev="cd ~/development"
