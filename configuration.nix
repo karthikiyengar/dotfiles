@@ -79,6 +79,7 @@ in
       docker
       docker-compose
       thefuck
+      nixpkgs-fmt
       i3lock
       acpi
       gnome3.gnome-keyring
