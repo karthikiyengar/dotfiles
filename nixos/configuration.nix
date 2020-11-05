@@ -47,7 +47,11 @@ in
           configure.plug.plugins = with pkgs.vimPlugins; [
             vim-nix
             YouCompleteMe
+            nerdtree
             ale
+            vim-airline
+            fzfWrapper
+            fzf-vim
             vim-sleuth
           ];
           viAlias = true;
@@ -68,7 +72,8 @@ in
             set foldmethod=syntax
             let javaScript_fold=1  
             set foldlevel=20
-
+            set hidden
+            set clipboard=unnamed
 
             let $FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
             let g:ale_fixers = {'typescript': ['tslint', 'prettier'], 'haskell': ['brittany']}
@@ -76,16 +81,19 @@ in
             let g:ale_lint_on_save = 1
             let g:ale_fix_on_save = 1
             let g:ale_javascript_prettier_use_local_config = 1
+            let g:NERDTreeChDirMode = 2
 
             nnoremap <F12> :YcmCompleter GoToDeclaration<CR>
             nnoremap <C-p> :Files<CR>
             nnoremap <F2>  :YcmCompleter RefactorRename 
             nnoremap <F8>  :lopen<CR> :lnext<CR>
             nnoremap <F9>  :YcmCompleter FixIt<CR>
-            nnoremap <C-J> <C-W><C-J>
-            nnoremap <C-K> <C-W><C-K>
-            nnoremap <C-L> <C-W><C-L>
-            nnoremap <C-H> <C-W><C-H>
+            "nnoremap <C-J> <C-W><C-J>
+            "nnoremap <C-K> <C-W><C-K>
+            "nnoremap <C-L> <C-W><C-L>
+            "nnoremap <C-H> <C-W><C-H>
+            nmap <C-P> :FZF<CR>
+            nmap <C-L> :NERDTreeToggle<CR> 
             tnoremap <Esc> <C-\><C-n>
           '';
         };
@@ -141,6 +149,7 @@ in
       haskellPackages.termonad
       rxvt-unicode
       st
+      gnvim
       xidlehook
       pasystray
       unstable.autorandr
@@ -151,6 +160,9 @@ in
       libreoffice
       firefox
       direnv
+      bat
+      ag
+      ripgrep
       fzf
       fzf-zsh
       antigen
@@ -164,8 +176,10 @@ in
       mkpasswd
       nextcloud-client
       dunst
+      trash-cli
       rofi
       feh
+      polybar
       jq
       xorg.xkill
       slack
