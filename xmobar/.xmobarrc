@@ -9,7 +9,7 @@ Config {
    -- layout
    , sepChar =  "%"   -- delineator between plugin names and straight text
    , alignSep = "}{"  -- separator between left-right alignment
-   , template = "%StdinReader% }{ %battery% | %multicpu% | %memory% | %RJTT% | %date% || %kbd% "
+   , template = "%StdinReader% }{ %battery% | %mpris2% | %multicpu% | %memory% | %RJTT% | %date% | %kbd% "
 
    -- general behavior
    , lowerOnStart =     True    -- send to bottom of window stack on start
@@ -38,6 +38,8 @@ Config {
         -- weather monitor
         [ Run Weather "RJTT" [ "--template", "<action=`xdg-open https://darksky.net/forecast/52.5178,13.4098/ca12/en`><fc=#4682B4><tempC></fc>°C</action>"
                              ] 36000
+				-- spotfiy
+				, Run Mpris2 "spotify" ["--template", "<action=`dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause`><fc=darkgreen><artist> - <title></fc></action>"] 10
 
         -- network activity monitor (dynamic interface resolution)
         , Run DynNetwork     [ "--template" , "<dev>: <tx>kB/s|<rx>kB/s"
@@ -76,7 +78,7 @@ Config {
                              ] 10
 
         -- battery monitor
-        , Run Battery        [ "--template" , "Batt: <acstatus>"
+        , Run Battery        [ "--template" , "Bat: <acstatus>"
                              , "--Low"      , "10"        -- units: %
                              , "--High"     , "80"        -- units: %
                              , "--low"      , "darkred"
@@ -100,6 +102,7 @@ Config {
         , Run Kbd            [ ("us(dvorak)" , "<fc=#00008B>DV</fc>")
                              , ("us"         , "<fc=#8B0000>US</fc>")
                              ]
-	, Run StdinReader
+				-- for workspaces	
+				, Run StdinReader
         ]
    }

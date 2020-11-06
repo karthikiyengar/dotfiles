@@ -3,16 +3,17 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-let 
+let
   unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
   my-python-packages = python-packages: with python-packages; [
     pandas
     requests
-  ]; 
-in 
-  {
-    imports =
-      [ # Include the results of the hardware scan.
+  ];
+in
+{
+  imports =
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
 
@@ -41,95 +42,155 @@ in
   environment.variables.EDITOR = "nvim";
   nixpkgs.overlays = [
     (self: super: {
-      neovim = super.neovim.override {
-        viAlias = true;
-        vimAlias = true;
-      };
+      neovim = super.neovim.override
+        {
+          configure.plug.plugins = with pkgs.vimPlugins; [
+            vim-nix
+            YouCompleteMe
+            nerdtree
+            ale
+            vim-airline
+            fzfWrapper
+            fzf-vim
+            vim-sleuth
+          ];
+          viAlias = true;
+          vimAlias = true;
+          configure.customRC = ''
+            filetype plugin on
+            runtime! plugin/python_setup.vim
+
+            set omnifunc=syntaxcomplete#Complete
+            set ignorecase
+            set completeopt+=noinsert,menuone
+            set shortmess+=c  
+            set laststatus=2
+            set shiftwidth=2
+            set tabstop=2
+            set number
+            set softtabstop=2
+            set foldmethod=syntax
+            let javaScript_fold=1  
+            set foldlevel=20
+            set hidden
+            set clipboard=unnamed
+
+            let $FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
+            let g:ale_fixers = {'typescript': ['tslint', 'prettier'], 'haskell': ['brittany']}
+            let g:ale_linters = {'haskell': ['ghc']}
+            let g:ale_lint_on_save = 1
+            let g:ale_fix_on_save = 1
+            let g:ale_javascript_prettier_use_local_config = 1
+            let g:NERDTreeChDirMode = 2
+
+            nnoremap <F12> :YcmCompleter GoToDeclaration<CR>
+            nnoremap <C-p> :Files<CR>
+            nnoremap <F2>  :YcmCompleter RefactorRename 
+            nnoremap <F8>  :lopen<CR> :lnext<CR>
+            nnoremap <F9>  :YcmCompleter FixIt<CR>
+            "nnoremap <C-J> <C-W><C-J>
+            "nnoremap <C-K> <C-W><C-K>
+            "nnoremap <C-L> <C-W><C-L>
+            "nnoremap <C-H> <C-W><C-H>
+            nmap <C-P> :FZF<CR>
+            nmap <C-L> :NERDTreeToggle<CR> 
+            tnoremap <Esc> <C-\><C-n>
+          '';
+        };
     })
   ];
 
-  virtualisation.docker.enable = true; 
+  virtualisation.docker.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   # To Package: rumno, unipicker, rofi stuff
-  environment.systemPackages = with pkgs; 
-  let my-python-packages = python-packages: with python-packages; [
-    dbus-python
-    requests
-  ]; 
-  python-with-my-packages = python3.withPackages my-python-packages; 
-  in 
-  [
-    # unstable.obinskit
-    unstable.robo3t
-    unstable.mongodb-compass
-    flameshot
-    mate.caja
-    kdeconnect
-    heroku
-    imagemagick
-    stack
-    blueman
-    docker
-    docker-compose
-    thefuck
-    i3lock
-    gnome3.gnome-keyring
-    gnome3.cheese
-    python-with-my-packages
-    wget
-    psmisc
-    networkmanagerapplet
-    nodejs
-    xclip
-    stow
-    vscode-with-extensions
-    haskellPackages.termonad
-    st 
-    xidlehook
-    pasystray 
-    autorandr
-    postman
-    arandr
-    neovim
-    vim_configurable 
-    libreoffice
-    firefox
-    direnv
-    fzf
-    fzf-zsh
-    antigen
-    oh-my-zsh
-    haskellPackages.greenclip
-    coreutils   
-    chromium
-    git
-    joplin
-    joplin-desktop
-    mkpasswd
-    nextcloud-client
-    dunst
-    rofi
-    feh
-    jq
-    xorg.xkill
-    slack
-    pavucontrol
-    polybar
-    gnome3.geary
-    unstable.mailspring
-    unstable.zoom-us
-    spotify
-    (
-      with import <nixpkgs> {};
-
-      vim_configurable.customize {
-        name = "vim";
-        vimrcConfig.customRC = ''set number'';
-        vimrcConfig.plug.plugins = with pkgs.vimPlugins; [vim-addon-nix youcompleteme];
-      }
-      )
+  environment.systemPackages = with pkgs;
+    let
+      my-python-packages = python-packages: with python-packages; [
+        dbus-python
+        requests
+      ];
+      python-with-my-packages = python3.withPackages my-python-packages;
+    in
+    [
+      # unstable.obinskit
+      unstable.robo3t
+      unstable.mongodb-compass
+      flameshot
+      freemind
+      pcmanfm
+      kdeconnect
+      heroku
+      imagemagick
+      simplescreenrecorder
+      vlc
+      stack
+      blueman
+      docker
+      docker-compose
+      thefuck
+      nixpkgs-fmt
+      i3lock
+      acpi
+      gnome3.gnome-keyring
+      gnome3.cheese
+      python-with-my-packages
+      wget
+      psmisc
+      networkmanagerapplet
+      nodejs
+      yarn
+      libnotify
+      xsel
+      xclip
+      stow
+      vscode-with-extensions
+      haskellPackages.termonad
+      rxvt-unicode
+      st
+      gnvim
+      xidlehook
+      pasystray
+      unstable.autorandr
+      postman
+      arandr
+      neovim
+      vim_configurable
+      libreoffice
+      firefox
+      direnv
+      bat
+      ag
+      ripgrep
+      fzf
+      fzf-zsh
+      antigen
+      oh-my-zsh
+      haskellPackages.greenclip
+      coreutils
+      google-chrome
+      chromium
+      git
+      unstable.joplin-desktop
+      mkpasswd
+      nextcloud-client
+      dunst
+      trash-cli
+      rofi
+      feh
+      polybar
+      jq
+      xorg.xkill
+      slack
+      pavucontrol
+      atop
+      stalonetray
+      xmobar
+      gnome3.geary
+      unstable.mailspring
+      unstable.zoom-us
+      spotify
       lxqt.lxqt-policykit
       kdeApplications.ark
       kdeApplications.okular
@@ -157,8 +218,8 @@ in
   # };
 
   # KDE Connect
-  networking.firewall.allowedTCPPortRanges = [ { from = 1714; to = 1764; } ];
-  networking.firewall.allowedUDPPortRanges = [ { from = 1714; to = 1764; } ];
+  networking.firewall.allowedTCPPortRanges = [{ from = 1714; to = 1764; }];
+  networking.firewall.allowedUDPPortRanges = [{ from = 1714; to = 1764; }];
 
 
   # Set your time zone.
@@ -190,6 +251,9 @@ in
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
+  # Enable urxvtd
+  services.urxvtd.enable = true;
+
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
@@ -199,15 +263,15 @@ in
   services.blueman.enable = true;
   hardware.bluetooth.enable = true;
 
+  # USB Automount
+  services.gvfs.enable = true;
+
   # Tuxedo
   hardware.tuxedo-keyboard.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e";
-
-  # Enable touchpad support.
-  services.xserver.libinput.enable = true;
 
   # Enable XMonad Desktop Environment.
   services.autorandr.enable = true;
@@ -221,17 +285,17 @@ in
       defaultSession = "none+xmonad";
       lightdm = {
         enable = true;
-        autoLogin = {
-          enable = true;
-          user = "kiyengar";
-        };
+      };
+      autoLogin = {
+        enable = true;
+        user = "kiyengar";
       };
     };
     windowManager = {
       xmonad = {
         enable = true;
         enableContribAndExtras = true;
-        extraPackages = haskellPackages : [
+        extraPackages = haskellPackages: [
           haskellPackages.xmonad-contrib
           haskellPackages.xmonad-extras
           haskellPackages.xmonad
@@ -255,21 +319,43 @@ in
   programs.zsh = {
     enable = true;
     autosuggestions.enable = true;
-    ohMyZsh.enable = true;  
+    ohMyZsh.enable = true;
     ohMyZsh.theme = "frisk";
     ohMyZsh.plugins = [ "git" "sudo" "docker" "kubectl" ];
-    syntaxHighlighting.enable = true;    
+    syntaxHighlighting.enable = true;
   };
 
   # Touchpad
-  services.xserver.libinput.naturalScrolling = true;
+  services.xserver.libinput = {
+    enable = true;
+    naturalScrolling = true;
+    additionalOptions = ''MatchIsTouchpad "on"'';
+  };
 
   # nixpkgs
-  nixpkgs.config.allowUnfree = true; 
+  nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
     "electron-3.1.13"
   ];
 
+  # battery monitor
+  systemd.user.services.batteryMonitor = {
+    path = [ pkgs.bash pkgs.acpi pkgs.libnotify ];
+    wantedBy = [ "multi-user.target" ];
+    description = "Notifies when battery is low and suspends";
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.bash}/bin/bash %h/.wm-scripts/battery-monitor.sh";
+    };
+  };
+
+  systemd.user.timers.batteryMonitor = {
+    timerConfig = {
+      OnUnitInactiveSec = "2s";
+      AccuracySec = "1s";
+    };
+    wantedBy = [ "timers.target" ];
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -280,4 +366,3 @@ in
   system.stateVersion = "20.03"; # Did you read the comment?
 
 }
-
