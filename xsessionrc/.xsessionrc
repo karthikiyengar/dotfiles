@@ -15,6 +15,7 @@ then
   blueman-applet &!
   greenclip daemon &!
   rumno-background &!
+  redshift-gtk &!
   
   # Set cursor to pointer
   xsetroot -cursor_name left_ptr &!
