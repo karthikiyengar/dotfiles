@@ -237,6 +237,9 @@ in
     pinentryFlavor = "gnome3";
   };
 
+  # Android
+  programs.adb.enable = true;
+
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
@@ -312,7 +315,7 @@ in
     home = "/home/kiyengar";
     description = "Karthik Iyengar";
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" "video" "networkmanager" "audio" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "adbusers" "wheel" "docker" "video" "networkmanager" "audio" ]; # Enable ‘sudo’ for the user.
     hashedPassword = "***REMOVED***";
   };
 
