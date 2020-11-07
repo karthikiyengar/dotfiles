@@ -9,8 +9,10 @@ export ADFS_USERNAME=k.iyengar
 export LDAP_USERNAME=k.iyengar
 
 antigen use oh-my-zsh
+antigen bundle agkozak/zsh-z
+antigen bundle Aloxaf/fzf-tab
 antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle hschne/fzf-git
+antigen bundle git-auto-fetch
 antigen bundle git
 antigen bundle hoffi/zsh-theme-lambda
 antigen bundle vi-mode
@@ -18,7 +20,6 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle akoenig/npm-run.plugin.ZSH
 antigen bundle lukechilds/zsh-nvm
 antigen apply
-
 
 export EDITOR='nvim'
 
@@ -61,7 +62,6 @@ alias zy="sudo zypper"
 alias grm="git fetch --all; git rebase origin/master"
 alias gd="git diff --staged"
 alias vx="code ~/.xmonad/"
-export PATH="$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/cmdline-tools/tools/bin:$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
 
 bindkey -v
 if [ -n "${commands[fzf-share]}" ]; then
@@ -71,11 +71,12 @@ fi
 
 export JAVA_HOME="$HOME/.nix-profile/lib/openjdk"
 export JRE_HOME="$HOME/.nix-profile/lib/openjdk/jre"
-export ANDROID_HOME="$HOME/.android/sdk/cmdline-tools"
+export ANDROID_HOME="$HOME/.android/sdk"
 export ANDROID_SDK_ROOT="$HOME/.android/sdk"
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 export GRADLE_USER_HOME="$HOME/.gradle"
 export M2_HOME="$HOME/.maven"
+export PATH="$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/cmdline-tools/tools/bin:$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/kiyengar/.sdkman"
@@ -92,3 +93,5 @@ if [ -e /home/kiyengar/.nix-profile/etc/profile.d/nix.sh ]; then . /home/kiyenga
 export LOCALE_ARCHIVE_2_11="$(nix-build --no-out-link "<nixpkgs>" -A glibcLocales)/lib/locale/locale-archive"
 export LOCALE_ARCHIVE_2_27="$(nix-build --no-out-link "<nixpkgs>" -A glibcLocales)/lib/locale/locale-archive"
 export LOCALE_ARCHIVE="/usr/bin/locale"
+
+enable-fzf-tab;
