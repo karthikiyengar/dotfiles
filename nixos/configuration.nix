@@ -1,4 +1,4 @@
-# Edit this configuration file to define what should be installed on
+# Edit this configuration file to efine what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
@@ -10,9 +10,9 @@ let
     requests
   ];
 in
-{
-  imports =
-    [
+  {
+    imports =
+      [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
@@ -43,62 +43,31 @@ in
   nixpkgs.overlays = [
     (self: super: {
       neovim = super.neovim.override
-        {
-          configure.plug.plugins = with pkgs.vimPlugins; [
-            vim-nix
-            YouCompleteMe
-            nerdtree
-            ale
-            vim-airline
-            fzfWrapper
-            fzf-vim
-            vim-sleuth
-            typescript-vim
-            vim-jsx-typescript
-          ];
-          viAlias = true;
-          vimAlias = true;
-          configure.customRC = ''
-            filetype plugin on
-            runtime! plugin/python_setup.vim
-
-            set omnifunc=syntaxcomplete#Complete
-            set ignorecase
-            set completeopt+=noinsert,menuone
-            set shortmess+=c  
-            set laststatus=2
-            set shiftwidth=2
-            set tabstop=2
-            set number
-            set softtabstop=2
-            set foldmethod=syntax
-            let javaScript_fold=1  
-            set foldlevel=20
-            set hidden
-            set clipboard=unnamed
-
-            let $FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
-            let g:ale_fixers = {'typescript': ['tslint', 'prettier'], 'haskell': ['brittany']}
-            let g:ale_linters = {'haskell': ['ghc']}
-            let g:ale_lint_on_save = 1
-            let g:ale_fix_on_save = 1
-            let g:ale_javascript_prettier_use_local_config = 1
-            let g:NERDTreeChDirMode = 2
-
-            nnoremap <F12> :YcmCompleter GoToDeclaration<CR>
-            nnoremap <C-p> :Files<CR>
-            nnoremap <F2>  :YcmCompleter RefactorRename 
-            nnoremap <F8>  :lopen<CR> :lnext<CR>
-            nnoremap <F9>  :YcmCompleter FixIt<CR>
-            "nnoremap <C-J> <C-W><C-J>
-            "nnoremap <C-K> <C-W><C-K>
-            "nnoremap <C-L> <C-W><C-L>
-            "nnoremap <C-H> <C-W><C-H>
-            nmap <C-P> :FZF<CR>
-            nmap <C-L> :NERDTreeToggle<CR> 
-            tnoremap <Esc> <C-\><C-n>
-          '';
-        };
+      {
+        configure.plug.plugins = with pkgs.vimPlugins; [
+          vim-nix
+          vim-vinegar
+          ale
+          vim-fugitive
+          vim-airline
+          vim-gitgutter
+          vim-surround
+          fzfWrapper
+          fzf-vim
+          vim-sleuth
+          gruvbox
+          coc-nvim
+          coc-json
+          coc-tsserver
+          vim-markdown
+          vim-javascript
+          typescript-vim
+          vim-jsx-typescript
+        ];
+        viAlias = true;
+        vimAlias = true;
+        configure.customRC = (builtins.readFile /home/kiyengar/.vimrc);
+      };
     })
   ];
 
@@ -108,20 +77,26 @@ in
   # $ nix search wget
   # To Package: rumno, unipicker, rofi stuff
   environment.systemPackages = with pkgs;
-    let
-      my-python-packages = python-packages: with python-packages; [
-        dbus-python
-        requests
-      ];
-      python-with-my-packages = python3.withPackages my-python-packages;
-    in
-    [
+  let
+    my-python-packages = python-packages: with python-packages; [
+      dbus-python
+      requests
+    ];
+    python-with-my-packages = python3.withPackages my-python-packages;
+  in
+  [
       # unstable.obinskit
       unstable.robo3t
+      ibus-engines.typing-booster
       unstable.mongodb-compass
+      system-config-printer
+      xsane
       flameshot
       freemind
       pcmanfm
+      lxmenu-data
+      shared_mime_info
+      audacity
       gthumb
       kdeconnect
       heroku
@@ -133,6 +108,7 @@ in
       docker
       docker-compose
       thefuck
+      discord
       nixpkgs-fmt
       i3lock
       acpi
@@ -149,9 +125,15 @@ in
       xclip
       stow
       vscode-with-extensions
+      openvpn
+      protonvpn-cli
       haskellPackages.termonad
       rxvt-unicode
+      hexchat
+      weechat
       st
+      alacritty
+      ranger
       gnvim
       xidlehook
       pasystray
@@ -174,6 +156,7 @@ in
       coreutils
       google-chrome
       chromium
+      gitAndTools.tig
       git
       unstable.joplin-desktop
       mkpasswd
@@ -220,6 +203,12 @@ in
   #   keyMap = "us";
   # };
 
+  # Activate typing-booster
+  i18n.inputMethod = {
+    enabled = "ibus";
+    ibus.engines = with pkgs.ibus-engines; [ typing-booster ];
+  };
+
   # KDE Connect
   networking.firewall.allowedTCPPortRanges = [{ from = 1714; to = 1764; }];
   networking.firewall.allowedUDPPortRanges = [{ from = 1714; to = 1764; }];
@@ -262,8 +251,9 @@ in
   # like  "Impossible to connect to XXX.local: Name or service not known"
   services.avahi.nssmdns = true;
 
-  # Enable urxvtd
-  services.urxvtd.enable = true;
+  # Enable Scanning
+  hardware.sane.enable = true;
+  hardware.sane.extraBackends = [ pkgs.sane-airscan ];
 
   # Enable sound.
   sound.enable = true;
@@ -323,7 +313,7 @@ in
     home = "/home/kiyengar";
     description = "Karthik Iyengar";
     isNormalUser = true;
-    extraGroups = [ "adbusers" "wheel" "docker" "video" "networkmanager" "audio" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "adbusers" "wheel" "scanner" "lp" "docker" "video" "networkmanager" "audio" ]; # Enable ‘sudo’ for the user.
     hashedPassword = "***REMOVED***";
   };
 
@@ -352,10 +342,10 @@ in
   # battery monitor
   systemd.user.services.batteryMonitor = {
     path = [ pkgs.bash pkgs.acpi pkgs.libnotify ];
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = [ "basic.target" ];
     description = "Notifies when battery is low and suspends";
     serviceConfig = {
-      Type = "simple";
+      Type = "oneshot";
       ExecStart = "${pkgs.bash}/bin/bash %h/.wm-scripts/battery-monitor.sh";
     };
   };
@@ -367,6 +357,27 @@ in
     };
     wantedBy = [ "timers.target" ];
   };
+
+
+  # Fonts
+  fonts.fontconfig = {
+    localConf   = builtins.readFile /home/kiyengar/fontconfig.xml;
+    defaultFonts = {
+      emoji = ["Noto Color Emoji"];
+      serif = ["Bitstream Vera Serif"];
+      sansSerif = ["Bitstream Vera Sans"];
+      monospace = ["Bitstream Vera Sans Mono"];
+    };
+  };
+
+  # fonts.enableDefaultFonts = true;
+  fonts.fonts = with pkgs; [
+    noto-fonts-emoji
+    ttf_bitstream_vera
+    hasklig
+    font-awesome_4
+    unifont  
+  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

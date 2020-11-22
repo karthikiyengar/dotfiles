@@ -1,3 +1,5 @@
+URxvt.termName:             rxvt-unicode-256color
+
 !! Colorscheme
 
 ! special
@@ -38,7 +40,7 @@
 *.color15: #fdf6e3
 
 !! URxvt* Appearance
-URxvt*.font: xft:Bitstream Vera Sans Mono:size=10
+URxvt*.font: xft:Bitstream Vera Sans Mono:size=10, xft:Noto Emoji
 URxvt*.letterSpace: 0
 URxvt*.lineSpace: 0
 URxvt*.geometry: 92x24
