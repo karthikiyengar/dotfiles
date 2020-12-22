@@ -21,6 +21,15 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # For xbox controller
+  hardware.xpadneo.enable = true;
+  boot.extraModprobeConfig = ''options bluetooth disable_ertm=1''; 
+  hardware.bluetooth.config = {
+    General = {
+      Privacy = "device";
+    };
+  };
+
   # grub
   boot.loader.grub = {
     enable = true;
@@ -29,6 +38,9 @@ in
     enableCryptodisk = true;
     device = "nodev";
   };
+
+  # enable ntfs
+  boot.supportedFilesystems = [ "ntfs" ];
 
   # luks
   boot.initrd.luks.devices = {
@@ -72,6 +84,9 @@ in
   ];
 
   virtualisation.docker.enable = true;
+  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.enableExtensionPack = true;
+  users.extraGroups.vboxusers.members = [ "kiyengar" ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -88,9 +103,11 @@ in
       # unstable.obinskit
       unstable.robo3t
       ibus-engines.typing-booster
+      sysfsutils
       unstable.mongodb-compass
       system-config-printer
       xsane
+      veracrypt
       flameshot
       freemind
       pcmanfm
@@ -105,7 +122,13 @@ in
       vlc
       stack
       blueman
+      etcher
+      gptfdisk
+      partition-manager
+      parted
+      gparted
       docker
+      lsof
       docker-compose
       thefuck
       discord
@@ -132,6 +155,7 @@ in
       hexchat
       weechat
       st
+      mate.caja
       alacritty
       ranger
       gnvim
@@ -219,6 +243,7 @@ in
 
 
   programs.light.enable = true;
+  programs.steam.enable = true; 
   programs.nm-applet.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -282,9 +307,15 @@ in
   services.xserver = {
     enable = true;
     xkbOptions = "terminate:ctrl_alt_bksp";
+    desktopManager = {
+      plasma5 = {
+        enable = true;
+      };
+    };
+
     displayManager = {
       defaultSession = "none+xmonad";
-      lightdm = {
+      sddm = {
         enable = true;
       };
       autoLogin = {
