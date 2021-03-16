@@ -4,10 +4,6 @@ source ~/.antigen.zsh
 export NVM_AUTO_USE=true
 export TERM=xterm;
 
-# Klarna Stuff
-export ADFS_USERNAME=k.iyengar
-export LDAP_USERNAME=k.iyengar
-
 antigen use oh-my-zsh
 antigen bundle agkozak/zsh-z
 antigen bundle Aloxaf/fzf-tab
@@ -38,27 +34,13 @@ alias sz="source ~/.zshrc"
 alias dev="cd ~/development"
 alias ga="git add --all"
 alias gc="git commit"
-alias app="cd ~/development/klapp/klarna-app"
-alias appc="cd ~/development/klapp/klarna-app/clients"
-alias appe="cd ~/development/klapp/klarna-app/clients/apps/extension"
-alias appw="cd ~/development/klapp/klarna-app/websites"
-alias appme="cd ~/development/klapp/master/clients/apps/extension"
-alias appmw="cd ~/development/klapp/master/websites"
-alias appmc="cd ~/development/klapp/master/clients"
-alias appm="cd ~/development/klapp/master"
-alias whoami="echo k.iyengar"
-alias vpn="cd ~/VPN && sudo openvpn --config k.iyengar@laptop.ovpn"
 alias r="sudo nixos-rebuild switch"
 alias nclean="find . -name "node_modules" -exec rm -rf '{}' +"
 alias adfs="sh ~/adfs.sh"
-alias u="sudo apt-get update; sudo apt-get upgrade"
-alias un="sudo nix-channel --update; r"
+alias u="sudo nix-channel --update; r"
 alias crocks="cd ~/development/crocks"
-alias ikea="cd ~/development/cs-ikea"
-alias iam="cd ~/development/iam-policies"
 alias mapi="cd ~/development/lyra-api"
 alias wp="~/.wm-scripts/change-wallpaper.sh"
-alias zy="sudo zypper"
 alias grm="git fetch --all; git rebase origin/master"
 alias gd="git diff --staged"
 alias vx="code ~/.xmonad/"
@@ -68,16 +50,6 @@ if [ -n "${commands[fzf-share]}" ]; then
   source "$(fzf-share)/key-bindings.zsh"
   source "$(fzf-share)/completion.zsh"
 fi
-
-export JAVA_HOME="$HOME/.nix-profile/lib/openjdk"
-export JRE_HOME="$HOME/.nix-profile/lib/openjdk/jre"
-export ANDROID_HOME="$HOME/.android/sdk"
-export ANDROID_SDK_ROOT="$HOME/.android/sdk"
-export ANDROID_AVD_HOME="$HOME/.android/avd"
-export GRADLE_USER_HOME="$HOME/.gradle"
-export M2_HOME="$HOME/.maven"
-export PATH="$ANDROID_SDK_ROOT/emulator:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/cmdline-tools/tools/bin:$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH"
-
 
 # Enable thefuck
 eval $(thefuck --alias f)
@@ -104,9 +76,4 @@ FZF-EOF"
 }
 
 enable-fzf-tab;
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/kiyengar/.sdkman"
-[[ -s "/home/kiyengar/.sdkman/bin/sdkman-init.sh" ]] && source "/home/kiyengar/.sdkman/bin/sdkman-init.sh"
-
 
