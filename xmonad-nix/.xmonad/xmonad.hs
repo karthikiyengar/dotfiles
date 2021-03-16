@@ -29,6 +29,7 @@ import           XMonad.Actions.CopyWindow      ( copy )
 
 myTerminal = "urxvtc"
 myMod = mod4Mask -- Super Key
+altMask = mod1Mask -- Alt Key
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 
@@ -48,7 +49,7 @@ searchEngineMap method =
 -- xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'
 myKeys x = M.union (M.fromList (newKeys x)) (keys def x)
 newKeys conf@XConfig { XMonad.modMask = modm } =
-  [ ((modm .|. shiftMask, xK_l), spawn "i3lock -c 444444")
+  [ ((modm .|. altMask, xK_l), spawn "i3lock -c 444444")
     ]
 
     ++ [ ( (modm, xK_p)
@@ -57,10 +58,11 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
          )
        , ((modm, xK_v), spawn "pavucontrol -t 3")
        , ((modm, xK_c), spawn "blueman-manager")
-       , ( (modm, xK_u)
-         , spawn
-           "unipicker --copy --command 'rofi -dmenu -theme solarized -location 1 -width 100'"
-         )
+       , ((modm, xK_u), spawn "rofi -show emoji -modi emoji")
+      --  , ( (modm, xK_u)
+      --    , spawn
+      --      "unipicker --copy --command 'rofi -dmenu -theme solarized -location 1 -width 100'"
+      --    )
        , ( (0, xF86XK_AudioRaiseVolume)
          , spawn "~/.wm-scripts/media.sh volume-inc"
          )

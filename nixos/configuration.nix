@@ -21,6 +21,9 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Kernel
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   # For xbox controller
   hardware.xpadneo.enable = true;
   boot.extraModprobeConfig = ''options bluetooth disable_ertm=1''; 
@@ -35,6 +38,7 @@ in
     enable = true;
     version = 2;
     efiSupport = true;
+    useOSProber = true;
     enableCryptodisk = true;
     device = "nodev";
   };
@@ -54,6 +58,9 @@ in
   environment.variables.EDITOR = "nvim";
   nixpkgs.overlays = [
     (self: super: {
+      rofi = super.rofi.override { 
+        plugins = [ pkgs.rofi-emoji ]; 
+      };
       neovim = super.neovim.override
       {
         configure.plug.plugins = with pkgs.vimPlugins; [
@@ -83,10 +90,14 @@ in
     })
   ];
 
+
+
   virtualisation.docker.enable = true;
-  virtualisation.virtualbox.host.enable = true;
-  virtualisation.virtualbox.host.enableExtensionPack = true;
-  users.extraGroups.vboxusers.members = [ "kiyengar" ];
+
+  # This takes too long, complies vbox from source
+  # virtualisation.virtualbox.host.enable = true;
+  # virtualisation.virtualbox.host.enableExtensionPack = true;
+  # users.extraGroups.vboxusers.members = [ "kiyengar" ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -97,6 +108,7 @@ in
       dbus-python
       requests
     ];
+
     python-with-my-packages = python3.withPackages my-python-packages;
   in
   [
@@ -106,16 +118,21 @@ in
       sysfsutils
       unstable.mongodb-compass
       system-config-printer
+      element-desktop
       xsane
+      gimp
       veracrypt
       flameshot
       freemind
       pcmanfm
       lxmenu-data
+      jetbrains.idea-community
       shared_mime_info
       audacity
       gthumb
       kdeconnect
+      todoist-electron
+      signal-desktop
       heroku
       imagemagick
       simplescreenrecorder
@@ -133,6 +150,10 @@ in
       thefuck
       discord
       nixpkgs-fmt
+      brightnessctl
+      wl-clipboard
+      texstudio
+      texlive.combined.scheme-full 
       i3lock
       acpi
       gnome3.gnome-keyring
@@ -142,10 +163,13 @@ in
       psmisc
       networkmanagerapplet
       nodejs
+      rofi-file-browser
+      rofi-emoji
       yarn
       libnotify
       xsel
       xclip
+      zip
       stow
       vscode-with-extensions
       openvpn
@@ -198,11 +222,12 @@ in
       stalonetray
       xmobar
       gnome3.geary
-      unstable.mailspring
+      thunderbird
       unstable.zoom-us
       spotify
       lxqt.lxqt-policykit
       kdeApplications.ark
+      kdeApplications.kfind
       kdeApplications.okular
     ];
 
@@ -242,6 +267,21 @@ in
   time.timeZone = "Europe/Berlin";
 
 
+  # Sway!
+
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true; # so that gtk works properly
+    extraPackages = with pkgs; [
+      swaylock
+      swayidle
+      wl-clipboard
+      mako # notification daemon
+      alacritty # Alacritty is the default terminal in the config
+      dmenu # Dmenu is the default in the config but i recommend wofi since its wayland native
+    ];
+  };
+
   programs.light.enable = true;
   programs.steam.enable = true; 
   programs.nm-applet.enable = true;
@@ -275,6 +315,10 @@ in
   # Important to resolve .local domains of printers, otherwise you get an error
   # like  "Impossible to connect to XXX.local: Name or service not known"
   services.avahi.nssmdns = true;
+
+  # Enable flatpak
+  services.flatpak.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
   # Enable Scanning
   hardware.sane.enable = true;
