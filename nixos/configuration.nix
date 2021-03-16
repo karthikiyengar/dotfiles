@@ -178,7 +178,24 @@ in
       rxvt-unicode
       hexchat
       weechat
-      st
+      (st.overrideAttrs (oldAttrs: rec {
+        patches = [
+        # Fetch them directly from `st.suckless.org`
+          (fetchpatch {
+            url = "https://st.suckless.org/patches/scrollback/st-scrollback-20201205-4ef0cbd.diff";
+            sha256 = "0p3pdk9sb92kllzpcgzkfghxfvxbrr2d4cd36xz76jibr57a6wr4";
+          })
+          (fetchpatch {
+            url = "https://st.suckless.org/patches/scrollback/st-scrollback-mouse-20191024-a2c479c.diff";
+            sha256 = "0qg20sv64im5lcnfnphnbbiyizwywrg1g6zhxyxqqyf8g33lpbb7";
+          })
+          (fetchpatch {
+            url = "https://st.suckless.org/patches/gruvbox/st-gruvbox-dark-0.8.2.diff";
+            sha256 = "14ajygrlz4z3p0w90cbdc7xk2wikhys4m761ci3ln7p16n48qxdz";
+          })
+        ];
+      }))
+      tmux
       mate.caja
       alacritty
       ranger
@@ -447,10 +464,14 @@ in
 
   # fonts.enableDefaultFonts = true;
   fonts.fonts = with pkgs; [
+    noto-fonts
     noto-fonts-emoji
     ttf_bitstream_vera
     hasklig
     font-awesome_4
+    symbola 
+    fira-code
+    fira-code-symbols
     unifont  
   ];
 
