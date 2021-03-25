@@ -15,6 +15,7 @@ then
   blueman-applet &!
   greenclip daemon &!
   rumno-background &!
+  flameshot &!
   redshift-gtk &!
   
   # Set cursor to pointer

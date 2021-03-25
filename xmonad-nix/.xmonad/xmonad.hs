@@ -145,8 +145,6 @@ myStartupHook = do
   spawnOnOnce "8" "spotify"
   spawnOnOnce "2" "code"
   spawnOnOnce "1" "firefox"
-  spawnOnOnce "7" "joplin"
-  spawnOnOnce "9" "slack"
   spawnOnOnce "9" "thunderbird"
   docksStartupHook
   setWMName "LG3D"

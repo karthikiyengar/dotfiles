@@ -6,6 +6,7 @@
 let
   unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
   my-python-packages = python-packages: with python-packages; [
+    recoll
     pandas
     requests
   ];
@@ -23,6 +24,12 @@ in
 
   # Kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
+
+
+  # NixOS GC and optimization
+  nix.gc.automatic = true;
+  nix.gc.options = "--delete-older-than 30d";
+  nix.autoOptimiseStore = true;
 
   # For xbox controller
   hardware.xpadneo.enable = true;
@@ -59,7 +66,9 @@ in
   nixpkgs.overlays = [
     (self: super: {
       rofi = super.rofi.override { 
-        plugins = [ pkgs.rofi-emoji ]; 
+        plugins = [ 
+          pkgs.rofi-emoji 
+        ]; 
       };
       neovim = super.neovim.override
       {
@@ -112,72 +121,44 @@ in
     python-with-my-packages = python3.withPackages my-python-packages;
   in
   [
-      # unstable.obinskit
+      # Development 
       unstable.robo3t
-      ibus-engines.typing-booster
-      sysfsutils
       unstable.mongodb-compass
-      system-config-printer
-      element-desktop
+      jetbrains.idea-community
+      docker
+      docker-compose
+      nodejs
+      stack
+      openjdk11
+      heroku
+      gitAndTools.tig
+      git
+
+      # Utilities
       xsane
+      flameshot
       gimp
       veracrypt
-      flameshot
-      freemind
-      pcmanfm
-      lxmenu-data
-      jetbrains.idea-community
-      shared_mime_info
-      audacity
-      gthumb
-      kdeconnect
-      todoist-electron
+
+      # Communication
+      tdesktop 
+      element-desktop
       signal-desktop
-      heroku
-      imagemagick
-      simplescreenrecorder
-      vlc
-      stack
-      blueman
-      etcher
-      gptfdisk
-      partition-manager
-      parted
-      gparted
-      docker
-      lsof
-      docker-compose
-      thefuck
+      slack
+      thunderbird
+      unstable.zoom-us
       discord
-      nixpkgs-fmt
-      brightnessctl
-      wl-clipboard
-      texstudio
-      texlive.combined.scheme-full 
-      i3lock
-      acpi
-      gnome3.gnome-keyring
-      gnome3.cheese
-      python-with-my-packages
-      wget
-      psmisc
-      networkmanagerapplet
-      nodejs
-      rofi-file-browser
-      rofi-emoji
-      yarn
-      libnotify
-      xsel
-      xclip
-      zip
-      stow
-      vscode-with-extensions
-      openvpn
-      protonvpn-cli
-      haskellPackages.termonad
-      rxvt-unicode
       hexchat
       weechat
+
+      # File
+      pcmanfm
+      mate.caja
+
+      # Terminal Emulators
+      termite
+      haskellPackages.termonad
+      rxvt-unicode
       (st.overrideAttrs (oldAttrs: rec {
         patches = [
         # Fetch them directly from `st.suckless.org`
@@ -196,51 +177,100 @@ in
         ];
       }))
       tmux
-      mate.caja
       alacritty
       ranger
-      gnvim
-      xidlehook
-      pasystray
-      unstable.autorandr
-      postman
-      arandr
-      neovim
-      vim_configurable
-      libreoffice
-      firefox
-      direnv
-      bat
-      ag
+
+      # Terminal Apps
       ripgrep
       fzf
       fzf-zsh
       antigen
       oh-my-zsh
-      haskellPackages.greenclip
-      coreutils
-      google-chrome
-      chromium
-      gitAndTools.tig
-      git
-      unstable.joplin-desktop
-      mkpasswd
-      nextcloud-client
-      dunst
+      ag
+      gitAndTools.gh
+      lsof
+      thefuck
       trash-cli
+      jq
+      xorg.xkill
+      stow
+      xsel
+      xclip
+      ncdu
+      zip
+      direnv
+      atop
+
+      # Productivity
+      todoist-electron
+      freemind
+      unstable.joplin-desktop
+
+      # DE/WM
       rofi
       feh
       polybar
-      jq
-      xorg.xkill
-      slack
-      pavucontrol
-      atop
       stalonetray
       xmobar
-      gnome3.geary
-      thunderbird
-      unstable.zoom-us
+      arandr
+      dunst
+      pavucontrol
+      i3lock
+      haskellPackages.greenclip
+      xidlehook
+
+      # Editors
+      vscode-with-extensions
+      gnvim
+      texstudio
+      texlive.combined.scheme-full 
+      neovim
+      vim_configurable
+
+      # Unclassified
+      ibus-engines.typing-booster
+      sysfsutils
+      system-config-printer
+      lxmenu-data
+      shared_mime_info
+      audacity
+      gthumb
+      kdeconnect
+      imagemagick
+      recoll
+      simplescreenrecorder
+      vlc
+      blueman
+      etcher
+      gptfdisk
+      partition-manager
+      parted
+      gparted
+      nixpkgs-fmt
+      gnome3.pomodoro
+      brightnessctl
+      acpi
+      gnome3.gnome-keyring
+      gnome3.cheese
+      python-with-my-packages
+      wget
+      psmisc
+      networkmanagerapplet
+      yarn
+      libnotify
+      openvpn
+      protonvpn-cli
+      pasystray
+      unstable.autorandr
+      postman
+      libreoffice
+      firefox
+      bat
+      coreutils
+      google-chrome
+      chromium
+      mkpasswd
+      nextcloud-client
       spotify
       lxqt.lxqt-policykit
       kdeApplications.ark
@@ -283,9 +313,7 @@ in
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
-
   # Sway!
-
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true; # so that gtk works properly
