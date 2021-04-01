@@ -27,19 +27,20 @@ border-size = 0
 border-color = #00000000
 
 padding-left = 0
-padding-right = 2
+padding-right = 1
 padding-bottom = 0
 
 module-margin-left = 0
-module-margin-right = 2
+module-margin-right = 1
 
 font-0 = Hasklig:pixelsize=10;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:style=Regular;2
+font-4 = "Noto Color Emoji:pixelsize=16:style=Regular:antialias=true:scale=10;2"
 
-modules-left = workspaces-xmonad layout-xmonad title-xmonad 
+modules-left = xmonad
 ; modules-center =
-modules-right = spotify weather filesystem memory cpu xkeyboard date caffeinate
+modules-right = spotify weather filesystem memory cpu xkeyboard date caffeinate battery
 tray-position = right
 tray-pad= 0
 ;tray-background = #0063ff
@@ -130,26 +131,9 @@ screenchange-reload = true
 margin-top = 0
 margin-bottom = 0
 
-
-[module/workspaces-xmonad]
+[module/xmonad]
 type = custom/script
-exec = tail -F /tmp/.xmonad-workspace-log
-exec-if = [ -e /tmp/.xmonad-workspace-log ]
-tail = true
-format-foreground = #43abc9
-
-[module/title-xmonad]
-type = custom/script
-format-foreground = #fb9224
-exec = tail -F /tmp/.xmonad-title-log
-exec-if = [ -e /tmp/.xmonad-title-log ]
-tail = true
-label-maxlen = 50
-
-[module/layout-xmonad]
-type = custom/script
-exec = tail -F /tmp/.xmonad-layout-log
-exec-if = [ -e /tmp/.xmonad-layout-log ]
+exec = xmonad-log
 tail = true
 
 [module/weather]

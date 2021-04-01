@@ -1,9 +1,7 @@
-#!/bin/python
-
+#!/usr/bin/env python
 import sys
 import dbus
 import argparse
-
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -52,7 +50,7 @@ def fix_string(string):
 # Default parameters
 output = fix_string(u'{play_pause} {artist}: {song}')
 trunclen = 25
-play_pause = fix_string(u'\ue058,\ue059') # first character is play, second is paused
+play_pause = fix_string(u'\u25B6,\u23F8') # first character is play, second is paused
 
 label_with_font = '%{{T{font}}}{label}%{{T-}}'
 font = args.font

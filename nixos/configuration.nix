@@ -31,6 +31,9 @@ in
   nix.gc.options = "--delete-older-than 30d";
   nix.autoOptimiseStore = true;
 
+  # Use sandboxing
+  nix.useSandbox = true;
+
   # For xbox controller
   hardware.xpadneo.enable = true;
   boot.extraModprobeConfig = ''options bluetooth disable_ertm=1''; 
@@ -218,6 +221,7 @@ in
       i3lock
       haskellPackages.greenclip
       xidlehook
+      xmonad-log
 
       # Editors
       vscode-with-extensions
@@ -226,6 +230,9 @@ in
       texlive.combined.scheme-full 
       neovim
       vim_configurable
+
+      # Haskell Dev
+     haskellPackages.ghc
 
       # Unclassified
       ibus-engines.typing-booster
@@ -299,7 +306,7 @@ in
   #   keyMap = "us";
   # };
 
-  # Activate typing-booster
+  # Activate typing-booster (for emoji picker)
   i18n.inputMethod = {
     enabled = "ibus";
     ibus.engines = with pkgs.ibus-engines; [ typing-booster ];
@@ -311,7 +318,7 @@ in
 
 
   # Set your time zone.
-  time.timeZone = "Europe/Berlin";
+  time.timeZone = "Asia/Kolkata";
 
   # Sway!
   programs.sway = {
@@ -419,6 +426,8 @@ in
         extraPackages = haskellPackages: [
           haskellPackages.xmonad-contrib
           haskellPackages.xmonad-extras
+          haskellPackages.dbus
+          haskellPackages.monad-logger
           haskellPackages.xmonad
         ];
       };
@@ -460,7 +469,7 @@ in
   ];
 
   # battery monitor
-  systemd.user.services.batteryMonitor = {
+  systemd.user.services.battery-monitor = {
     path = [ pkgs.bash pkgs.acpi pkgs.libnotify ];
     wantedBy = [ "basic.target" ];
     description = "Notifies when battery is low and suspends";
@@ -470,7 +479,8 @@ in
     };
   };
 
-  systemd.user.timers.batteryMonitor = {
+  systemd.user.timers.battery-monitor = {
+    enable = true;
     timerConfig = {
       OnUnitInactiveSec = "2s";
       AccuracySec = "1s";
@@ -496,6 +506,7 @@ in
     noto-fonts-emoji
     ttf_bitstream_vera
     hasklig
+    unifont
     font-awesome_4
     symbola 
     fira-code
