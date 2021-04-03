@@ -118,6 +118,7 @@ in
   let
     my-python-packages = python-packages: with python-packages; [
       dbus-python
+      pulsectl
       requests
     ];
 
@@ -132,10 +133,17 @@ in
       docker-compose
       nodejs
       stack
+      cargo
       openjdk11
       heroku
       gitAndTools.tig
       git
+      haskellPackages.ghc 
+
+      # Browsers
+      firefox
+      google-chrome
+      chromium
 
       # Utilities
       xsane
@@ -154,7 +162,7 @@ in
       hexchat
       weechat
 
-      # File
+      # File Managers
       pcmanfm
       mate.caja
 
@@ -231,8 +239,13 @@ in
       neovim
       vim_configurable
 
-      # Haskell Dev
-     haskellPackages.ghc
+      # Multimedia
+      audacity
+      gthumb
+      imagemagick
+      simplescreenrecorder
+      vlc
+      spotify
 
       # Unclassified
       ibus-engines.typing-booster
@@ -240,13 +253,8 @@ in
       system-config-printer
       lxmenu-data
       shared_mime_info
-      audacity
-      gthumb
       kdeconnect
-      imagemagick
       recoll
-      simplescreenrecorder
-      vlc
       blueman
       etcher
       gptfdisk
@@ -271,14 +279,10 @@ in
       unstable.autorandr
       postman
       libreoffice
-      firefox
       bat
       coreutils
-      google-chrome
-      chromium
       mkpasswd
       nextcloud-client
-      spotify
       lxqt.lxqt-policykit
       kdeApplications.ark
       kdeApplications.kfind

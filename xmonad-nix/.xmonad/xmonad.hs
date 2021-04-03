@@ -34,7 +34,7 @@ import qualified Codec.Binary.UTF8.String as UTF8
 
 
 
-myTerminal = "urxvtc"
+myTerminal = "termite"
 myMod = mod4Mask -- Super Key
 altMask = mod1Mask -- Alt Key
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
@@ -61,15 +61,15 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
 
     ++ [ ( (modm, xK_p)
          , spawn
-           "rofi -combi-modi window,drun,run -theme solarized -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100"
+           "rofi -combi-modi window,drun,run -theme gruvbox-dark-soft -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100 -show-icons -font 'Hasklig Regular 12'"
          )
        , ((modm, xK_v), spawn "pavucontrol -t 3")
        , ((modm, xK_c), spawn "blueman-manager")
-       , ((modm, xK_u), spawn "rofi -show emoji -modi emoji")
-      --  , ( (modm, xK_u)
-      --    , spawn
-      --      "unipicker --copy --command 'rofi -dmenu -theme solarized -location 1 -width 100'"
-      --    )
+       , ((modm, xK_i), spawn "rofi -show emoji -modi emoji")
+       , ( (modm, xK_u)
+         , spawn
+           "unipicker --copy --command 'rofi -dmenu -theme solarized -location 1 -width 100'"
+         )
        , ( (0, xF86XK_AudioRaiseVolume)
          , spawn "~/.wm-scripts/media.sh volume-inc"
          )
@@ -149,7 +149,7 @@ myManageHook = composeAll
   ]
 
 myStartupHook = do
-  spawn "killall polybar; polybar xmother"
+  spawn "killall polybar; polybar xmother &!"
   spawnOnOnce "8" "spotify"
   spawnOnOnce "2" "code"
   spawnOnOnce "1" "firefox"
@@ -183,7 +183,7 @@ dbusOutput dbus str =
 
 polybarHook :: D.Client -> PP
 polybarHook dbus =
-  let wrapper c s | s /= "NSP" = wrap ("%{F" <> c <> "} ") " %{F-}" s
+  let wrapper c s | s /= "NSP" = wrap ("%{F" <> c <> "} ")" %{F-}" s
                   | otherwise  = mempty
       blue   = "#2E9AFE"
       gray   = "#7F7F7F"
@@ -196,7 +196,7 @@ polybarHook dbus =
           , ppUrgent          = wrapper orange
           , ppHidden          = wrapper gray
           , ppHiddenNoWindows = mempty
-          , ppTitle           = shorten 100 . wrapper purple
+          , ppTitle           = shorten 80 . wrapper "#fb9224"
           }
 
 myPolybarLogHook dbus = myLogHook <+> dynamicLogWithPP (polybarHook dbus)
@@ -206,6 +206,7 @@ main' dbus = xmonad . ewmh $ def { terminal           = myTerminal
           , modMask            = myMod
           , startupHook        = myStartupHook
           , manageHook         = manageSpawn <+> myManageHook <+> manageHook def
+          , handleEventHook    = docksEventHook
           , focusedBorderColor = "#fb9224"
           , normalBorderColor  = "#000"
           , borderWidth        = 3
