@@ -14,6 +14,8 @@ in
   {
     imports =
       [
+
+      <home-manager/nixos>
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
@@ -141,7 +143,6 @@ in
       haskellPackages.ghc 
 
       # Browsers
-      firefox
       google-chrome
       chromium
 
@@ -210,7 +211,6 @@ in
       ncdu
       zip
       direnv
-      atop
 
       # Productivity
       todoist-electron
@@ -517,6 +517,28 @@ in
     fira-code-symbols
     unifont  
   ];
+
+
+  # Home Manager 
+  home-manager.useGlobalPkgs = true;
+  home-manager.users.kiyengar = { pkgs, ... }: {
+    programs.firefox = {
+      enable = true;
+      profiles = {
+        myprofile = {
+          settings = {
+            "ui.context_menus.after_mouseup" = true; # xmonad right click bug
+          };
+        };
+      };
+    };
+
+    programs.git = {
+      enable = true; 
+      userName = "Karthik Iyengar";
+      userEmail = "hello@kiyengar.net";
+    };
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
