@@ -65,10 +65,10 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
          )
        , ((modm, xK_v), spawn "pavucontrol -t 3")
        , ((modm, xK_c), spawn "blueman-manager")
-       , ((modm, xK_i), spawn "rofi -show emoji -modi emoji")
+       , ((modm, xK_i), spawn "rofi -show emoji -modi emoji -theme gruvbox-dark-soft -location 1 -width 100")
        , ( (modm, xK_u)
          , spawn
-           "unipicker --copy --command 'rofi -dmenu -theme solarized -location 1 -width 100'"
+           "unipicker --copy --command 'rofi -dmenu -theme gruvbox-dark-soft -location 1 -width 100'"
          )
        , ( (0, xF86XK_AudioRaiseVolume)
          , spawn "~/.wm-scripts/media.sh volume-inc"

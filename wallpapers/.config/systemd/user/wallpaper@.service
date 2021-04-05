@@ -3,10 +3,9 @@ Description=Battery Monitor
 
 [Service]
 Type=simple
-ExecStart=/bin/bash %h/.wm-scripts/change-wallpaper.sh
+ExecStart=/usr/bin/env bash %h/.wm-scripts/change-wallpaper.sh
 Environment=DISPLAY=:0
 Environment=XAUTHORITY=%h/.Xauthority
-Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus
 
 [Install]
 WantedBy=multi-user.target

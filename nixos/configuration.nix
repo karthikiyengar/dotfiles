@@ -4,7 +4,6 @@
 
 { config, pkgs, ... }:
 let
-  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in
   {
     imports =
@@ -228,6 +227,7 @@ in
       haskellPackages.greenclip
       xidlehook
       xmonad-log
+      unstable.unipicker
 
       # Editors
       vscode-with-extensions
@@ -465,10 +465,14 @@ in
   };
 
   # nixpkgs
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-3.1.13"
-  ];
+  nixpkgs.config = {
+    allowUnfree = true;
+    packageOverrides = pkgs: {
+      unstable = import <nixpkgs-unstable> {
+        config = config.nixpkgs.config;
+      };
+    };
+  };
 
   # battery monitor
   systemd.user.services.battery-monitor = {
