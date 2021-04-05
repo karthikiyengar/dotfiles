@@ -5,11 +5,6 @@
 { config, pkgs, ... }:
 let
   unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-  my-python-packages = python-packages: with python-packages; [
-    recoll
-    pandas
-    requests
-  ];
 in
   {
     imports =
@@ -119,7 +114,8 @@ in
   environment.systemPackages = with pkgs;
   let
     my-python-packages = python-packages: with python-packages; [
-      dbus-python
+      dbus-python # used by xmonad-log
+      recoll
       pulsectl
       requests
     ];
@@ -145,12 +141,14 @@ in
       # Browsers
       google-chrome
       chromium
+      firefox
 
       # Utilities
       xsane
       flameshot
       gimp
       veracrypt
+      gnome3.gnome-calculator
 
       # Communication
       tdesktop 

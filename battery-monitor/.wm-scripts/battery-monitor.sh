@@ -20,7 +20,7 @@ function checkBatteryLevel() {
     fi
     
     if [ $battery_level -le 3 ]; then
-        sudo systemctl suspend
+        systemctl suspend
     elif [ $battery_level -le 5 ]; then
         notify-send "Low Battery" "Your computer will suspend soon unless plugged into a power outlet." -u critical
     elif [ $battery_level -le 15 ]; then

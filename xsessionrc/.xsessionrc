@@ -16,6 +16,7 @@ then
   rumno-background &!
   flameshot &!
   redshift-gtk &!
+  recollindex -w 60 -m &!
   
   # Set cursor to pointer
   xsetroot -cursor_name left_ptr &!
