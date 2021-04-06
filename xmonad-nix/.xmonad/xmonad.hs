@@ -1,6 +1,9 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 import           XMonad                  hiding ( (|||) )
 import           XMonad.Layout.LayoutCombinators
 import           XMonad.Layout.Grid
+import           XMonad.Layout.NoBorders
 import qualified XMonad.Prompt                 as P
 import qualified XMonad.Actions.Submap         as SM
 import qualified XMonad.Actions.Search         as S
@@ -27,6 +30,7 @@ import           XMonad.Actions.SpawnOn
 import           XMonad.Util.SpawnOnce
 import qualified Data.Map                      as M
 import           XMonad.Actions.CopyWindow      ( copy )
+import           Data.Text                      ( pack, replace, unpack )
 
 import qualified DBus as D
 import qualified DBus.Client as D
@@ -61,7 +65,7 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
 
     ++ [ ( (modm, xK_p)
          , spawn
-           "rofi -combi-modi window,drun,run -theme gruvbox-dark-soft -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100 -show-icons -font 'Hasklig Regular 12'"
+           "rofi -combi-modi window,drun,calc,run -theme gruvbox-dark-soft -show combi -modi combi,calc,run -terse -no-show-match -no-sort -location 1 -width 100 -show-icons -font 'Hasklig Regular 12'"
          )
        , ((modm, xK_v), spawn "pavucontrol -t 3")
        , ((modm, xK_c), spawn "blueman-manager")
@@ -127,8 +131,14 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
 
 myRemovedKeys = [(myMod .|. shiftMask, xK_q)]
 
+
+data AllFloats = AllFloats deriving (Read, Show)
+instance SetsAmbiguous AllFloats where
+    hiddens _ wset _ _ _ = M.keys $ W.floating wset
+
 myLayoutHook =
-  avoidStruts
+    avoidStruts
+    -- $ lessBorders AllFloats -- To remove borders for floating windows
     $ smartBorders
     $ dwmStyle shrinkText def
     $ (   (Tall 1 (3 / 100) (1 / 2))
@@ -195,6 +205,7 @@ polybarHook dbus =
           , ppVisible         = wrapper gray
           , ppUrgent          = wrapper orange
           , ppHidden          = wrapper gray
+          , ppLayout          = unpack . replace "DwmStyle" "" . pack
           , ppHiddenNoWindows = mempty
           , ppTitle           = shorten 80 . wrapper "#fb9224"
           }

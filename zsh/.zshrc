@@ -43,6 +43,10 @@ alias mapi="cd ~/development/lyra-api"
 alias wp="~/.wm-scripts/change-wallpaper.sh"
 alias grm="git fetch --all; git rebase origin/master"
 alias gd="git diff --staged"
+alias vpn="sudo protonvpn c -f"
+alias vpnin="sudo protonvpn c --CC IN"
+alias vpnde="sudo protonvpn c --CC DE"
+alias vpnd="sudo protonvpn d"
 alias vx="code ~/.xmonad/"
 
 bindkey -v

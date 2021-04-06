@@ -67,6 +67,7 @@ in
       rofi = super.rofi.override { 
         plugins = [ 
           pkgs.rofi-emoji 
+          pkgs.rofi-calc
         ]; 
       };
       neovim = super.neovim.override
@@ -204,6 +205,8 @@ in
       xorg.xkill
       stow
       xsel
+      file
+      shfmt
       xclip
       ncdu
       zip
@@ -374,6 +377,21 @@ in
   services.flatpak.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
+  # Compositing
+  services.picom = {
+    enable = true;
+    activeOpacity = 1.0;
+    inactiveOpacity = 0.8;
+    backend = "glx";
+    fade = true;
+    fadeDelta = 5;
+    shadow = true;
+    opacityRules = [
+      "100:class_g = 'Rofi'"
+    ];
+    shadowOpacity = 0.75;
+  }; 
+
   # Enable Scanning
   hardware.sane.enable = true;
   hardware.sane.extraBackends = [ pkgs.sane-airscan ];
@@ -429,6 +447,7 @@ in
           haskellPackages.xmonad-contrib
           haskellPackages.xmonad-extras
           haskellPackages.dbus
+          haskellPackages.List
           haskellPackages.monad-logger
           haskellPackages.xmonad
         ];

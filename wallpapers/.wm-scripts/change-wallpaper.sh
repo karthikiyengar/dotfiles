@@ -1,6 +1,8 @@
-#!/usr/bin/env bash
-# apt install imagemagick
-SUBREDDITS=$(cat <<-END
+#!/bin/sh
+# This script needs feh and wget
+
+subreddit=$(
+  shuf -n1 <<-END
 earthporn/top
 cityporn/top
 skyporn/top
@@ -11,23 +13,18 @@ exposureporn/hot
 END
 )
 
-SUBREDDIT=$(echo "$SUBREDDITS" | shuf -n 1)
-
-echo "Choosing $SUBREDDIT"
+echo "Choosing $subreddit"
 mkdir -p ~/.wallpapers
 wallpaper_location=~/.wallpapers/current-wallpaper.jpg
-urls=$(wget -O - -o /dev/null http://www.reddit.com/r/$SUBREDDIT/.rss |  grep -oP 'https://i.redd.it/\w{13}\.(jpg|png)')
-
-for url in $urls; do 
-    wget -O $wallpaper_location $url
-    is_landscape=$(identify -format '%[fx:(w>h)]' $wallpaper_location)
-    resolution=$(feh -L "%p" $wallpaper_location)
-    is_highres=0;
-    if [[ $resolution -gt 1000000 ]]; then
-        is_highres=1;
-    fi;
-    if [[ $is_landscape = 1 && $is_highres = 1 ]]; then
-        feh --bg-scale $wallpaper_location
-        break;
-    fi
-done;
+urls=$(wget -O - -o /dev/null http://www.reddit.com/r/"$subreddit"/.rss | grep -oP 'https://i.redd.it/\w{13}\.(jpg|png)')
+for url in $urls; do
+  wget -O $wallpaper_location "$url"
+  height=$(feh -L "%h" $wallpaper_location)
+  width=$(feh -L "%w" $wallpaper_location)
+  resolution=$(feh -L "%p" $wallpaper_location)
+  if [ "$resolution" -lt 1000000 ] || [ "$width" -lt "$height" ]; then
+    continue
+  fi
+  feh --bg-scale $wallpaper_location
+  break
+done

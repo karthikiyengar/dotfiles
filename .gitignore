@@ -11,3 +11,4 @@ xmonad/.xmonad/prompt-history
 *.swp
 *.swo
 *~
+prompt-history
