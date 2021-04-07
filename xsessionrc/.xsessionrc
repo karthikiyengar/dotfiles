@@ -16,16 +16,14 @@ then
   rumno-background &!
   flameshot &!
   redshift-gtk &!
-  
+  protonvpn-tray &!
+
   # Set cursor to pointer
   xsetroot -cursor_name left_ptr &!
   
   # Load custom fonts
   xset +fp $HOME/.fonts
   xset fp rehash &!
-
-  # Polkit for auth prompts
-  /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &!
 
   # Notification Daemon
   dunst &!
@@ -35,7 +33,8 @@ then
 
   # Enable keyboard layouts
   setxkbmap -layout us,de -option 'grp:alt_shift_space_toggle'
-  recollindex -w 60 -m
+  recollindex -w 60 -m &!
+
 
   # Set Wallpaper
   if [ -f ~/.wallpapers/current-wallpaper.jpg ]; then

@@ -5,9 +5,9 @@
 { config, pkgs, ... }:
 let
 in
-  {
-    imports =
-      [
+{
+  imports =
+    [
 
       <home-manager/nixos>
       # Include the results of the hardware scan.
@@ -32,7 +32,7 @@ in
 
   # For xbox controller
   hardware.xpadneo.enable = true;
-  boot.extraModprobeConfig = ''options bluetooth disable_ertm=1''; 
+  boot.extraModprobeConfig = ''options bluetooth disable_ertm=1'';
   hardware.bluetooth.config = {
     General = {
       Privacy = "device";
@@ -64,38 +64,38 @@ in
   environment.variables.EDITOR = "nvim";
   nixpkgs.overlays = [
     (self: super: {
-      rofi = super.rofi.override { 
-        plugins = [ 
-          pkgs.rofi-emoji 
+      rofi = super.rofi.override {
+        plugins = [
+          pkgs.rofi-emoji
           pkgs.rofi-calc
-        ]; 
+        ];
       };
       neovim = super.neovim.override
-      {
-        configure.plug.plugins = with pkgs.vimPlugins; [
-          vim-nix
-          vim-vinegar
-          ale
-          vim-fugitive
-          vim-airline
-          vim-gitgutter
-          vim-surround
-          fzfWrapper
-          fzf-vim
-          vim-sleuth
-          gruvbox
-          coc-nvim
-          coc-json
-          coc-tsserver
-          vim-markdown
-          vim-javascript
-          typescript-vim
-          vim-jsx-typescript
-        ];
-        viAlias = true;
-        vimAlias = true;
-        configure.customRC = (builtins.readFile /home/kiyengar/.vimrc);
-      };
+        {
+          configure.plug.plugins = with pkgs.vimPlugins; [
+            vim-nix
+            vim-vinegar
+            ale
+            vim-fugitive
+            vim-airline
+            vim-gitgutter
+            vim-surround
+            fzfWrapper
+            fzf-vim
+            vim-sleuth
+            gruvbox
+            coc-nvim
+            coc-json
+            coc-tsserver
+            vim-markdown
+            vim-javascript
+            typescript-vim
+            vim-jsx-typescript
+          ];
+          viAlias = true;
+          vimAlias = true;
+          configure.customRC = (builtins.readFile /home/kiyengar/.vimrc);
+        };
     })
   ];
 
@@ -112,17 +112,17 @@ in
   # $ nix search wget
   # To Package: rumno, unipicker, rofi stuff
   environment.systemPackages = with pkgs;
-  let
-    my-python-packages = python-packages: with python-packages; [
-      dbus-python # used by xmonad-log
-      recoll
-      pulsectl
-      requests
-    ];
+    let
+      my-python-packages = python-packages: with python-packages; [
+        dbus-python # used by xmonad-log
+        recoll
+        pulsectl
+        requests
+      ];
 
-    python-with-my-packages = python3.withPackages my-python-packages;
-  in
-  [
+      python-with-my-packages = python3.withPackages my-python-packages;
+    in
+    [
       # Development 
       unstable.robo3t
       unstable.mongodb-compass
@@ -136,7 +136,7 @@ in
       heroku
       gitAndTools.tig
       git
-      haskellPackages.ghc 
+      haskellPackages.ghc
 
       # Browsers
       google-chrome
@@ -151,7 +151,7 @@ in
       gnome3.gnome-calculator
 
       # Communication
-      tdesktop 
+      tdesktop
       element-desktop
       signal-desktop
       slack
@@ -162,7 +162,7 @@ in
       weechat
 
       # File Managers
-      pcmanfm
+      xfce.thunar
       mate.caja
 
       # Terminal Emulators
@@ -171,7 +171,7 @@ in
       rxvt-unicode
       (st.overrideAttrs (oldAttrs: rec {
         patches = [
-        # Fetch them directly from `st.suckless.org`
+          # Fetch them directly from `st.suckless.org`
           (fetchpatch {
             url = "https://st.suckless.org/patches/scrollback/st-scrollback-20201205-4ef0cbd.diff";
             sha256 = "0p3pdk9sb92kllzpcgzkfghxfvxbrr2d4cd36xz76jibr57a6wr4";
@@ -231,12 +231,13 @@ in
       xidlehook
       xmonad-log
       unstable.unipicker
+      lxappearance
 
       # Editors
       vscode-with-extensions
       gnvim
       texstudio
-      texlive.combined.scheme-full 
+      texlive.combined.scheme-full
       neovim
       vim_configurable
 
@@ -340,7 +341,7 @@ in
   };
 
   programs.light.enable = true;
-  programs.steam.enable = true; 
+  programs.steam.enable = true;
   programs.nm-applet.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -365,6 +366,10 @@ in
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
+
+  # TLP for battery
+  services.tlp.enable = true;
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
   services.printing.drivers = [ pkgs.gutenprint ];
@@ -387,10 +392,11 @@ in
     fadeDelta = 5;
     shadow = true;
     opacityRules = [
+      "100:class_g = 'i3lock'"
       "100:class_g = 'Rofi'"
     ];
     shadowOpacity = 0.75;
-  }; 
+  };
 
   # Enable Scanning
   hardware.sane.enable = true;
@@ -444,8 +450,6 @@ in
         enable = true;
         enableContribAndExtras = true;
         extraPackages = haskellPackages: [
-          haskellPackages.xmonad-contrib
-          haskellPackages.xmonad-extras
           haskellPackages.dbus
           haskellPackages.List
           haskellPackages.monad-logger
@@ -513,15 +517,14 @@ in
     wantedBy = [ "timers.target" ];
   };
 
-
   # Fonts
   fonts.fontconfig = {
-    localConf   = builtins.readFile /home/kiyengar/fontconfig.xml;
+    localConf = builtins.readFile /home/kiyengar/fontconfig.xml;
     defaultFonts = {
-      emoji = ["Noto Color Emoji"];
-      serif = ["Bitstream Vera Serif"];
-      sansSerif = ["Bitstream Vera Sans"];
-      monospace = ["Bitstream Vera Sans Mono"];
+      emoji = [ "Noto Color Emoji" ];
+      serif = [ "Bitstream Vera Serif" ];
+      sansSerif = [ "Bitstream Vera Sans" ];
+      monospace = [ "Bitstream Vera Sans Mono" ];
     };
   };
 
@@ -533,10 +536,10 @@ in
     hasklig
     unifont
     font-awesome_4
-    symbola 
+    symbola
     fira-code
     fira-code-symbols
-    unifont  
+    unifont
   ];
 
 
@@ -555,7 +558,7 @@ in
     };
 
     programs.git = {
-      enable = true; 
+      enable = true;
       userName = "Karthik Iyengar";
       userEmail = "hello@kiyengar.net";
     };
@@ -568,5 +571,4 @@ in
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "20.03"; # Did you read the comment?
-
 }

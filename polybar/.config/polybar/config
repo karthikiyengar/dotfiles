@@ -39,7 +39,7 @@ font-2 = "Noto Color Emoji:pixelsize=16:style=Regular:antialias=true:scale=10;2"
 
 modules-left = xmonad
 ; modules-center =
-modules-right = spotify weather filesystem memory cpu xkeyboard battery date caffeinate protonvpn
+modules-right = spotify weather filesystem memory cpu xkeyboard battery date caffeinate 
 tray-position = right
 tray-pad= 0
 ;tray-background = #0063ff
@@ -92,7 +92,7 @@ label = %percentage_used%%
 [module/protonvpn]
 type = custom/script
 exec = ~/.config/polybar/scripts/vpncheck.sh
-interval = 15
+interval = 5
 
 [module/date]
 type = internal/date

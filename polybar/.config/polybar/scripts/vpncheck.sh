@@ -7,7 +7,7 @@ function is_connected {
 }
 
 
-if [ "$(protonvpn s | grep -i "server" | wc -l)" -gt 0 ]; then
+if [ "$(protonvpn s | grep "Connected" | wc -l)" -gt 0 ]; then
 	echo "%{F#149414}VPN"
 else
 	echo "%{F#f00}VPN"

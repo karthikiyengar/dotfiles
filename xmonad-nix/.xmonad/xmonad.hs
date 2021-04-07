@@ -15,7 +15,6 @@ import           Data.Function                  ( on )
 import           Control.Monad                  ( forM_
                                                 , join
                                                 )
-import           XMonad.Layout.NoBorders        ( smartBorders )
 import           XMonad.Util.Run                ( safeSpawn, hPutStrLn )
 import           XMonad.Util.NamedWindows       ( getName )
 import           XMonad.Hooks.DynamicLog
@@ -45,8 +44,7 @@ myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 
 searchEngineMap method =
-  M.fromList
-    $ [ ((0, xK_a), method S.alpha)
+  M.fromList [ ((0, xK_a), method S.alpha)
       , ((0, xK_d), method S.duckduckgo)
       , ((0, xK_i), method S.imdb)
       , ((0, xK_y), method S.youtube)
@@ -65,7 +63,7 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
 
     ++ [ ( (modm, xK_p)
          , spawn
-           "rofi -combi-modi window,drun,calc,run -theme gruvbox-dark-soft -show combi -modi combi,calc,run -terse -no-show-match -no-sort -location 1 -width 100 -show-icons -font 'Hasklig Regular 12'"
+           "rofi -combi-modi window,drun,run,calc -theme gruvbox-dark-soft -show combi -modi combi,calc,run -terse -no-show-match -no-sort -location 1 -width 100 -show-icons -font 'Hasklig Regular 12'  -calc-command \"echo '{result}' | xsel -b\""
          )
        , ((modm, xK_v), spawn "pavucontrol -t 3")
        , ((modm, xK_c), spawn "blueman-manager")
@@ -104,7 +102,8 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
          , spawn "~/.wm-scripts/media.sh brightness-dec"
          )
        , ((0, xK_Print), spawn "flameshot gui")
-       , ((modm, xK_f), spawn "caja")
+
+       , ((modm, xK_f), spawn "nix-shell /home/kiyengar/development/zzzfoo/shell.nix --run \"/home/kiyengar/development/zzzfoo/zzzfoo -n 0 -o xdg-open -r '-theme gruvbox-dark-soft -location 1 -width 100 -height 50'\"")
        , ( (modm .|. shiftMask, xK_h)
          , spawn
            "rofi -modi 'clipboard:greenclip print' -theme solarized -show clipboard -terse -no-show-match -no-sort -location 1 -width 100 -run-command '{cmd}'"
@@ -113,11 +112,11 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
          , sequence_ $ [ windows $ copy i | i <- XMonad.workspaces conf ]
          )    -- Pin to all workspaces
        , ( (modm .|. shiftMask, xK_a)
-         , windows $ kill8
+         , windows kill8
          )    -- remove from all but current
        , ((modm, xK_s), SM.submap $ searchEngineMap $ S.promptSearch P.def)
        , ( (modm .|. shiftMask, xK_s)
-         , SM.submap $ searchEngineMap $ S.selectSearch
+         , SM.submap $ searchEngineMap S.selectSearch
          )
        , ((modm, xK_b), spawn "polybar-msg cmd toggle &" >> sendMessage ToggleStruts)
        ]
@@ -140,8 +139,7 @@ myLayoutHook =
     avoidStruts
     -- $ lessBorders AllFloats -- To remove borders for floating windows
     $ smartBorders
-    $ dwmStyle shrinkText def
-    $ (   (Tall 1 (3 / 100) (1 / 2))
+    $ dwmStyle shrinkText def (   (Tall 1 (3 / 100) (1 / 2))
       ||| Grid
       ||| ThreeCol 1 (3 / 100) (1 / 3)
       ||| Full
@@ -152,10 +150,10 @@ myLayoutHook =
 myManageHook = composeAll
   [ title =? "Emulator" --> doFloat
   , title =? "Android Emulator - pixel:5554" --> doFloat
-  , className =? "Code" --> (doShift "2")
-  , className =? "Firefox" --> (doShift "1")
-  , className =? "Spotify" --> (doShift "8")
-  , className =? "Chromium-browser" --> (doShift "4")
+  , className =? "Code" --> doShift "2"
+  , className =? "Firefox" --> doShift "1"
+  , className =? "Spotify" --> doShift "8"
+  , className =? "Chromium-browser" --> doShift "4"
   ]
 
 myStartupHook = do
@@ -168,7 +166,7 @@ myStartupHook = do
   setWMName "LG3D"
 
 
-kill8 ss | Just w <- W.peek ss = (W.insertUp w) $ W.delete w ss
+kill8 ss | Just w <- W.peek ss = W.insertUp w $ W.delete w ss
          | otherwise           = ss
 
 myLogHook = fadeInactiveLogHook 0.9
