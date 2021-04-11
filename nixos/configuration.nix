@@ -116,11 +116,12 @@ in
       my-python-packages = python-packages: with python-packages; [
         dbus-python # used by xmonad-log
         recoll
-        pulsectl
+        pulsectl # used by xob script
+        watchdog # used by xob script 
         requests
       ];
 
-      python-with-my-packages = python3.withPackages my-python-packages;
+      python-with-my-packages = unstable.python3.withPackages my-python-packages;
     in
     [
       # Development 
@@ -206,6 +207,8 @@ in
       stow
       xsel
       file
+      atop 
+      htop
       shfmt
       xclip
       ncdu
@@ -225,6 +228,7 @@ in
       xmobar
       arandr
       dunst
+      xob
       pavucontrol
       i3lock
       haskellPackages.greenclip
@@ -244,6 +248,11 @@ in
       # Multimedia
       audacity
       gthumb
+      obs-studio
+      kdenlive
+      ffmpeg-full
+      frei0r # needed by kdenlive
+      gnome3.cheese
       imagemagick
       simplescreenrecorder
       vlc

@@ -103,7 +103,7 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
          )
        , ((0, xK_Print), spawn "flameshot gui")
 
-       , ((modm, xK_f), spawn "nix-shell /home/kiyengar/development/zzzfoo/shell.nix --run \"/home/kiyengar/development/zzzfoo/zzzfoo -n 0 -o xdg-open -r '-theme gruvbox-dark-soft -location 1 -width 100 -height 50'\"")
+       , ((modm, xK_f), spawn "~/.wm-scripts/zzzfoo -n 0 -o xdg-open -r '-theme gruvbox-dark-soft -location 1 -width 100 -height 50'")
        , ( (modm .|. shiftMask, xK_h)
          , spawn
            "rofi -modi 'clipboard:greenclip print' -theme solarized -show clipboard -terse -no-show-match -no-sort -location 1 -width 100 -run-command '{cmd}'"

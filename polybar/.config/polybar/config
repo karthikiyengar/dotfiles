@@ -9,7 +9,7 @@ success = #66b266
 alert = #bd2c40
 
 [bar/xmother]
-monitor = ${env:MONITOR:}
+monitor = HDMI-2
 monitor-fallback = eDP-1
 width = 100%
 height = 23
