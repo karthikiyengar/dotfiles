@@ -12,6 +12,7 @@ in
       <home-manager/nixos>
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./multimedia.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -33,7 +34,7 @@ in
   # For xbox controller
   hardware.xpadneo.enable = true;
   boot.extraModprobeConfig = ''options bluetooth disable_ertm=1'';
-  hardware.bluetooth.config = {
+  hardware.bluetooth.settings = {
     General = {
       Privacy = "device";
     };
@@ -147,6 +148,8 @@ in
       # Utilities
       xsane
       flameshot
+      authy
+      bitwarden
       gimp
       veracrypt
       gnome3.gnome-calculator
@@ -223,9 +226,9 @@ in
       # DE/WM
       rofi
       feh
+      ant-theme
+      arc-theme
       polybar
-      stalonetray
-      xmobar
       arandr
       dunst
       xob
@@ -244,19 +247,6 @@ in
       texlive.combined.scheme-full
       neovim
       vim_configurable
-
-      # Multimedia
-      audacity
-      gthumb
-      obs-studio
-      kdenlive
-      ffmpeg-full
-      frei0r # needed by kdenlive
-      gnome3.cheese
-      imagemagick
-      simplescreenrecorder
-      vlc
-      spotify
 
       # Unclassified
       ibus-engines.typing-booster
@@ -295,9 +285,8 @@ in
       mkpasswd
       nextcloud-client
       lxqt.lxqt-policykit
-      kdeApplications.ark
-      kdeApplications.kfind
-      kdeApplications.okular
+      stable.kdeApplications.ark
+      stable.kdeApplications.okular
     ];
 
 
@@ -349,6 +338,7 @@ in
     ];
   };
 
+  # Some other applications
   programs.light.enable = true;
   programs.steam.enable = true;
   programs.nm-applet.enable = true;
@@ -365,6 +355,8 @@ in
   programs.adb.enable = true;
 
   # List services that you want to enable:
+  services.fprintd.enable = true;
+  services.fwupd.enable = true;
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
@@ -410,11 +402,6 @@ in
   # Enable Scanning
   hardware.sane.enable = true;
   hardware.sane.extraBackends = [ pkgs.sane-airscan ];
-
-  # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
-  hardware.pulseaudio.package = pkgs.pulseaudioFull;
 
   # Enable bluetooth
   services.blueman.enable = true;
@@ -492,8 +479,10 @@ in
   # Touchpad
   services.xserver.libinput = {
     enable = true;
-    naturalScrolling = true;
-    additionalOptions = ''MatchIsTouchpad "on"'';
+    touchpad = {
+      naturalScrolling = true;
+      additionalOptions = ''MatchIsTouchpad "on"'';
+    };
   };
 
   # nixpkgs
@@ -501,6 +490,9 @@ in
     allowUnfree = true;
     packageOverrides = pkgs: {
       unstable = import <nixpkgs-unstable> {
+        config = config.nixpkgs.config;
+      };
+      stable = import <nixos-stable> {
         config = config.nixpkgs.config;
       };
     };
