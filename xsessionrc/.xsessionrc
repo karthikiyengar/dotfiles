@@ -1,11 +1,7 @@
-#!bin/bash
+#!/usr/bin/env bash
 if [[ "$DESKTOP_SESSION" == *"xmonad"* ]] 
 then
-  source ~/.profile
-  # enable compositing
-  # compton --backend glx --xrender-sync --xrender-sync-fence -fCz --fade-delta 4 &!
-  compton --fade-delta 3 -CfGb
-  
+
   lxqt-policykit-agent &!
   gnome-keyring-daemon &!
   # Applets
@@ -13,7 +9,6 @@ then
   pasystray &!
   blueman-applet &!
   greenclip daemon &!
-  rumno-background &!
   flameshot &!
   redshift-gtk &!
   protonvpn-tray &!
@@ -36,7 +31,6 @@ then
   autorandr -c
 
   # Enable keyboard layouts
-  setxkbmap -layout us,de -option 'grp:alt_shift_space_toggle'
   recollindex -w 60 -m &!
 
 

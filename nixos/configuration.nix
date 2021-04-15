@@ -233,12 +233,12 @@ in
       dunst
       xob
       pavucontrol
-      i3lock
       haskellPackages.greenclip
       xidlehook
       xmonad-log
       unstable.unipicker
       lxappearance
+      redshift
 
       # Editors
       vscode-with-extensions
@@ -342,6 +342,8 @@ in
   programs.light.enable = true;
   programs.steam.enable = true;
   programs.nm-applet.enable = true;
+  programs.slock.enable = true; 
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -393,7 +395,7 @@ in
     fadeDelta = 5;
     shadow = true;
     opacityRules = [
-      "100:class_g = 'i3lock'"
+      "100:class_g = 'Slock'"
       "100:class_g = 'Rofi'"
     ];
     shadowOpacity = 0.75;
@@ -543,6 +545,8 @@ in
     unifont
   ];
 
+  # Set location provider to geoclue for redshift, maps etc
+  location.provider = "geoclue2";
 
   # Home Manager 
   home-manager.useGlobalPkgs = true;

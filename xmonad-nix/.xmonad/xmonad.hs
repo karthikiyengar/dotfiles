@@ -158,6 +158,7 @@ myManageHook = composeAll
 
 myStartupHook = do
   spawn "killall polybar; polybar xmother &!"
+  spawnOnce "~/.xautostart" -- temporary fix for the double xprofile exec issue 
   spawnOnOnce "8" "spotify"
   spawnOnOnce "2" "code"
   spawnOnOnce "1" "firefox"
