@@ -21,5 +21,12 @@
       gitAndTools.tig
       git
       haskellPackages.ghc
+
+      # Editors
+      unstable.vscode-with-extensions
+      gnvim
+      texstudio
+      texlive.combined.scheme-full
+      neovim
     ];
 }

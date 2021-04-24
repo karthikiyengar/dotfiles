@@ -200,13 +200,6 @@ in
       redshift
       gnomeExtensions.appindicator
 
-      # Editors
-      vscode-with-extensions
-      gnvim
-      texstudio
-      texlive.combined.scheme-full
-      neovim
-
       # Unclassified
       ibus-engines.typing-booster
       sysfsutils
