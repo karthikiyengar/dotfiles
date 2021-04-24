@@ -1,3 +1,6 @@
+[options]
+scrollback_lines = -1
+
 [colors]
 # Base16 Gruvbox dark, hard
 # Author: Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)

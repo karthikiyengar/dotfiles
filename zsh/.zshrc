@@ -38,16 +38,18 @@ alias r="sudo nixos-rebuild switch"
 alias nclean="find . -name "node_modules" -exec rm -rf '{}' +"
 alias adfs="sh ~/adfs.sh"
 alias nixgc="sudo nix-collect-garbage -d; nix-collect-garbage -d; sudo nix-store --optimize"
-alias u="sudo nix-channel --update; r"
+alias u="sudo nix-rebuild switch --upgrade"
 alias crocks="cd ~/development/crocks"
 alias mapi="cd ~/development/lyra-api"
 alias wp="~/.wm-scripts/change-wallpaper.sh"
 alias grm="git fetch --all; git rebase origin/master"
 alias gd="git diff --staged"
 alias vpn="sudo protonvpn c -f"
-alias vpnin="sudo protonvpn c --CC IN"
-alias vpnde="sudo protonvpn c --CC DE"
+alias vpnin="sudo protonvpn c --cc IN"
+alias vpnde="sudo protonvpn c --cc DE"
 alias vpnd="sudo protonvpn d"
+alias vpns="sudo protonvpn s"
+alias dotf="code ~/dotfiles"
 alias vx="code ~/.xmonad/"
 
 bindkey -v
@@ -60,13 +62,14 @@ fi
 eval $(thefuck --alias f)
 
 # Enable direnv
-eval "$(direnv hook $SHELL)"
+eval "$(direnv hook zsh)"
 if [ -e /home/kiyengar/.nix-profile/etc/profile.d/nix.sh ]; then . /home/kiyengar/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 export LOCALE_ARCHIVE_2_11="$(nix-build --no-out-link "<nixpkgs>" -A glibcLocales)/lib/locale/locale-archive"
 export LOCALE_ARCHIVE_2_27="$(nix-build --no-out-link "<nixpkgs>" -A glibcLocales)/lib/locale/locale-archive"
 export LOCALE_ARCHIVE="/usr/bin/locale"
 
+export PATH="$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH:$HOME/.cargo/bin"
 
 # Some git goodness
 func glog() {

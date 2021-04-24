@@ -3,21 +3,22 @@
 {
   sound.enable = true;
   security.rtkit.enable = true;
+  hardware.pulseaudio.enable = true;
 
   services = {
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      pulse.enable = true;
-      jack.enable = true;
-
-      media-session.config.bluez-monitor = {
-        bluez5.msbc-support = true;
-        properties = {
-          bluez5.codecs = ["ldac" "aptx_hd"];
-        };
-      };
-    };
+    # 21.05
+    # pipewire = {
+    #   enable = true;
+    #   alsa.enable = true;
+    #   pulse.enable = true;
+    #   jack.enable = true;
+    #   media-session.config.bluez-monitor = {
+    #     bluez5.msbc-support = true;
+    #     properties = {
+    #       bluez5.codecs = ["ldac" "aptx_hd"];
+    #     };
+    #   };
+    # };
   };
 
   environment.systemPackages = with pkgs; [

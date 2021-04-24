@@ -1,4 +1,4 @@
-# Edit this configuration file to efine what should be installed on
+# Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
@@ -8,11 +8,12 @@ in
 {
   imports =
     [
-
       <home-manager/nixos>
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./multimedia.nix
+      ./xorg.nix
+      ./dev.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -30,15 +31,6 @@ in
 
   # Use sandboxing
   nix.useSandbox = true;
-
-  # For xbox controller
-  hardware.xpadneo.enable = true;
-  boot.extraModprobeConfig = ''options bluetooth disable_ertm=1'';
-  hardware.bluetooth.settings = {
-    General = {
-      Privacy = "device";
-    };
-  };
 
   # grub
   boot.loader.grub = {
@@ -101,9 +93,6 @@ in
   ];
 
 
-
-  virtualisation.docker.enable = true;
-
   # This takes too long, complies vbox from source
   # virtualisation.virtualbox.host.enable = true;
   # virtualisation.virtualbox.host.enableExtensionPack = true;
@@ -125,30 +114,16 @@ in
       python-with-my-packages = unstable.python3.withPackages my-python-packages;
     in
     [
-      # Development 
-      unstable.robo3t
-      unstable.mongodb-compass
-      jetbrains.idea-community
-      docker
-      docker-compose
-      nodejs
-      stack
-      cargo
-      openjdk11
-      heroku
-      gitAndTools.tig
-      git
-      haskellPackages.ghc
-
       # Browsers
       google-chrome
       chromium
       firefox
+      torrential
 
       # Utilities
       xsane
       flameshot
-      authy
+      unstable.authy
       bitwarden
       gimp
       veracrypt
@@ -173,23 +148,6 @@ in
       termite
       haskellPackages.termonad
       rxvt-unicode
-      (st.overrideAttrs (oldAttrs: rec {
-        patches = [
-          # Fetch them directly from `st.suckless.org`
-          (fetchpatch {
-            url = "https://st.suckless.org/patches/scrollback/st-scrollback-20201205-4ef0cbd.diff";
-            sha256 = "0p3pdk9sb92kllzpcgzkfghxfvxbrr2d4cd36xz76jibr57a6wr4";
-          })
-          (fetchpatch {
-            url = "https://st.suckless.org/patches/scrollback/st-scrollback-mouse-20191024-a2c479c.diff";
-            sha256 = "0qg20sv64im5lcnfnphnbbiyizwywrg1g6zhxyxqqyf8g33lpbb7";
-          })
-          (fetchpatch {
-            url = "https://st.suckless.org/patches/gruvbox/st-gruvbox-dark-0.8.2.diff";
-            sha256 = "14ajygrlz4z3p0w90cbdc7xk2wikhys4m761ci3ln7p16n48qxdz";
-          })
-        ];
-      }))
       tmux
       alacritty
       ranger
@@ -210,7 +168,7 @@ in
       stow
       xsel
       file
-      atop 
+      atop
       htop
       shfmt
       xclip
@@ -230,6 +188,7 @@ in
       arc-theme
       polybar
       arandr
+      i3lock
       dunst
       xob
       pavucontrol
@@ -239,6 +198,7 @@ in
       unstable.unipicker
       lxappearance
       redshift
+      gnomeExtensions.appindicator
 
       # Editors
       vscode-with-extensions
@@ -246,7 +206,6 @@ in
       texstudio
       texlive.combined.scheme-full
       neovim
-      vim_configurable
 
       # Unclassified
       ibus-engines.typing-booster
@@ -285,30 +244,14 @@ in
       mkpasswd
       nextcloud-client
       lxqt.lxqt-policykit
-      stable.kdeApplications.ark
-      stable.kdeApplications.okular
     ];
 
 
-  # networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "kiyengar-nixos";
   networking.networkmanager.enable = true;
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  # networking.useDHCP = false;
-  # networking.interfaces.enp59s0f1.useDHCP = true;
-  # networking.interfaces.wlp64s0.useDHCP = true;
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
+  i18n.defaultLocale = "en_US.UTF-8";
 
   # Activate typing-booster (for emoji picker)
   i18n.inputMethod = {
@@ -324,25 +267,10 @@ in
   # Set your time zone.
   time.timeZone = "Asia/Kolkata";
 
-  # Sway!
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true; # so that gtk works properly
-    extraPackages = with pkgs; [
-      swaylock
-      swayidle
-      wl-clipboard
-      mako # notification daemon
-      alacritty # Alacritty is the default terminal in the config
-      dmenu # Dmenu is the default in the config but i recommend wofi since its wayland native
-    ];
-  };
-
   # Some other applications
   programs.light.enable = true;
   programs.steam.enable = true;
   programs.nm-applet.enable = true;
-  programs.slock.enable = true; 
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -356,19 +284,15 @@ in
   # Android
   programs.adb.enable = true;
 
+  # Gnome
+  services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
+
   # List services that you want to enable:
   services.fprintd.enable = true;
   services.fwupd.enable = true;
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
 
   # TLP for battery
   services.tlp.enable = true;
@@ -385,22 +309,6 @@ in
   services.flatpak.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
-  # Compositing
-  services.picom = {
-    enable = true;
-    activeOpacity = 1.0;
-    inactiveOpacity = 0.8;
-    backend = "glx";
-    fade = true;
-    fadeDelta = 5;
-    shadow = true;
-    opacityRules = [
-      "100:class_g = 'Slock'"
-      "100:class_g = 'Rofi'"
-    ];
-    shadowOpacity = 0.75;
-  };
-
   # Enable Scanning
   hardware.sane.enable = true;
   hardware.sane.extraBackends = [ pkgs.sane-airscan ];
@@ -415,48 +323,6 @@ in
   # Tuxedo
   hardware.tuxedo-keyboard.enable = true;
 
-  # Enable the X11 windowing system.
-  services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e";
-
-  # Enable XMonad Desktop Environment.
-  services.autorandr.enable = true;
-  environment.extraInit = ''
-    xset s off -dpms
-  '';
-  services.xserver = {
-    enable = true;
-    xkbOptions = "terminate:ctrl_alt_bksp";
-    desktopManager = {
-      plasma5 = {
-        enable = true;
-      };
-    };
-
-    displayManager = {
-      defaultSession = "none+xmonad";
-      sddm = {
-        enable = true;
-      };
-      autoLogin = {
-        enable = true;
-        user = "kiyengar";
-      };
-    };
-    windowManager = {
-      xmonad = {
-        enable = true;
-        enableContribAndExtras = true;
-        extraPackages = haskellPackages: [
-          haskellPackages.dbus
-          haskellPackages.List
-          haskellPackages.monad-logger
-          haskellPackages.xmonad
-        ];
-      };
-    };
-  };
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.mutableUsers = false;
   users.users.kiyengar = {
@@ -465,7 +331,7 @@ in
     home = "/home/kiyengar";
     description = "Karthik Iyengar";
     isNormalUser = true;
-    extraGroups = [ "adbusers" "wheel" "scanner" "lp" "docker" "video" "networkmanager" "audio" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "adbusers" "wheel" "scanner" "lp" "video" "networkmanager" "audio" ]; # Enable ‘sudo’ for the user.
     hashedPassword = "***REMOVED***";
   };
 
@@ -481,10 +347,14 @@ in
   # Touchpad
   services.xserver.libinput = {
     enable = true;
-    touchpad = {
-      naturalScrolling = true;
-      additionalOptions = ''MatchIsTouchpad "on"'';
-    };
+
+    naturalScrolling = true;
+    additionalOptions = ''MatchIsTouchpad "on"'';
+    # 21.05
+    # touchpad = {
+    #   naturalScrolling = true;
+    #   additionalOptions = ''MatchIsTouchpad "on"'';
+    # };
   };
 
   # nixpkgs
@@ -492,9 +362,6 @@ in
     allowUnfree = true;
     packageOverrides = pkgs: {
       unstable = import <nixpkgs-unstable> {
-        config = config.nixpkgs.config;
-      };
-      stable = import <nixos-stable> {
         config = config.nixpkgs.config;
       };
     };
@@ -522,7 +389,7 @@ in
 
   # Fonts
   fonts.fontconfig = {
-    localConf = builtins.readFile /home/kiyengar/fontconfig.xml;
+    # localConf = builtins.readFile /home/kiyengar/fontconfig.xml;
     defaultFonts = {
       emoji = [ "Noto Color Emoji" ];
       serif = [ "Bitstream Vera Serif" ];
@@ -567,6 +434,7 @@ in
       userName = "Karthik Iyengar";
       userEmail = "hello@kiyengar.net";
     };
+
   };
 
   # This value determines the NixOS release from which the default
