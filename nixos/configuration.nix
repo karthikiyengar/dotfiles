@@ -117,7 +117,7 @@ in
       # Browsers
       google-chrome
       chromium
-      firefox
+      unstable.firefox
       torrential
 
       # Utilities
@@ -179,6 +179,7 @@ in
       # Productivity
       todoist-electron
       freemind
+      unstable.joplin
       unstable.joplin-desktop
 
       # DE/WM
@@ -224,6 +225,7 @@ in
       wget
       psmisc
       networkmanagerapplet
+      evince
       yarn
       libnotify
       openvpn

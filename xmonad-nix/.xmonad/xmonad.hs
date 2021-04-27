@@ -206,7 +206,7 @@ polybarHook dbus =
           , ppHidden          = wrapper gray
           , ppLayout          = unpack . replace "DwmStyle" "" . pack
           , ppHiddenNoWindows = mempty
-          , ppTitle           = shorten 80 . wrapper "#fb9224"
+          , ppTitle           = shorten 50 . wrapper "#fb9224"
           }
 
 myPolybarLogHook dbus = myLogHook <+> dynamicLogWithPP (polybarHook dbus)

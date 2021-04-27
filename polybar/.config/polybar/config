@@ -39,7 +39,7 @@ font-2 = "Noto Color Emoji:pixelsize=16:style=Regular:antialias=true:scale=10;2"
 
 modules-left = xmonad
 ; modules-center =
-modules-right = spotify weather filesystem memory cpu xkeyboard battery date caffeinate 
+modules-right = spotify weather filesystem memory cpu battery dnd caffeinate date
 tray-position = right
 tray-pad= 0
 ;tray-background = #0063ff
@@ -159,6 +159,17 @@ exec =  [ "$(pgrep -x xidlehook)" ] && echo "%{F#66b266}N%{F- }" || echo "%{F#ff
 format-prefix = "Caf: "
 format-prefix-foreground = ${colors.foreground-alt}
 click-left = ~/.config/polybar/scripts/caffeinate-toggle.sh
+
+
+; TODO: color as env variable
+[module/dnd]
+type = custom/script
+interval = 1
+format = <label>
+exec =  [ "$(pgrep -xf /run/current-system/sw/bin/dunst)" ] && echo "%{F#66b266}N%{F- }" || echo "%{F#ffb52a}Y%{F- }"
+format-prefix = "DND: "
+format-prefix-foreground = ${colors.foreground-alt}
+click-left = ~/.config/polybar/scripts/dunst-toggle.sh
 
 [module/spotify]
 type = custom/script
