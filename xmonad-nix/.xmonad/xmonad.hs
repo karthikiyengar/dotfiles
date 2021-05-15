@@ -37,7 +37,7 @@ import qualified Codec.Binary.UTF8.String as UTF8
 
 
 
-myTerminal = "termite"
+myTerminal = "alacritty"
 myMod = mod4Mask -- Super Key
 altMask = mod1Mask -- Alt Key
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]

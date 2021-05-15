@@ -14,6 +14,7 @@ in
       ./multimedia.nix
       ./xorg.nix
       ./dev.nix
+      ./tuxedo.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -126,6 +127,7 @@ in
       unstable.authy
       bitwarden
       gimp
+
       veracrypt
       gnome3.gnome-calculator
 
@@ -177,7 +179,8 @@ in
       direnv
 
       # Productivity
-      todoist-electron
+      # todoist-electron
+      todoist
       freemind
       unstable.joplin
       unstable.joplin-desktop
@@ -191,6 +194,7 @@ in
       arandr
       i3lock
       dunst
+      slock
       xob
       pavucontrol
       haskellPackages.greenclip
@@ -225,7 +229,7 @@ in
       wget
       psmisc
       networkmanagerapplet
-      evince
+      unstable.foliate
       yarn
       libnotify
       openvpn
@@ -260,12 +264,13 @@ in
 
 
   # Set your time zone.
-  time.timeZone = "Asia/Kolkata";
+  time.timeZone = "Europe/Berlin";
 
   # Some other applications
   programs.light.enable = true;
   programs.steam.enable = true;
   programs.nm-applet.enable = true;
+  programs.slock.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

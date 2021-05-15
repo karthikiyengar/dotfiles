@@ -28,5 +28,6 @@
       texstudio
       texlive.combined.scheme-full
       neovim
+      glade
     ];
 }
