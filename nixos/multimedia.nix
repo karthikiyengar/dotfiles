@@ -36,5 +36,6 @@
     simplescreenrecorder
     vlc
     spotify
+    unstable.spotifyd
   ];
 }

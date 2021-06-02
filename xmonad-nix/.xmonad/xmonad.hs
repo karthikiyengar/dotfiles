@@ -58,7 +58,7 @@ searchEngineMap method =
 -- xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'
 myKeys x = M.union (M.fromList (newKeys x)) (keys def x)
 newKeys conf@XConfig { XMonad.modMask = modm } =
-  [ ((modm .|. altMask, xK_l), spawn "i3lock -c 444444")
+  [ ((modm .|. altMask, xK_l), spawn "slock")
     ]
 
     ++ [ ( (modm, xK_p)

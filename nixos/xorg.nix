@@ -18,10 +18,6 @@
       gdm = {
         enable = true;
       };
-      autoLogin = {
-        enable = true;
-        user = "kiyengar";
-      };
     };
     windowManager = {
       xmonad = {
@@ -39,20 +35,8 @@
 
   # Compositing
   services.picom = {
-    enable = true;
-    activeOpacity = 1.0;
-    inactiveOpacity = 0.8;
-    shadow = false;
+    enable = false;
     backend = "glx";
-    fade = true;
-    fadeDelta = 5;
-    menuOpacity = 1.0;
-    opacityRules = [
-      "100:class_g = 'i3lock'"
-      "100:class_g = 'Rofi'"
-      "100:class_g = 'Firefox'"
-    ];
-    shadowOpacity = 0.75;
   };
 
   services.autorandr.enable = true;

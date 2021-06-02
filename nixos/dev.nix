@@ -30,4 +30,12 @@
       neovim
       glade
     ];
+
+    home-manager.users.kiyengar = { pkgs, ... }: {
+      programs.git = {
+        enable = true;
+        userName = "Karthik Iyengar";
+        userEmail = "hello@kiyengar.net";
+      };
+    };
 }

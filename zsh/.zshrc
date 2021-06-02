@@ -1,20 +1,14 @@
 # Use Antigen to manage packages
 source ~/.antigen.zsh
 
-export NVM_AUTO_USE=true
 export TERM=xterm;
 
-antigen use oh-my-zsh
 antigen bundle agkozak/zsh-z
 antigen bundle Aloxaf/fzf-tab
 antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle git-auto-fetch
 antigen bundle git
 antigen bundle hoffi/zsh-theme-lambda
-antigen bundle vi-mode
 antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle akoenig/npm-run.plugin.ZSH
-antigen bundle lukechilds/zsh-nvm
 antigen apply
 
 export EDITOR='nvim'
@@ -22,9 +16,6 @@ export EDITOR='nvim'
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 
 HISTSIZE=999999999
-
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 alias vim="nvim"
 alias ls="ls -lah --color"
@@ -70,18 +61,6 @@ export LOCALE_ARCHIVE_2_27="$(nix-build --no-out-link "<nixpkgs>" -A glibcLocale
 export LOCALE_ARCHIVE="/usr/bin/locale"
 
 export PATH="$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$PATH:$HOME/.cargo/bin"
-
-# Some git goodness
-func glog() {
-  git log --graph --color=always \
-      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
-  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
-      --bind "ctrl-m:execute:
-                (grep -o '[a-f0-9]\{7\}' | head -1 |
-                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
-                {}
-FZF-EOF"
-}
 
 enable-fzf-tab;
 

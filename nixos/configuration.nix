@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 let
 in
 {
@@ -10,20 +10,17 @@ in
     [
       <home-manager/nixos>
       # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      /etc/nixos/hardware-configuration.nix
       ./multimedia.nix
       ./xorg.nix
       ./dev.nix
-      ./tuxedo.nix
+      ./hosts/macbook/config.nix
     ];
-
+ 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  # Kernel
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
+  boot.loader.grub.useOSProber = true;
 
   # NixOS GC and optimization
   nix.gc.automatic = true;
@@ -33,26 +30,8 @@ in
   # Use sandboxing
   nix.useSandbox = true;
 
-  # grub
-  boot.loader.grub = {
-    enable = true;
-    version = 2;
-    efiSupport = true;
-    useOSProber = true;
-    enableCryptodisk = true;
-    device = "nodev";
-  };
-
   # enable ntfs
   boot.supportedFilesystems = [ "ntfs" ];
-
-  # luks
-  boot.initrd.luks.devices = {
-    crypted = {
-      device = "/dev/disk/by-uuid/d76a7ade-a702-455e-9e21-b5edb5533079";
-      preLVM = true;
-    };
-  };
 
   # Set neovim as default editor
   environment.variables.EDITOR = "nvim";
@@ -101,7 +80,6 @@ in
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  # To Package: rumno, unipicker, rofi stuff
   environment.systemPackages = with pkgs;
     let
       my-python-packages = python-packages: with python-packages; [
@@ -127,7 +105,6 @@ in
       unstable.authy
       bitwarden
       gimp
-
       veracrypt
       gnome3.gnome-calculator
 
@@ -205,6 +182,10 @@ in
       redshift
       gnomeExtensions.appindicator
 
+      # Hardware
+      lshw
+      usbutils
+
       # Unclassified
       ibus-engines.typing-booster
       sysfsutils
@@ -245,8 +226,6 @@ in
       lxqt.lxqt-policykit
     ];
 
-
-  networking.hostName = "kiyengar-nixos";
   networking.networkmanager.enable = true;
 
   # Select internationalisation properties.
@@ -294,9 +273,7 @@ in
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
-  # TLP for battery
-  services.tlp.enable = true;
-
+  
   # Enable CUPS to print documents.
   services.printing.enable = true;
   services.printing.drivers = [ pkgs.gutenprint ];
@@ -319,9 +296,6 @@ in
 
   # USB Automount
   services.gvfs.enable = true;
-
-  # Tuxedo
-  hardware.tuxedo-keyboard.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.mutableUsers = false;
@@ -379,7 +353,6 @@ in
   };
 
   systemd.user.timers.battery-monitor = {
-    enable = true;
     timerConfig = {
       OnUnitInactiveSec = "2s";
       AccuracySec = "1s";
@@ -389,7 +362,6 @@ in
 
   # Fonts
   fonts.fontconfig = {
-    # localConf = builtins.readFile /home/kiyengar/fontconfig.xml;
     defaultFonts = {
       emoji = [ "Noto Color Emoji" ];
       serif = [ "Bitstream Vera Serif" ];
@@ -443,5 +415,5 @@ in
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "20.03"; # Did you read the comment?
+  system.stateVersion = "20.09"; # Did you read the comment?
 }
