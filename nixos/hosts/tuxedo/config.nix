@@ -14,9 +14,8 @@
   hardware.tuxedo-keyboard.enable = true;
 
   # To Do: Figure out if this will solve the suspend/wake problem: https://askubuntu.com/questions/916465/ubuntu-17-04-keyboard-not-responding-after-suspend
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.enable = "kiyengar";
+  # services.xserver.displayManager.autoLogin.enable = true;
+  # services.xserver.displayManager.autoLogin.user = "kiyengar";
 
-  systemd.user.timers.battery-monitor.enable = true; 
-  services.tlp.enable = true;
+  systemd.user.timers.battery-monitor.enable = true;
 }

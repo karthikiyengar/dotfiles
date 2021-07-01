@@ -1,15 +1,13 @@
 # Use Antigen to manage packages
-source ~/.antigen.zsh
+# source ~/.antigen.zsh
 
 export TERM=xterm;
 
-antigen bundle agkozak/zsh-z
-antigen bundle Aloxaf/fzf-tab
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle git
-antigen bundle hoffi/zsh-theme-lambda
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen apply
+# antigen bundle agkozak/zsh-z
+# antigen bundle Aloxaf/fzf-tab
+# antigen bundle zsh-users/zsh-autosuggestions
+# antigen bundle hoffi/zsh-theme-lambda
+# antigen apply
 
 export EDITOR='nvim'
 

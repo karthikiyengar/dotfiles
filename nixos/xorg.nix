@@ -8,14 +8,14 @@
     enable = true;
     xkbOptions = "terminate:ctrl_alt_bksp";
     desktopManager = {
-      gnome3 = {
+      plasma5 = {
         enable = true;
       };
     };
 
     displayManager = {
       defaultSession = "none+xmonad";
-      gdm = {
+      sddm = {
         enable = true;
       };
     };

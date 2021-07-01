@@ -10,4 +10,3 @@
 
   powerManagement.cpuFreqGovernor = lib.mkForce "performance";
 }
-

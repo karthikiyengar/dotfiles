@@ -14,13 +14,23 @@ in
       ./multimedia.nix
       ./xorg.nix
       ./dev.nix
-      ./hosts/macbook/config.nix
+      ./fonts.nix
+      ./hosts/tuxedo/config.nix
     ];
- 
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.grub.useOSProber = true;
+
+  # grub
+  boot.loader.grub = {
+    enable = true;
+    version = 2;
+    efiSupport = true;
+    useOSProber = true;
+    enableCryptodisk = true;
+    device = "nodev";
+  };
 
   # NixOS GC and optimization
   nix.gc.automatic = true;
@@ -112,16 +122,21 @@ in
       tdesktop
       element-desktop
       signal-desktop
+      neochat
       slack
+      kmail
+      kontact
+      korganizer
       thunderbird
       unstable.zoom-us
       discord
       hexchat
       weechat
 
-      # File Managers
+      # File
       xfce.thunar
       mate.caja
+      gnome.file-roller
 
       # Terminal Emulators
       termite
@@ -134,9 +149,7 @@ in
       # Terminal Apps
       ripgrep
       fzf
-      fzf-zsh
       antigen
-      oh-my-zsh
       ag
       gitAndTools.gh
       lsof
@@ -156,20 +169,22 @@ in
       direnv
 
       # Productivity
-      # todoist-electron
-      todoist
+      todoist-electron
       freemind
       unstable.joplin
       unstable.joplin-desktop
+      zettlr
+      obsidian
 
       # DE/WM
       rofi
       feh
       ant-theme
       arc-theme
+      tela-icon-theme
+      moka-icon-theme
       polybar
       arandr
-      i3lock
       dunst
       slock
       xob
@@ -179,8 +194,6 @@ in
       xmonad-log
       unstable.unipicker
       lxappearance
-      redshift
-      gnomeExtensions.appindicator
 
       # Hardware
       lshw
@@ -205,7 +218,6 @@ in
       brightnessctl
       acpi
       gnome3.gnome-keyring
-      gnome3.cheese
       python-with-my-packages
       wget
       psmisc
@@ -214,7 +226,8 @@ in
       yarn
       libnotify
       openvpn
-      protonvpn-cli
+      unstable.protonvpn-cli
+      unstable.protonvpn-gui
       pasystray
       unstable.autorandr
       postman
@@ -222,7 +235,7 @@ in
       bat
       coreutils
       mkpasswd
-      nextcloud-client
+      unstable.nextcloud-client
       lxqt.lxqt-policykit
     ];
 
@@ -263,9 +276,6 @@ in
   # Android
   programs.adb.enable = true;
 
-  # Gnome
-  services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
-
   # List services that you want to enable:
   services.fprintd.enable = true;
   services.fwupd.enable = true;
@@ -273,7 +283,7 @@ in
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
-  
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
   services.printing.drivers = [ pkgs.gutenprint ];
@@ -309,26 +319,14 @@ in
     hashedPassword = "***REMOVED***";
   };
 
-  programs.zsh = {
-    enable = true;
-    autosuggestions.enable = true;
-    ohMyZsh.enable = true;
-    ohMyZsh.theme = "frisk";
-    ohMyZsh.plugins = [ "git" "sudo" "docker" "kubectl" ];
-    syntaxHighlighting.enable = true;
-  };
 
   # Touchpad
   services.xserver.libinput = {
     enable = true;
-
-    naturalScrolling = true;
-    additionalOptions = ''MatchIsTouchpad "on"'';
-    # 21.05
-    # touchpad = {
-    #   naturalScrolling = true;
-    #   additionalOptions = ''MatchIsTouchpad "on"'';
-    # };
+    touchpad = {
+      naturalScrolling = true;
+      additionalOptions = ''MatchIsTouchpad "on"'';
+    };
   };
 
   # nixpkgs
@@ -360,30 +358,6 @@ in
     wantedBy = [ "timers.target" ];
   };
 
-  # Fonts
-  fonts.fontconfig = {
-    defaultFonts = {
-      emoji = [ "Noto Color Emoji" ];
-      serif = [ "Bitstream Vera Serif" ];
-      sansSerif = [ "Bitstream Vera Sans" ];
-      monospace = [ "Bitstream Vera Sans Mono" ];
-    };
-  };
-
-  # fonts.enableDefaultFonts = true;
-  fonts.fonts = with pkgs; [
-    noto-fonts
-    noto-fonts-emoji
-    ttf_bitstream_vera
-    hasklig
-    unifont
-    font-awesome_4
-    symbola
-    fira-code
-    fira-code-symbols
-    unifont
-  ];
-
   # Set location provider to geoclue for redshift, maps etc
   location.provider = "geoclue2";
 
@@ -401,12 +375,82 @@ in
       };
     };
 
+    programs.zsh = {
+      enable = true;
+      autocd = true;
+      enableAutosuggestions = true;
+      enableCompletion = true;
+      history = {
+        size = 999999999;
+        save = 999999999;
+      };
+
+      initExtra = ''
+        source ~/.p10k.zsh
+
+        eval $(thefuck --alias f) # Enable thefuck
+        eval "$(direnv hook zsh)" # Enable direnv
+        
+        export PATH="$PATH:$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$HOME/.cargo/bin"
+      '';
+
+      shellAliases = {
+        vim = "nvim";
+        ls = "ls -lah --color";
+        vz = "vim ~/.zshrc";
+        sz = "source ~/.zshrc";
+        r = "sudo nixos-rebuild switch";
+        wp = "~/.wm-scripts/change-wallpaper.sh";
+        nclean = "find . -name \" node_modules \" -exec rm -rf '{}' +";
+
+        # Git
+        gup = "git fetch --all; git rebase origin/master";
+        ga = "git add --all";
+        gc = "git commit";
+        gst = "git status";
+        gd = "git diff --staged";
+
+        # NixOS 
+        nixgc = "sudo nix-collect-garbage -d; nix-collect-garbage -d; sudo nix-store --optimize";
+        u = "sudo nixos-rebuild switch --upgrade";
+        vn = "vim ~/dotfiles/nixos/configuration.nix";
+
+        # Dev Folders
+        dev = "cd ~/development";
+        crocks = "cd ~/development/crocks";
+        mapi = "cd ~/development/lyra-api";
+        dotf = "code ~/dotfiles";
+        vx = "code ~/.xmonad/";
+
+        # VPN
+        vpn = "sudo protonvpn c -f";
+        vpnin = "sudo protonvpn c --cc IN";
+        vpnde = "sudo protonvpn c --cc DE";
+        vpnd = "sudo protonvpn d";
+        vpns = "sudo protonvpn s";
+      };
+
+      zplug = {
+        enable = true;
+        plugins = [
+          { name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1 ]; }
+          { name = "Aloxaf/fzf-tab"; }
+          { name = "agkozak/zsh-z"; }
+        ];
+      };
+    };
+
     programs.git = {
       enable = true;
       userName = "Karthik Iyengar";
       userEmail = "hello@kiyengar.net";
     };
 
+    programs.fzf = {
+      enable = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+    };
   };
 
   # This value determines the NixOS release from which the default

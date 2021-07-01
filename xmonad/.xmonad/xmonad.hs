@@ -1,24 +1,25 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 import           XMonad                  hiding ( (|||) )
 import           XMonad.Layout.LayoutCombinators
 import           XMonad.Layout.Grid
+import           XMonad.Layout.NoBorders
 import qualified XMonad.Prompt                 as P
 import qualified XMonad.Actions.Submap         as SM
 import qualified XMonad.Actions.Search         as S
+import           XMonad.Hooks.FadeInactive             ( fadeInactiveLogHook )
 import           XMonad.Layout.ThreeColumns
 import           XMonad.Layout.DwmStyle
 import           Data.List                      ( sortBy )
 import           Data.Function                  ( on )
-import Data.String.Utils (replace)
 import           Control.Monad                  ( forM_
                                                 , join
                                                 )
-import           XMonad.Layout.NoBorders        ( smartBorders )
-import           XMonad.Util.Run                ( safeSpawn )
+import           XMonad.Util.Run                ( safeSpawn, hPutStrLn )
 import           XMonad.Util.NamedWindows       ( getName )
 import           XMonad.Hooks.DynamicLog
 import qualified XMonad.StackSet               as W
 import           XMonad.Hooks.EwmhDesktops      ( ewmh
-                                                , fullscreenEventHook
                                                 )
 import           XMonad.Hooks.ManageDocks
 import           XMonad.Util.EZConfig
@@ -28,18 +29,22 @@ import           XMonad.Actions.SpawnOn
 import           XMonad.Util.SpawnOnce
 import qualified Data.Map                      as M
 import           XMonad.Actions.CopyWindow      ( copy )
+import           Data.Text                      ( pack, replace, unpack )
 
-myBar = "killall -q polybar; polybar xmother"
-myStatusBar = statusBar myBar (PP { ppOutput = \s -> return () }) def
-myTerminal = "termonad"
+import qualified DBus as D
+import qualified DBus.Client as D
+import qualified Codec.Binary.UTF8.String as UTF8
+
+
+
+myTerminal = "alacritty"
 myMod = mod4Mask -- Super Key
+altMask = mod1Mask -- Alt Key
 myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 
-
 searchEngineMap method =
-  M.fromList
-    $ [ ((0, xK_a), method S.alpha)
+  M.fromList [ ((0, xK_a), method S.alpha)
       , ((0, xK_d), method S.duckduckgo)
       , ((0, xK_i), method S.imdb)
       , ((0, xK_y), method S.youtube)
@@ -53,21 +58,19 @@ searchEngineMap method =
 -- xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'
 myKeys x = M.union (M.fromList (newKeys x)) (keys def x)
 newKeys conf@XConfig { XMonad.modMask = modm } =
-  [ ( (modm, xK_b)
-    , sequence_ [spawn "polybar-msg cmd toggle", sendMessage ToggleStruts]
-    )
-    , ((modm .|. shiftMask, xK_l), spawn "i3lock -c 444444")
+  [ ((modm .|. altMask, xK_l), spawn "slock")
     ]
 
     ++ [ ( (modm, xK_p)
          , spawn
-           "rofi -combi-modi window,drun,run -theme solarized -show combi -modi combi,run -terse -no-show-match -no-sort -location 1 -width 100"
+           "rofi -combi-modi window,drun,run,calc -theme gruvbox-dark-soft -show combi -modi combi,calc,run -terse -no-show-match -no-sort -location 1 -width 100 -show-icons -font 'Hasklig Regular 12'  -calc-command \"echo '{result}' | xsel -b\""
          )
        , ((modm, xK_v), spawn "pavucontrol -t 3")
        , ((modm, xK_c), spawn "blueman-manager")
+       , ((modm, xK_i), spawn "rofi -show emoji -modi emoji -theme gruvbox-dark-soft -location 1 -width 100")
        , ( (modm, xK_u)
          , spawn
-           "unipicker --copy --command 'rofi -dmenu -theme solarized -location 1 -width 100'"
+           "unipicker --copy --command 'rofi -dmenu -theme gruvbox-dark-soft -location 1 -width 100'"
          )
        , ( (0, xF86XK_AudioRaiseVolume)
          , spawn "~/.wm-scripts/media.sh volume-inc"
@@ -99,7 +102,9 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
          , spawn "~/.wm-scripts/media.sh brightness-dec"
          )
        , ((0, xK_Print), spawn "flameshot gui")
-       , ((modm, xK_f), spawn "caja")
+
+       , ((modm, xK_f), spawn "~/.wm-scripts/zzzfoo -n 0 -o xdg-open -r '-theme gruvbox-dark-soft -location 1 -width 100 -height 50'")
+       , ((modm .|. shiftMask, xK_f), spawn "thunar")
        , ( (modm .|. shiftMask, xK_h)
          , spawn
            "rofi -modi 'clipboard:greenclip print' -theme solarized -show clipboard -terse -no-show-match -no-sort -location 1 -width 100 -run-command '{cmd}'"
@@ -108,12 +113,13 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
          , sequence_ $ [ windows $ copy i | i <- XMonad.workspaces conf ]
          )    -- Pin to all workspaces
        , ( (modm .|. shiftMask, xK_a)
-         , windows $ kill8
+         , windows kill8
          )    -- remove from all but current
        , ((modm, xK_s), SM.submap $ searchEngineMap $ S.promptSearch P.def)
        , ( (modm .|. shiftMask, xK_s)
-         , SM.submap $ searchEngineMap $ S.selectSearch
+         , SM.submap $ searchEngineMap S.selectSearch
          )
+       , ((modm, xK_b), spawn "polybar-msg cmd toggle &" >> sendMessage ToggleStruts)
        ]
     -- Screen order for triple screens.
     ++ [ ( (m .|. modm, key)
@@ -125,74 +131,107 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
 
 myRemovedKeys = [(myMod .|. shiftMask, xK_q)]
 
+
+data AllFloats = AllFloats deriving (Read, Show)
+instance SetsAmbiguous AllFloats where
+    hiddens _ wset _ _ _ = M.keys $ W.floating wset
+
 myLayoutHook =
-  avoidStruts
+    avoidStruts
+    -- $ lessBorders AllFloats -- To remove borders for floating windows
     $ smartBorders
-    $ dwmStyle shrinkText def
-    $ (   (Tall 1 (3 / 100) (1 / 2))
+    $ dwmStyle shrinkText def (   (Tall 1 (3 / 100) (1 / 2))
       ||| Grid
       ||| ThreeCol 1 (3 / 100) (1 / 3)
       ||| Full
       )
 
+-- https://wiki.haskell.org/Xmonad/Frequently_asked_questions#I_need_to_find_the_class_title_or_some_other_X_property_of_my_program
+-- TLDR; xprop _NET_WM_CLASS (second property)
 myManageHook = composeAll
   [ title =? "Emulator" --> doFloat
   , title =? "Android Emulator - pixel:5554" --> doFloat
+  , className =? "Code" --> doShift "2"
+  , className =? "Firefox" --> doShift "1"
+  , className =? "Spotify" --> doShift "8"
+  , className =? "Chromium-browser" --> doShift "4"
   ]
 
 myStartupHook = do
+  spawn "killall polybar; polybar xmother &!"
+  spawnOnce "~/.wm-scripts/startup.sh"
   spawnOnOnce "8" "spotify"
   spawnOnOnce "2" "code"
   spawnOnOnce "1" "firefox"
-  spawnOnOnce "7" "joplin"
-  spawnOnOnce "9" "slack"
   spawnOnOnce "9" "thunderbird"
+  docksStartupHook
   setWMName "LG3D"
 
-myEventLogHook = do
-  forM_ [".xmonad-workspace-log", ".xmonad-title-log", ".xmonad-layout-log"]
-    $ \file -> safeSpawn "mkfifo" ["/tmp/" ++ file]
-  winset <- gets windowset
-  title  <- maybe (return "") (fmap show . getName) . W.peek $ winset
-  let currWs = W.currentTag winset
-  let activeWss = filter
-        (\ws -> (length (W.stack ws) > 0) || W.tag ws == currWs)
-        (W.workspaces winset)
-  let wsTags = map W.tag $ activeWss
-  let wsStr  = join $ map (fmt currWs) $ sort' wsTags
-  let lStr = replace "DwmStyle" "" . description . W.layout . W.workspace . W.current $ winset
 
-  io $ appendFile "/tmp/.xmonad-title-log" (title ++ "\n")
-  io $ appendFile "/tmp/.xmonad-workspace-log" (wsStr ++ "\n")
-  io $ appendFile "/tmp/.xmonad-layout-log" (lStr ++ "\n")
-
- where
-  fmt currWs ws | currWs == ws = "[" ++ ws ++ "]"
-                | otherwise    = " " ++ ws ++ " "
-  sort' = sortBy (compare `on` (!! 0))
-
-
-kill8 ss | Just w <- W.peek ss = (W.insertUp w) $ W.delete w ss
+kill8 ss | Just w <- W.peek ss = W.insertUp w $ W.delete w ss
          | otherwise           = ss
 
+myLogHook = fadeInactiveLogHook 0.9
 
-myConfig =
-  ewmh
-    $ def { terminal           = myTerminal
+-- Section: Polybar Dbus Output -- 
+mkDbusClient :: IO D.Client
+mkDbusClient = do
+  dbus <- D.connectSession
+  D.requestName dbus (D.busName_ "org.xmonad.log") opts
+  return dbus
+ where
+  opts = [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
+
+dbusOutput :: D.Client -> String -> IO ()
+dbusOutput dbus str =
+  let opath  = D.objectPath_ "/org/xmonad/Log"
+      iname  = D.interfaceName_ "org.xmonad.Log"
+      mname  = D.memberName_ "Update"
+      signal = D.signal opath iname mname
+      body   = [D.toVariant $ UTF8.decodeString str]
+  in  D.emit dbus $ signal { D.signalBody = body }
+
+polybarHook :: D.Client -> PP
+polybarHook dbus =
+  let wrapper c s | s /= "NSP" = wrap ("%{F" <> c <> "} ")" %{F-}" s
+                  | otherwise  = mempty
+      blue   = "#2E9AFE"
+      gray   = "#7F7F7F"
+      orange = "#ea4300"
+      purple = "#9058c7"
+      red    = "#722222"
+  in  def { ppOutput          = dbusOutput dbus
+          , ppCurrent         = wrapper blue
+          , ppVisible         = wrapper gray
+          , ppUrgent          = wrapper orange
+          , ppHidden          = wrapper gray
+          , ppLayout          = unpack . replace "DwmStyle" "" . pack
+          , ppHiddenNoWindows = mempty
+          , ppTitle           = shorten 50 . wrapper "#fb9224"
+          }
+
+myPolybarLogHook dbus = myLogHook <+> dynamicLogWithPP (polybarHook dbus)
+-- /Section: Polybar Dbus Output -- 
+main' :: D.Client -> IO ()
+main' dbus = xmonad . ewmh $ def { terminal           = myTerminal
           , modMask            = myMod
           , startupHook        = myStartupHook
           , manageHook         = manageSpawn <+> myManageHook <+> manageHook def
+          , handleEventHook    = docksEventHook
           , focusedBorderColor = "#fb9224"
           , normalBorderColor  = "#000"
           , borderWidth        = 3
-          , logHook            = myEventLogHook
           , layoutHook         = myLayoutHook
-          , handleEventHook    = handleEventHook def <+> fullscreenEventHook
+          , logHook            = myPolybarLogHook dbus
           , keys               = myKeys
           }
     `removeKeys` myRemovedKeys
 
-main = xmonad =<< myStatusBar myConfig
+
+
+main :: IO ()
+main = mkDbusClient >>= main'
+
 
 
 -- TODO: spawnOnOnce steals focus at startup
