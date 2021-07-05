@@ -106,7 +106,6 @@ in
       # Browsers
       google-chrome
       chromium
-      unstable.firefox
       torrential
 
       # Utilities
@@ -200,6 +199,7 @@ in
       usbutils
 
       # Unclassified
+      home-manager
       ibus-engines.typing-booster
       sysfsutils
       system-config-printer
@@ -323,6 +323,9 @@ in
   # Touchpad
   services.xserver.libinput = {
     enable = true;
+    mouse = {
+      middleEmulation = false;
+    };
     touchpad = {
       naturalScrolling = true;
       additionalOptions = ''MatchIsTouchpad "on"'';
@@ -338,6 +341,8 @@ in
       };
     };
   };
+
+  home-manager.users.kiyengar = import ./home.nix;
 
   # battery monitor
   systemd.user.services.battery-monitor = {
@@ -360,98 +365,6 @@ in
 
   # Set location provider to geoclue for redshift, maps etc
   location.provider = "geoclue2";
-
-  # Home Manager 
-  home-manager.useGlobalPkgs = true;
-  home-manager.users.kiyengar = { pkgs, ... }: {
-    programs.firefox = {
-      enable = true;
-      profiles = {
-        myprofile = {
-          settings = {
-            "ui.context_menus.after_mouseup" = true; # xmonad right click bug
-          };
-        };
-      };
-    };
-
-    programs.zsh = {
-      enable = true;
-      autocd = true;
-      enableAutosuggestions = true;
-      enableCompletion = true;
-      history = {
-        size = 999999999;
-        save = 999999999;
-      };
-
-      initExtra = ''
-        source ~/.p10k.zsh
-
-        eval $(thefuck --alias f) # Enable thefuck
-        eval "$(direnv hook zsh)" # Enable direnv
-        
-        export PATH="$PATH:$HOME/.cabal/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.deno/bin:$HOME/.npm-global/bin:$HOME/.cargo/bin"
-      '';
-
-      shellAliases = {
-        vim = "nvim";
-        ls = "ls -lah --color";
-        vz = "vim ~/.zshrc";
-        sz = "source ~/.zshrc";
-        r = "sudo nixos-rebuild switch";
-        wp = "~/.wm-scripts/change-wallpaper.sh";
-        nclean = "find . -name \" node_modules \" -exec rm -rf '{}' +";
-
-        # Git
-        gup = "git fetch --all; git rebase origin/master";
-        ga = "git add --all";
-        gc = "git commit";
-        gst = "git status";
-        gd = "git diff --staged";
-
-        # NixOS 
-        nixgc = "sudo nix-collect-garbage -d; nix-collect-garbage -d; sudo nix-store --optimize";
-        u = "sudo nixos-rebuild switch --upgrade";
-        vn = "vim ~/dotfiles/nixos/configuration.nix";
-
-        # Dev Folders
-        dev = "cd ~/development";
-        crocks = "cd ~/development/crocks";
-        mapi = "cd ~/development/lyra-api";
-        dotf = "code ~/dotfiles";
-        vx = "code ~/.xmonad/";
-
-        # VPN
-        vpn = "sudo protonvpn c -f";
-        vpnin = "sudo protonvpn c --cc IN";
-        vpnde = "sudo protonvpn c --cc DE";
-        vpnd = "sudo protonvpn d";
-        vpns = "sudo protonvpn s";
-      };
-
-      zplug = {
-        enable = true;
-        plugins = [
-          { name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1 ]; }
-          { name = "Aloxaf/fzf-tab"; }
-          { name = "agkozak/zsh-z"; }
-        ];
-      };
-    };
-
-    programs.git = {
-      enable = true;
-      userName = "Karthik Iyengar";
-      userEmail = "hello@kiyengar.net";
-    };
-
-    programs.fzf = {
-      enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-    };
-  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

@@ -24,7 +24,6 @@
     audacity
     ardour
     ladspaPlugins
-    pipewire
     gthumb
     obs-studio
     kdenlive
