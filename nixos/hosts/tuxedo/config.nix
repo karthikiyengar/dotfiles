@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  networking.hostName = "kiyengar-nixos";
+  networking.hostName = "tuxboi";
 
   # luks
   boot.initrd.luks.devices = {

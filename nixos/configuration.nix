@@ -107,14 +107,16 @@ in
       google-chrome
       chromium
       torrential
+      qbittorrent
 
       # Utilities
       xsane
-      flameshot
+      # unstable.flameshot
       unstable.authy
       bitwarden
       gimp
       veracrypt
+      gnome.gnome-screenshot
       gnome3.gnome-calculator
 
       # Communication
@@ -303,7 +305,6 @@ in
   # Enable bluetooth
   services.blueman.enable = true;
   hardware.bluetooth.enable = true;
-
   # USB Automount
   services.gvfs.enable = true;
 

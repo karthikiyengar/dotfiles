@@ -49,6 +49,13 @@ let mozilla = import (builtins.fetchGit {
     initExtra = ''
       source ~/.p10k.zsh
 
+      # Fix shitty vi mode bindings for Home/Ins/Del/Ctrl+Arrow
+      bindkey "^[[1;5C" forward-word
+      bindkey "^[[1;5D" backward-word
+      bindkey  "^[[H"   beginning-of-line
+      bindkey  "^[[F"   end-of-line
+      bindkey  "^[[3~"  delete-char
+
       eval $(thefuck --alias f) # Enable thefuck
       eval "$(direnv hook zsh)" # Enable direnv
         
@@ -73,7 +80,7 @@ let mozilla = import (builtins.fetchGit {
 
       # NixOS 
       nixgc = "sudo nix-collect-garbage -d; nix-collect-garbage -d; sudo nix-store --optimize";
-      u = "sudo nixos-rebuild switch --upgrade";
+      u = "sudo nix-channel --update; sudo nixos-rebuild switch --upgrade";
       vn = "vim ~/dotfiles/nixos/configuration.nix";
 
       # Dev Folders
@@ -97,6 +104,7 @@ let mozilla = import (builtins.fetchGit {
         { name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1 ]; }
         { name = "Aloxaf/fzf-tab"; }
         { name = "agkozak/zsh-z"; }
+        { name = "kutsan/zsh-system-clipboard"; }
       ];
     };
   };
