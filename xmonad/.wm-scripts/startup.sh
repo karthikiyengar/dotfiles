@@ -4,15 +4,15 @@ then
     lxqt-policykit-agent &!
     gnome-keyring-daemon &!
     # Applets
-    nm-applet &!
     blueman-applet &!
     greenclip daemon &!
     flameshot &!
     redshift-gtk &!
+    (sleep 5 && nm-applet --sm-disable --indicator) &!
 
     # Volume and brightness notifications
-    ~/.wm-scripts/brightness-watcher.py | xob &!
-    ~/.wm-scripts/pulse-volume-watcher.py | xob &!
+    # ~/.wm-scripts/brightness-watcher.py | xob &!
+    # ~/.wm-scripts/pulse-volume-watcher.py | xob &!
 
     # Set cursor to pointer
     xsetroot -cursor_name left_ptr &!
@@ -48,4 +48,5 @@ then
     export _JAVA_AWT_WM_NONREPARENTING=1
     # Run xidlehook
     ~/.wm-scripts/suspend.sh
+    
 fi

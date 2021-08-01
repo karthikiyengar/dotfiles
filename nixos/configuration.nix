@@ -128,7 +128,7 @@ in
       kmail
       kontact
       korganizer
-      thunderbird
+      thunderbird-bin
       unstable.zoom-us
       discord
       hexchat
@@ -182,9 +182,12 @@ in
       feh
       ant-theme
       arc-theme
+      hicolor-icon-theme
+      gnome-icon-theme
       tela-icon-theme
       moka-icon-theme
-      polybar
+      taffybar
+      haskellPackages.status-notifier-item
       arandr
       dunst
       slock
@@ -263,7 +266,12 @@ in
   # Some other applications
   programs.light.enable = true;
   programs.steam.enable = true;
+
+  # nm-applet
   programs.nm-applet.enable = true;
+  # Disable applet autostart
+  systemd.user.services.nm-applet.enable = false;
+
   programs.slock.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -305,6 +313,7 @@ in
   # Enable bluetooth
   services.blueman.enable = true;
   hardware.bluetooth.enable = true;
+
   # USB Automount
   services.gvfs.enable = true;
 
@@ -344,6 +353,20 @@ in
   };
 
   home-manager.users.kiyengar = import ./home.nix;
+
+  # For taffybar
+  systemd.user.services.status-notifier-watcher = {
+    enable = true;
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.haskellPackages.status-notifier-item}/bin/status-notifier-watcher";
+    };
+    description = "SNI watcher";
+    after = [ "graphical-session-pre.target" ];
+    partOf = [ "graphical-session.target" ];
+    wantedBy = [ "graphical-session.target" ];
+  };
+
 
   # battery monitor
   systemd.user.services.battery-monitor = {

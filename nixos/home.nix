@@ -25,6 +25,10 @@ let mozilla = import (builtins.fetchGit {
     latest.firefox-nightly-bin
   ];
 
+  programs.vscode = {
+    enable = true;
+  };
+
   programs.firefox = {
     enable = false;
     profiles = {

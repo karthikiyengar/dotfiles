@@ -21,9 +21,9 @@
       gitAndTools.tig
       git
       haskellPackages.ghc
+      dig
 
       # Editors
-      unstable.vscode-with-extensions
       gnvim
       texstudio
       texlive.combined.scheme-full
@@ -31,11 +31,11 @@
       glade
     ];
 
-    home-manager.users.kiyengar = { pkgs, ... }: {
-      programs.git = {
-        enable = true;
-        userName = "Karthik Iyengar";
-        userEmail = "hello@kiyengar.net";
-      };
+  home-manager.users.kiyengar = { pkgs, ... }: {
+    programs.git = {
+      enable = true;
+      userName = "Karthik Iyengar";
+      userEmail = "hello@kiyengar.net";
     };
+  };
 }

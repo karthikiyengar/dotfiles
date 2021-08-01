@@ -27,6 +27,7 @@
           haskellPackages.dbus
           haskellPackages.List
           haskellPackages.monad-logger
+          haskellPackages.taffybar
           haskellPackages.xmonad
         ];
       };
