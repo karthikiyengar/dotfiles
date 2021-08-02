@@ -17,6 +17,7 @@
       rustup
       gcc
       openjdk11
+      bfg-repo-cleaner
       heroku
       gitAndTools.tig
       git

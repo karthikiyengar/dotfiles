@@ -94,12 +94,12 @@ in
       my-python-packages = python-packages: with python-packages; [
         dbus-python # used by xmonad-log
         recoll
-        pulsectl # used by xob script
-        watchdog # used by xob script 
         requests
       ];
-
       python-with-my-packages = unstable.python3.withPackages my-python-packages;
+      appimage-run = pkgs.appimage-run.override {
+        extraPkgs = p: [ p.gnome3.libsecret ];
+      };
     in
     [
       # Browsers
@@ -132,7 +132,6 @@ in
       unstable.zoom-us
       discord
       hexchat
-      weechat
 
       # File
       xfce.thunar
@@ -199,6 +198,7 @@ in
       xmonad-log
       unstable.unipicker
       lxappearance
+      appimage-run
 
       # Hardware
       lshw
@@ -327,7 +327,7 @@ in
     description = "Karthik Iyengar";
     isNormalUser = true;
     extraGroups = [ "adbusers" "wheel" "scanner" "lp" "video" "networkmanager" "audio" ]; # Enable ‘sudo’ for the user.
-    hashedPassword = "***REMOVED***";
+    passwordFile = "./password";
   };
 
 

@@ -12,3 +12,4 @@ xmonad/.xmonad/prompt-history
 *.swo
 *~
 prompt-history
+password

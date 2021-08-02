@@ -85,7 +85,7 @@ let mozilla = import (builtins.fetchGit {
       # NixOS 
       nixgc = "sudo nix-collect-garbage -d; nix-collect-garbage -d; sudo nix-store --optimize";
       u = "sudo nix-channel --update; sudo nixos-rebuild switch --upgrade";
-      vn = "vim ~/dotfiles/nixos/configuration.nix";
+      vn = "code ~/dotfiles/nixos";
 
       # Dev Folders
       dev = "cd ~/development";
