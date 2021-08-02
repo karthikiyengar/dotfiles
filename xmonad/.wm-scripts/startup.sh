@@ -10,10 +10,6 @@ then
     redshift-gtk &!
     (sleep 3 && nm-applet --sm-disable --indicator) &!
 
-    # Volume and brightness notifications
-    # ~/.wm-scripts/brightness-watcher.py | xob &!
-    # ~/.wm-scripts/pulse-volume-watcher.py | xob &!
-
     # Set cursor to pointer
     xsetroot -cursor_name left_ptr &!
 
