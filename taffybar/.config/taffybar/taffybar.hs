@@ -140,8 +140,8 @@ caff interval = liftIO $ do
 getLabel :: ExitCode -> String
 getLabel exitCode =
   case exitCode of
-    ExitSuccess -> "☕"
-    ExitFailure x -> "💤"
+    ExitSuccess -> "💤"
+    ExitFailure x -> "☕"
 
 showFSInfo :: IO T.Text
 showFSInfo = do

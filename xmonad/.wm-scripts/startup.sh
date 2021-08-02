@@ -8,7 +8,7 @@ then
     greenclip daemon &!
     flameshot &!
     redshift-gtk &!
-    (sleep 5 && nm-applet --sm-disable --indicator) &!
+    (sleep 3 && nm-applet --sm-disable --indicator) &!
 
     # Volume and brightness notifications
     # ~/.wm-scripts/brightness-watcher.py | xob &!

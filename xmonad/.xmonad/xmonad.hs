@@ -69,7 +69,8 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
            "rofi -combi-modi window,drun,run,calc -theme gruvbox-dark-soft -show combi -modi combi,calc,run -terse -no-show-match -no-sort -location 1 -width 100 -show-icons -font 'Hasklig Regular 12'  -calc-command \"echo '{result}' | xsel -b\""
          )
        , ((modm, xK_v), spawn "pavucontrol -t 3")
-       , ((modm, xK_c), spawn "blueman-manager")
+       , ((modm .|. shiftMask, xK_b), spawn "~/.wm-scripts/toggle-bluetooth.sh")
+       , ((modm .|. altMask, xK_b), spawn "blueman-manager")
        , ((modm, xK_i), spawn "rofi -show emoji -modi emoji -theme gruvbox-dark-soft -location 1 -width 100")
        , ( (modm, xK_u)
          , spawn
@@ -84,19 +85,19 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
        , ((0, xF86XK_AudioMute), spawn "~/.wm-scripts/media.sh mute")
        , ( (0, xF86XK_AudioPause)
          , spawn
-           "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Pause"
+           "playerctl pause"
          )
        , ( (0, xF86XK_AudioPlay)
          , spawn
-           "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Play"
+           "playerctl play-pause"
          )
        , ( (0, xF86XK_AudioNext)
          , spawn
-           "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
+           "playerctl next"
          )
        , ( (0, xF86XK_AudioPrev)
          , spawn
-           "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
+           "playerctl previous"
          )
        , ( (0, xF86XK_MonBrightnessUp)
          , spawn "~/.wm-scripts/media.sh brightness-inc"
@@ -106,6 +107,7 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
          )
        , ((0, xK_Print), spawn "flameshot gui")
 
+       , ((modm, xK_backslash), spawn "playerctl play-pause")
        , ((modm, xK_f), spawn "~/.wm-scripts/zzzfoo -n 0 -o xdg-open -r '-theme gruvbox-dark-soft -location 1 -width 100 -height 50'")
        , ((modm .|. shiftMask, xK_f), spawn "caja")
        , ( (modm .|. shiftMask, xK_h)

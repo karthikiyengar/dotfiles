@@ -179,6 +179,7 @@ in
 
       # DE/WM
       rofi
+      xev
       feh
       ant-theme
       arc-theme
