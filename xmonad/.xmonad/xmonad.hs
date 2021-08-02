@@ -108,6 +108,8 @@ newKeys conf@XConfig { XMonad.modMask = modm } =
        , ((0, xK_Print), spawn "flameshot gui")
 
        , ((modm, xK_backslash), spawn "playerctl play-pause")
+       , ((modm, xK_bracketleft), spawn "playerctl previous")
+       , ((modm, xK_bracketright), spawn "playerctl next")
        , ((modm, xK_f), spawn "~/.wm-scripts/zzzfoo -n 0 -o xdg-open -r '-theme gruvbox-dark-soft -location 1 -width 100 -height 50'")
        , ((modm .|. shiftMask, xK_f), spawn "caja")
        , ( (modm .|. shiftMask, xK_h)
