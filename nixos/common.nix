@@ -15,7 +15,6 @@ in
       ./xorg.nix
       ./dev.nix
       ./fonts.nix
-      ./hosts/tuxedo/config.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -128,6 +127,7 @@ in
       kmail
       kontact
       korganizer
+      gnome.geary
       thunderbird-bin
       unstable.zoom-us
       discord
@@ -179,7 +179,7 @@ in
 
       # DE/WM
       rofi
-      xev
+      xorg.xev
       feh
       ant-theme
       arc-theme

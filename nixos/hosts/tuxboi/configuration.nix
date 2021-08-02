@@ -1,8 +1,11 @@
 { config, lib, pkgs, ... }:
 
 {
-  networking.hostName = "tuxboi";
+  imports = [
+    ../../common.nix
+  ];
 
+  networking.hostName = "tuxboi";
   # luks
   boot.initrd.luks.devices = {
     crypted = {

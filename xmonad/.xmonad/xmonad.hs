@@ -169,7 +169,7 @@ myStartupHook = do
   spawn "killall taffybar; taffybar &!"
   spawnOnOnce "8" "spotify"
   spawnOnOnce "1" "firefox"
-  spawnOnOnce "9" "thunderbird"
+  spawnOnOnce "9" "geary"
   setWMName "LG3D"
 
 

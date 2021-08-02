@@ -1,6 +1,10 @@
 { config, lib, pkgs, ... }:
 
 {
+  imports = [
+    ../../common.nix
+  ];
+
   # Wi-fi USB Dongle - TP-Link Archer T2U Nano 
   boot.extraModulePackages = [ config.boot.kernelPackages.rtl88xxau-aircrack ];
 

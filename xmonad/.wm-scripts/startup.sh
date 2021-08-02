@@ -26,7 +26,6 @@ then
     # Enable keyboard layouts
     recollindex -w 60 -m &!
 
-
     # Set Wallpaper
     if [ -f ~/.wallpapers/current-wallpaper.jpg ]; then
         feh --bg-scale ~/.wallpapers/current-wallpaper.jpg
