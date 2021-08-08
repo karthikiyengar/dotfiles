@@ -23,6 +23,11 @@ let mozilla = import (builtins.fetchGit {
   home.packages = with pkgs; [
     atop
     latest.firefox-nightly-bin
+    google-chrome
+    chromium
+    torrential
+    qbittorrent
+    neochat
   ];
 
   programs.vscode = {

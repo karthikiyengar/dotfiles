@@ -102,15 +102,9 @@ in
       };
     in
     [
-      # Browsers
-      google-chrome
-      chromium
-      torrential
-      qbittorrent
-
       # Utilities
       xsane
-      # unstable.flameshot
+      unstable.flameshot
       unstable.authy
       bitwarden
       gimp
@@ -179,6 +173,7 @@ in
       # DE/WM
       rofi
       xorg.xev
+      unstable.autorandr
       feh
       ant-theme
       arc-theme
@@ -191,11 +186,11 @@ in
       arandr
       dunst
       slock
-      xob
       pavucontrol
       haskellPackages.greenclip
       xidlehook
       xmonad-log
+      networkmanagerapplet
       unstable.unipicker
       lxappearance
       appimage-run
@@ -206,7 +201,6 @@ in
 
       # Unclassified
       home-manager
-      ibus-engines.typing-booster
       sysfsutils
       system-config-printer
       lxmenu-data
@@ -227,18 +221,13 @@ in
       python-with-my-packages
       wget
       psmisc
-      networkmanagerapplet
-      unstable.foliate
       yarn
       libnotify
       openvpn
       unstable.protonvpn-cli
       unstable.protonvpn-gui
       pasystray
-      unstable.autorandr
-      postman
       libreoffice
-      bat
       coreutils
       mkpasswd
       unstable.nextcloud-client
@@ -249,12 +238,6 @@ in
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-
-  # Activate typing-booster (for emoji picker)
-  i18n.inputMethod = {
-    enabled = "ibus";
-    ibus.engines = with pkgs.ibus-engines; [ typing-booster ];
-  };
 
   # KDE Connect
   networking.firewall.allowedTCPPortRanges = [{ from = 1714; to = 1764; }];
@@ -327,9 +310,8 @@ in
     description = "Karthik Iyengar";
     isNormalUser = true;
     extraGroups = [ "adbusers" "wheel" "scanner" "lp" "video" "networkmanager" "audio" ]; # Enable ‘sudo’ for the user.
-    passwordFile = "./password";
+    passwordFile = "/home/kiyengar/dotfiles/nixos/password";
   };
-
 
   # Touchpad
   services.xserver.libinput = {

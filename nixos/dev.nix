@@ -23,6 +23,7 @@
       git
       haskellPackages.ghc
       dig
+      postman
 
       # Editors
       gnvim
