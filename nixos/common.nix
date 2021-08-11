@@ -309,7 +309,7 @@ in
     home = "/home/kiyengar";
     description = "Karthik Iyengar";
     isNormalUser = true;
-    extraGroups = [ "adbusers" "wheel" "scanner" "lp" "video" "networkmanager" "audio" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "adbusers" "wheel" "scanner" "lp" "lpadmin" "video" "networkmanager" "audio" ]; # Enable ‘sudo’ for the user.
     passwordFile = "/home/kiyengar/dotfiles/nixos/password";
   };
 

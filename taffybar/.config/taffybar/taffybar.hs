@@ -174,7 +174,7 @@ main = do
             endWidgets =
               map
                 (>>= buildContentsBox)
-                [ batteryIconNew,
+                [ textBatteryNew "$percentage$% $status$",
                   caff 1,
                   clock,
                   tray,
