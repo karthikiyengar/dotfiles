@@ -25,6 +25,11 @@
       dig
       postman
 
+      # Clojure
+      leiningen
+      clojure
+      emacs
+
       # Editors
       gnvim
       texstudio

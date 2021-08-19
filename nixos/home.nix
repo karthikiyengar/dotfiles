@@ -11,6 +11,8 @@ let mozilla = import (builtins.fetchGit {
   home.username = "kiyengar";
   home.homeDirectory = "/home/kiyengar";
 
+  services.lorri.enable = true;
+
   nixpkgs.overlays = [
     mozilla
     (self: super: {

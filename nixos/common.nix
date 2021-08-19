@@ -38,6 +38,12 @@ in
 
   # Use sandboxing
   nix.useSandbox = true;
+  nix = {
+    package = pkgs.nixUnstable;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  };
 
   # enable ntfs
   boot.supportedFilesystems = [ "ntfs" ];
@@ -143,6 +149,7 @@ in
       # Terminal Apps
       ripgrep
       fzf
+      unzip
       antigen
       ag
       gitAndTools.gh
