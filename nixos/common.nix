@@ -132,6 +132,7 @@ in
       unstable.zoom-us
       discord
       hexchat
+      wireguard
 
       # File
       xfce.thunar
@@ -154,6 +155,7 @@ in
       ag
       gitAndTools.gh
       lsof
+      traceroute
       thefuck
       trash-cli
       jq
@@ -247,9 +249,28 @@ in
   i18n.defaultLocale = "en_US.UTF-8";
 
   # KDE Connect
+  networking.firewall.allowedUDPPorts = [ 51820 ];
+  networking.firewall.checkReversePath = false;
   networking.firewall.allowedTCPPortRanges = [{ from = 1714; to = 1764; }];
   networking.firewall.allowedUDPPortRanges = [{ from = 1714; to = 1764; }];
 
+
+  networking.wg-quick.interfaces = {
+    wg0 = {
+      address = [ "10.0.1.2/24" ];
+      listenPort = 51820; # to match firewall allowedUDPPorts (without this wg uses random port numbers)
+      privateKeyFile = "/home/kiyengar/wg/privatekey";
+      # This allows the wireguard server to route your traffic to the internet and hence be like a VPN
+      peers = [
+        {
+          publicKey = "YdHOPAcNkgGh9N4XpHhGR2O8H6PzTPDAKGum6QA6zjE=";
+          allowedIPs = [ "0.0.0.0/0" "::/0" ];
+          endpoint = "172.105.35.187:51820";
+          persistentKeepalive = 25;
+        }
+      ];
+    };
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
