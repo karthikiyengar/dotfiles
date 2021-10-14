@@ -34,7 +34,7 @@ function checkBatteryStateChange() {
     fi
 
     if [ "$battery_state" == "Discharging" ] && [ "$previous_battery_state" != "Discharging" ]; then
-        # notify-send "Power Unplugged" "Your computer has been disconnected from power." -u low
+       # notify-send "Power Unplugged" "Your computer has been disconnected from power." -u low
     fi
 }
 

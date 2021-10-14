@@ -28,7 +28,9 @@ let mozilla = import (builtins.fetchGit {
     google-chrome
     chromium
     torrential
+    fluffychat
     qbittorrent
+    digikam
     neochat
   ];
 

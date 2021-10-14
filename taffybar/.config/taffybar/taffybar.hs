@@ -185,7 +185,7 @@ main = do
                 ],
             barPosition = Top,
             barPadding = 0,
-            barHeight = 40,
+            barHeight = 50,
             widgetSpacing = 0
           }
   startTaffybar $ withBatteryRefresh $ withLogServer $ toTaffyConfig myConfig

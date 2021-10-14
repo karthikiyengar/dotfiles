@@ -114,6 +114,7 @@ in
       unstable.authy
       bitwarden
       gimp
+      okular
       veracrypt
       gnome.gnome-screenshot
       gnome3.gnome-calculator
@@ -127,7 +128,6 @@ in
       kmail
       kontact
       korganizer
-      gnome.geary
       thunderbird-bin
       unstable.zoom-us
       discord
@@ -136,6 +136,7 @@ in
       # File
       xfce.thunar
       mate.caja
+      fslint
       gnome.file-roller
 
       # Terminal Emulators
@@ -237,7 +238,7 @@ in
       libreoffice
       coreutils
       mkpasswd
-      unstable.nextcloud-client
+      nextcloud-client
       lxqt.lxqt-policykit
     ];
 
