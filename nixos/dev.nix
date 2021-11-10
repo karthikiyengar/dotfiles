@@ -30,6 +30,9 @@
       clojure
       emacs
 
+      # Ruby
+      ruby
+
       # Editors
       gnvim
       texstudio

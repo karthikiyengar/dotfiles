@@ -24,7 +24,7 @@ let mozilla = import (builtins.fetchGit {
 
   home.packages = with pkgs; [
     atop
-    latest.firefox-nightly-bin
+    # latest.firefox-nightly-bin
     google-chrome
     chromium
     torrential
@@ -38,14 +38,24 @@ let mozilla = import (builtins.fetchGit {
   };
 
   programs.firefox = {
-    enable = false;
-    profiles = {
-      myprofile = {
-        settings = {
-          "ui.context_menus.after_mouseup" = true; # xmonad right click bug
-        };
+    enable = true;
+    package = pkgs.firefox.override {
+      # See nixpkgs' firefox/wrapper.nix to check which options you can use
+      cfg = {
+        # firefox = pkgs.latest.firefox-nightly-bin;
+        # Gnome shell native connector
+        enableGnomeExtensions = true;
+        # Tridactyl native connector
+        enableTridactylNative = true;
       };
     };
+    # profiles = {
+    #   myprofile = {
+    #     settings = {
+    #       "ui.context_menus.after_mouseup" = true; # xmonad right click bug
+    #     };
+    #   };
+    # };
   };
 
   programs.zsh = {

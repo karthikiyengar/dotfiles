@@ -21,6 +21,16 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+
+  # exception
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-9.4.4"
+    "electron-11.5.0"
+  ];
+
+  nixpkgs.config.firefox.enableGnomeExtensions = true;
+  services.gnome.chrome-gnome-shell.enable = true;
+
   # grub
   boot.loader.grub = {
     enable = true;
@@ -114,7 +124,6 @@ in
       unstable.authy
       bitwarden
       gimp
-      okular
       veracrypt
       gnome.gnome-screenshot
       gnome3.gnome-calculator
@@ -125,9 +134,6 @@ in
       signal-desktop
       neochat
       slack
-      kmail
-      kontact
-      korganizer
       thunderbird-bin
       unstable.zoom-us
       discord
@@ -149,6 +155,7 @@ in
 
       # Terminal Apps
       ripgrep
+      traceroute
       fzf
       unzip
       antigen
@@ -173,9 +180,6 @@ in
       # Productivity
       todoist-electron
       freemind
-      unstable.joplin
-      unstable.joplin-desktop
-      zettlr
       obsidian
 
       # DE/WM
@@ -192,6 +196,9 @@ in
       taffybar
       haskellPackages.status-notifier-item
       arandr
+      gnome3.dconf-editor
+      firejail
+      gnomeExtensions.gsconnect
       dunst
       slock
       pavucontrol
@@ -213,7 +220,6 @@ in
       system-config-printer
       lxmenu-data
       shared_mime_info
-      kdeconnect
       recoll
       blueman
       etcher
@@ -241,7 +247,6 @@ in
       nextcloud-client
       lxqt.lxqt-policykit
     ];
-
   networking.networkmanager.enable = true;
 
   # Select internationalisation properties.

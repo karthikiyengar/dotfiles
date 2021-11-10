@@ -2,14 +2,18 @@
 
 {
   programs.dconf.enable = true;
+  programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.ksshaskpass.out}/bin/ksshaskpass"; # https://github.com/NixOS/nixpkgs/issues/75867
 
   services.xserver = {
     layout = "us";
     enable = true;
     xkbOptions = "terminate:ctrl_alt_bksp";
     desktopManager = {
-      plasma5 = {
+      gnome = {
         enable = true;
+      };
+      plasma5 = {
+        enable = false;
       };
     };
 
