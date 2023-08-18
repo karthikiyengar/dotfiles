@@ -1,0 +1,1 @@
+source ~/.zsh/index.sh
