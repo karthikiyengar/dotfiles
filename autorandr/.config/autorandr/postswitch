@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-if [ -f ~/.wallpapers/current-wallpaper.jpg ]; then
-    feh --bg-scale ~/.wallpapers/current-wallpaper.jpg
-else
-    feh --bg-scale ~/.wallpapers/dark-space.jpg
-fi
-
-xmonad --restart
