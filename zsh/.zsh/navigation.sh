@@ -1,3 +1,6 @@
+export VISUAL=nvim
+export EDITOR="$VISUAL"
+
 setopt autocd
 
 bindkey "^[[1;5C" forward-word # Ctrl + Right
