@@ -10,7 +10,8 @@ alias gds="git diff --staged"
 alias sz="source ~/.zshrc"
 alias vz="vim ~/.dotfiles"
 
-alias u="sudo apt update && sudo apt upgrade"
+alias u="sudo apt update && sudo apt upgrade && sudo apt autoremove"
 alias ls="LC_COLLATE=C ls -alF --color=auto"
 alias vim="nvim"
 alias grep='grep --color'
+alias neovide="~/Applications/neovide_44930d00ac7f37a4e1562650f7bf1143.appimage"
