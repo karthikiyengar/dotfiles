@@ -10,7 +10,7 @@ alias gds="git diff --staged"
 alias sz="source ~/.zshrc"
 alias vz="vim ~/.dotfiles"
 
-alias u="sudo apt update && sudo apt upgrade && sudo apt autoremove"
+alias u="sudo apt update && flatpak update -y && sudo apt upgrade && sudo apt autoremove"
 alias ls="LC_COLLATE=C ls -alF --color=auto"
 alias vim="nvim"
 alias grep='grep --color'
