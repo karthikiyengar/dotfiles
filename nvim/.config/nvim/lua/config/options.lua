@@ -3,3 +3,5 @@
 -- Add any additional options here
 
 vim.g.suda_smart_edit = 1
+vim.g.blamer_enabled = true
+vim.opt.title = true
