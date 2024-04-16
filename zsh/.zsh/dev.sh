@@ -5,4 +5,4 @@
 source "$HOME/.cargo/env"
 
 # Add ssh key to agent
-eval $(keychain -q --eval id_rsa)
+command -v keychain >/dev/null 2>&1 && eval $(keychain -q --eval id_rsa)
