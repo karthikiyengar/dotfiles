@@ -3,9 +3,9 @@ return {
   "jackMort/ChatGPT.nvim",
   event = "VeryLazy",
   config = function()
-    require("chatgpt").setup({
-      api_key_cmd = "gpg --decrypt " .. home .. "/openai.txt.gpg",
-    })
+    -- require("chatgpt").setup({
+    --   api_key_cmd = "gpg --decrypt " .. home .. "/openai.txt.gpg",
+    -- })
     require("which-key").register({
       ["<leader>o"] = {
         name = "ChatGPT",
