@@ -16,7 +16,7 @@ alias n="neovide ."
 alias t="timew"
 alias neovide="~/Applications/neovide_d8a7398de6f98b341232f4cfe1bdbe23.appimage"
 
-alias u="(sudo tuxedo-tomte configure all && sudo apt update && sudo apt -y upgrade && sudo apt -y autoremove); sudo flatpak update -y"
+alias u="(sudo apt update && sudo apt -y upgrade && sudo apt -y autoremove); sudo flatpak update -y"
 alias ls="LC_COLLATE=C lsd -la"
 alias vim="nvim"
 alias grep='grep --color'

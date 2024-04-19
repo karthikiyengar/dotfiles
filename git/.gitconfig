@@ -1,0 +1,8 @@
+[user]
+	name = Karthik Iyengar
+	email = hello@kiyengar.net
+[init]
+	defaultBranch = main
+[push]
+	default = current
+
