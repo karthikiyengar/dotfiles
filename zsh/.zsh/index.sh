@@ -1,3 +1,4 @@
+source $HOME/.zsh/tmux.sh
 source $HOME/.zsh/prompt.sh
 source $HOME/.zsh/plugins.sh
 source $HOME/.zsh/history.sh
