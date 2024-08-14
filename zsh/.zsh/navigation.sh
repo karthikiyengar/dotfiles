@@ -1,9 +1,6 @@
 # I use Ctrl + D in Vim to scroll. Don't want to kill the terminal accidentally.
 set -o ignoreeof
 
-export VISUAL=nvim
-export EDITOR="$VISUAL"
-
 setopt autocd
 
 bindkey "^[[1;5C" forward-word  # Ctrl + Right
