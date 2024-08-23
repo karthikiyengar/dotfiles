@@ -16,5 +16,5 @@ command -v keychain >/dev/null 2>&1 && eval $(keychain -q --eval id_rsa)
 ssh-add ~/.ssh/id_rsa >/dev/null 2>&1
 
 # Editor
-export EDITOR=vim
-export VISUAL=vim
+export EDITOR=nvim
+export VISUAL=nvim
