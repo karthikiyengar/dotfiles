@@ -9,3 +9,4 @@ source $HOME/.zsh/completion.sh
 source $HOME/.zsh/navigation.sh
 source $HOME/.zsh/path.sh
 source $HOME/.zsh/tmux.sh
+source $HOME/.zsh/keybinds.sh
