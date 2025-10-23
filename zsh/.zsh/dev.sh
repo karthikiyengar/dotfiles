@@ -15,6 +15,9 @@ export NVM_DIR="$HOME/.nvm"
 command -v keychain >/dev/null 2>&1 && eval $(keychain -q --eval id_rsa)
 ssh-add ~/.ssh/id_rsa >/dev/null 2>&1
 
+# Pyenv
+eval "$(pyenv init --path)"
+
 # Editor
 export EDITOR=nvim
 export VISUAL=nvim

@@ -1,0 +1,151 @@
+# Oh My Tmux! local configuration
+# https://github.com/gpakosz/.tmux
+
+# ===========================
+# General Settings
+# ===========================
+
+# Enable true color support
+set -g default-terminal "screen-256color"
+set -ga terminal-overrides ",xterm-256color:Tc"
+
+# Increase scrollback buffer size
+set -g history-limit 50000
+
+# Display messages for 2 seconds
+set -g display-time 2000
+
+# Focus events enabled for terminals that support them
+set -g focus-events on
+
+# Super useful when using "grouped sessions" and multi-monitor setup
+setw -g aggressive-resize on
+
+# Start window and pane numbering at 1
+set -g base-index 1
+setw -g pane-base-index 1
+
+# Renumber windows when one is closed
+set -g renumber-windows on
+
+# ===========================
+# Mouse Support
+# ===========================
+
+# Enable mouse support for scrolling, selecting panes, resizing
+set -g mouse on
+
+# ===========================
+# Keybindings
+# ===========================
+
+# Change prefix from C-b to C-a (more accessible)
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+
+# Reload configuration
+bind r source-file ~/.tmux.conf \; display "Config reloaded!"
+
+# Split panes with more intuitive keybindings
+bind | split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+bind _ split-window -v -c "#{pane_current_path}"
+unbind '"'
+unbind %
+
+# Vim-style pane navigation
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+# Vim-style pane resizing
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+# Quick pane cycling
+unbind o
+bind -r C-h select-window -t :-
+bind -r C-l select-window -t :+
+
+# ===========================
+# Copy Mode (Vim-style)
+# ===========================
+
+# Use vim keybindings in copy mode
+setw -g mode-keys vi
+
+# Setup 'v' to begin selection as in Vim
+bind -T copy-mode-vi v send -X begin-selection
+bind -T copy-mode-vi y send -X copy-pipe-and-cancel "pbcopy"
+bind -T copy-mode-vi MouseDragEnd1Pane send -X copy-pipe-and-cancel "pbcopy"
+
+# Update default binding of `Enter` to also use copy-pipe
+unbind -T copy-mode-vi Enter
+bind -T copy-mode-vi Enter send -X copy-pipe-and-cancel "pbcopy"
+
+# Easier copy mode entry
+bind Escape copy-mode
+
+# ===========================
+# Visual Styling
+# ===========================
+
+# Status bar configuration
+set -g status-interval 1
+set -g status-justify left
+
+# Pane borders
+set -g pane-border-style fg=colour238
+set -g pane-active-border-style fg=colour39
+
+# ===========================
+# Seamless Navigation with Vim
+# ===========================
+
+# Smart pane switching with awareness of Vim splits
+# See: https://github.com/christoomey/vim-tmux-navigator
+is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+bind-key -n 'C-h' if-shell "$is_vim" 'send-keys C-h'  'select-pane -L'
+bind-key -n 'C-j' if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
+bind-key -n 'C-k' if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
+bind-key -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R'
+
+bind-key -T copy-mode-vi 'C-h' select-pane -L
+bind-key -T copy-mode-vi 'C-j' select-pane -D
+bind-key -T copy-mode-vi 'C-k' select-pane -U
+bind-key -T copy-mode-vi 'C-l' select-pane -R
+
+# ===========================
+# SSH Agent Forwarding
+# ===========================
+
+# Remove SSH_AUTH_SOCK to disable tmux automatically resetting the variable
+set -g update-environment "DISPLAY SSH_ASKPASS SSH_AGENT_PID SSH_CONNECTION WINDOWID XAUTHORITY"
+
+# Use a symlink to look up SSH authentication
+setenv -g SSH_AUTH_SOCK $HOME/.ssh/ssh_auth_sock
+
+# ===========================
+# Oh My Tmux Customization
+# ===========================
+
+# You can customize Oh My Tmux variables here
+# See https://github.com/gpakosz/.tmux#configuration
+
+# Enable powerline symbols
+tmux_conf_theme_left_separator_main='\uE0B0'
+tmux_conf_theme_left_separator_sub='\uE0B1'
+tmux_conf_theme_right_separator_main='\uE0B2'
+tmux_conf_theme_right_separator_sub='\uE0B3'
+
+# Enable 24-hour clock
+tmux_conf_theme_24h_clock=true
+
+# Disable battery/wifi/weather in status bar (cleaner look)
+tmux_conf_theme_status_left=' ❐ #S '
+tmux_conf_theme_status_right='#{?client_prefix,⌨ ,}#{?pane_synchronized,🔒 ,}%R | %d %b '
