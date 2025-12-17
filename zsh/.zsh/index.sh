@@ -1,11 +1,15 @@
-source $HOME/.zsh/prompt.sh
-source $HOME/.zsh/plugins.sh
-source $HOME/.zsh/history.sh
-source $HOME/.zsh/dev.sh
-source $HOME/.zsh/aliases.sh
-[ -f $HOME/.zsh/aliases-private.sh ] && source $HOME/.zsh/aliases-private.sh
-source $HOME/.zsh/functions.sh
-source $HOME/.zsh/completion.sh
-source $HOME/.zsh/navigation.sh
-source $HOME/.zsh/path.sh
-source $HOME/.zsh/keybinds.sh
+# Central configuration directory - modify here to relocate all zsh configs
+ZSH_CONFIG_DIR="${HOME}/.zsh"
+
+# Load order: prompt → plugins → history → dev → aliases → functions → completion → navigation → path → keybinds
+source ${ZSH_CONFIG_DIR}/prompt.sh
+source ${ZSH_CONFIG_DIR}/plugins.sh
+source ${ZSH_CONFIG_DIR}/history.sh
+source ${ZSH_CONFIG_DIR}/dev.sh
+source ${ZSH_CONFIG_DIR}/aliases.sh
+[ -f ${ZSH_CONFIG_DIR}/aliases-private.sh ] && source ${ZSH_CONFIG_DIR}/aliases-private.sh
+source ${ZSH_CONFIG_DIR}/functions.sh
+source ${ZSH_CONFIG_DIR}/completion.sh
+source ${ZSH_CONFIG_DIR}/navigation.sh
+source ${ZSH_CONFIG_DIR}/path.sh
+source ${ZSH_CONFIG_DIR}/keybinds.sh
