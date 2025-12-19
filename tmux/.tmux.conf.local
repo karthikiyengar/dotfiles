@@ -47,6 +47,9 @@ bind C-a send-prefix
 # Reload configuration
 bind r source-file ~/.tmux.conf \; display "Config reloaded!"
 
+# Detach (moved from d to D to free up d for scroll)
+bind D detach-client
+
 # Split panes with more intuitive keybindings
 bind | split-window -h -c "#{pane_current_path}"
 bind - split-window -v -c "#{pane_current_path}"
@@ -89,6 +92,13 @@ bind -T copy-mode-vi Enter send -X copy-pipe-and-cancel "pbcopy"
 
 # Easier copy mode entry
 bind Escape copy-mode
+
+# Enter copy mode
+bind u copy-mode
+
+# Scroll in copy mode (no prefix needed)
+bind -T copy-mode-vi u send -X halfpage-up
+bind -T copy-mode-vi d send -X halfpage-down
 
 # ===========================
 # Visual Styling
