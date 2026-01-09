@@ -35,6 +35,9 @@ set -g renumber-windows on
 # Enable mouse support for scrolling, selecting panes, resizing
 set -g mouse on
 
+# Allow escape sequences to pass through (helps with nested tmux over SSH)
+set -g allow-passthrough on
+
 # ===========================
 # Keybindings
 # ===========================
@@ -47,13 +50,18 @@ bind C-a send-prefix
 # Reload configuration
 bind r source-file ~/.tmux.conf \; display "Config reloaded!"
 
+# Reset mouse mode when it gets stuck (prefix + m, overrides oh-my-tmux toggle)
+bind m set-option -g mouse off \; set-option -g mouse on \; display "Mouse reset!"
+
+# Rename window with empty prompt (instead of pre-filled current name)
+bind , command-prompt "rename-window '%%'"
+
 # Detach (moved from d to D to free up d for scroll)
 bind D detach-client
 
-# Split panes with more intuitive keybindings
-bind | split-window -h -c "#{pane_current_path}"
+# Split panes: = for side-by-side, - for stacked
+bind = split-window -h -c "#{pane_current_path}"
 bind - split-window -v -c "#{pane_current_path}"
-bind _ split-window -v -c "#{pane_current_path}"
 unbind '"'
 unbind %
 
@@ -84,7 +92,7 @@ setw -g mode-keys vi
 # Setup 'v' to begin selection as in Vim
 bind -T copy-mode-vi v send -X begin-selection
 bind -T copy-mode-vi y send -X copy-pipe-and-cancel "pbcopy"
-bind -T copy-mode-vi MouseDragEnd1Pane send -X copy-pipe-and-cancel "pbcopy"
+bind -T copy-mode-vi MouseDragEnd1Pane send -X copy-selection
 
 # Update default binding of `Enter` to also use copy-pipe
 unbind -T copy-mode-vi Enter
@@ -108,9 +116,10 @@ bind -T copy-mode-vi d send -X halfpage-down
 set -g status-interval 1
 set -g status-justify left
 
-# Pane borders
-set -g pane-border-style fg=colour238
-set -g pane-active-border-style fg=colour39
+# Pane borders - improved visibility
+set -g pane-border-style fg=colour245
+set -g pane-active-border-style fg=colour51
+set -g pane-border-lines heavy
 
 # ===========================
 # Seamless Navigation with Vim
