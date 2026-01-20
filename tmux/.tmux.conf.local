@@ -35,6 +35,12 @@ set -g renumber-windows on
 # Enable mouse support for scrolling, selecting panes, resizing
 set -g mouse on
 
+# Smooth mouse wheel scrolling (line-by-line instead of 5 lines)
+bind -T copy-mode-vi WheelUpPane select-pane \; send-keys -X -N 1 scroll-up
+bind -T copy-mode-vi WheelDownPane select-pane \; send-keys -X -N 1 scroll-down
+bind -T copy-mode WheelUpPane select-pane \; send-keys -X -N 1 scroll-up
+bind -T copy-mode WheelDownPane select-pane \; send-keys -X -N 1 scroll-down
+
 # Allow escape sequences to pass through (helps with nested tmux over SSH)
 set -g allow-passthrough on
 
@@ -81,6 +87,10 @@ bind -r L resize-pane -R 5
 unbind o
 bind -r C-h select-window -t :-
 bind -r C-l select-window -t :+
+
+# Reorder windows (move left/right)
+bind-key -r < swap-window -d -t -1
+bind-key -r > swap-window -d -t +1
 
 # ===========================
 # Copy Mode (Vim-style)

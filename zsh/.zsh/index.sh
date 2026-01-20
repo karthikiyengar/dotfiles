@@ -13,3 +13,4 @@ source ${ZSH_CONFIG_DIR}/completion.sh
 source ${ZSH_CONFIG_DIR}/navigation.sh
 source ${ZSH_CONFIG_DIR}/path.sh
 source ${ZSH_CONFIG_DIR}/keybinds.sh
+source ${ZSH_CONFIG_DIR}/tmux.sh
