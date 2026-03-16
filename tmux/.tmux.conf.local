@@ -18,6 +18,9 @@ set -g display-time 2000
 # Focus events enabled for terminals that support them
 set -g focus-events on
 
+# Forward OSC 52 clipboard escape sequences (needed for Atuin paste history)
+set -g set-clipboard on
+
 # Super useful when using "grouped sessions" and multi-monitor setup
 setw -g aggressive-resize on
 
